@@ -1752,14 +1752,14 @@ class RxController extends Controller {
                             'id' => 'table_protocol'
                         ],
                         'columns' => [
-                                [
+                            [
                                 'class' => 'kartik\grid\SerialColumn',
                                 'contentOptions' => ['class' => 'kartik-sheet-style'],
                                 'width' => '36px',
                                 'header' => '',
                                 'headerOptions' => ['class' => 'kartik-sheet-style']
                             ],
-                                [
+                            [
                                 'header' => 'CA DX',
                                 'headerOptions' => ['style' => 'color:black;text-align:center;'],
                                 'attribute' => 'Dx10CA',
@@ -1768,7 +1768,7 @@ class RxController extends Controller {
                                     return empty($model['Dx10CA']) ? '-' : $model['Dx10CA'];
                                 }
                             ],
-                                [
+                            [
                                 'header' => 'CA State',
                                 'headerOptions' => ['style' => 'color:black;text-align:center;'],
                                 'attribute' => 'chemo_state_desc',
@@ -1777,7 +1777,7 @@ class RxController extends Controller {
                                     return empty($model['chemo_state_desc']) ? '-' : $model['chemo_state_desc'];
                                 }
                             ],
-                                [
+                            [
                                 'header' => 'Protocol',
                                 'headerOptions' => ['style' => 'color:black;text-align:center;'],
                                 'attribute' => 'protocol_name',
@@ -1786,7 +1786,7 @@ class RxController extends Controller {
                                     return empty($model['protocol_name']) ? '-' : $model['protocol_name'];
                                 }
                             ],
-                                [
+                            [
                                 'header' => 'รหัสเบิกจ่าย',
                                 'headerOptions' => ['style' => 'color:black; text-align:center;'],
                                 'attribute' => 'regimen_paycode',
@@ -1795,7 +1795,7 @@ class RxController extends Controller {
                                     return empty($model['regimen_paycode']) ? '' : $model['regimen_paycode'];
                                 }
                             ],
-                                [
+                            [
                                 'class' => '\kartik\grid\ActionColumn',
                                 'contentOptions' => ['class' => 'text-center',],
                                 'template' => '{select}',
@@ -1832,7 +1832,7 @@ class RxController extends Controller {
         $dataProvider = $searchModel->search_order(Yii::$app->request->queryParams, $id);
         $header = VwPtServiceListOp::findOne($model['pt_vn_number']);
         $ptar = VwPtAr::find()->where(['pt_visit_number' => $model['pt_vn_number']])->all();
-        $query11 = VwCpoeRxDetail2::find()->where(['cpoe_id' => $id,'cpoe_Itemtype' => [10,20,21,22,40,50,53,54]])->asArray('cpoe_Itemtype')->groupBy('cpoe_Itemtype')->orderBy('cpoe_seq')->all();
+        $query11 = VwCpoeRxDetail2::find()->where(['cpoe_id' => $id, 'cpoe_Itemtype' => [10, 20, 21, 22, 40, 50, 53, 54]])->asArray('cpoe_Itemtype')->groupBy('cpoe_Itemtype')->orderBy('cpoe_seq')->all();
         if ($type == 'A4') {
             $content = $this->renderPartial('_form_print', [
                 'dataProvider' => $dataProvider,
@@ -1993,7 +1993,7 @@ class RxController extends Controller {
                     ->all();
             foreach ($query as $v) {
                 $items[$v->cpoe_ids] = [
-                    'content' => empty($v->itemType->cpoe_itemtype_decs) ? '' : '<i class="glyphicon glyphicon-hand-up"></i> '.$v->itemType->cpoe_itemtype_decs . ' ' . $v->ItemID,
+                    'content' => empty($v->itemType->cpoe_itemtype_decs) ? '' : '<i class="glyphicon glyphicon-hand-up"></i> ' . $v->itemType->cpoe_itemtype_decs . ' ' . $v->ItemID,
                         //'options' => ['data' => ['id' => $p->id]],
                 ];
             }
@@ -2005,7 +2005,7 @@ class RxController extends Controller {
                         'model' => $model,
                         'items' => $items,
                     ]),
-                    //'footer' => Html::button('Close', ['class' => 'btn btn-default pull-right', 'data-dismiss' => "modal"]),
+                        //'footer' => Html::button('Close', ['class' => 'btn btn-default pull-right', 'data-dismiss' => "modal"]),
                 ];
             }
         }
@@ -2022,7 +2022,7 @@ class RxController extends Controller {
                 if ($model['cpoe_Itemtype'] == 40 || $model['cpoe_Itemtype'] == 50) {
                     $model->cpoe_seq = $i;
                     $model->save();
-                    $j = $this->saveParentSort($key, ($i+1));
+                    $j = $this->saveParentSort($key, ($i + 1));
                     $i = $j++;
                 } else {
                     $model->cpoe_seq = $i;
@@ -2043,6 +2043,20 @@ class RxController extends Controller {
             $i++;
         }
         return $i;
+    }
+
+    public function actionSearchHn() {
+        $request = Yii::$app->request;
+        if ($request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                'title' => '<i class="glyphicon glyphicon-search"></i> ค้นหาผู้ป่วย',
+                'content' => $this->renderAjax('search_hn', [
+                    
+                ]),
+                'footer' => Html::button('Close', ['class' => 'btn btn-default pull-right', 'data-dismiss' => "modal"]),
+            ];
+        }
     }
 
 }
