@@ -39,6 +39,7 @@ use app\modules\pharmacy\models\TbPtAr;
 use app\modules\pharmacy\models\TbFiInvDetail;
 use app\modules\pharmacy\models\TbPrintDruglabel;
 use app\modules\pharmacy\models\VwCpoeRxDetail2;
+use app\modules\pharmacy\models\VwPtInfo;
 
 class RxController extends Controller {
 
@@ -2052,11 +2053,55 @@ class RxController extends Controller {
             return [
                 'title' => '<i class="glyphicon glyphicon-search"></i> ค้นหาผู้ป่วย',
                 'content' => $this->renderAjax('search_hn', [
-                    
                 ]),
-                'footer' => Html::button('Close', ['class' => 'btn btn-default pull-right', 'data-dismiss' => "modal"]),
+                    //'footer' => Html::button('Close', ['class' => 'btn btn-default pull-right', 'data-dismiss' => "modal"]),
             ];
         }
     }
+
+    public function actionQueryArdetail() {
+        $request = Yii::$app->request;
+        if ($request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if (VwPtInfo::findAll(['pt_hospital_number' => $request->get('HN')]) == null) {
+                return 'No data';
+            } else {
+                $Profile = VwPtServiceListOp::findOne(['pt_hospital_number' => $request->get('HN')]);
+                $data = VwPtAr::find()->where(['pt_hospital_number' => $request->get('HN')])->all();
+                $table = '<table id="details" class="table table-hover table-bordered table-striped table-condensed kv-table-wrap">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>สิทธิการรักษา</th>
+                                    <th>เลขที่ใบส่งตัว</th>
+                                    <th>วันเริ่มใบส่งตัว</th>
+                                    <th>วันสิ้นสุดใบส่งตัว</th>
+                                    <th>ใช้สิทธิ</th>
+                                </tr>
+                            </thead>
+                            <tbody>';
+                $no = 1;
+                foreach ($data as $v) {
+                    $table .= '<tr>';
+                    $table .= '<td style="text-align:center;">' . $no . '</td>';
+                    $table .= '<td>' . $v['ar_name'] . '</td>';
+                    $table .= '<td style="text-align:center;">' . $v['refer_hsender_doc_id'] . '</td>';
+                    $table .= '<td style="text-align:center;">' . Yii::$app->formatter->asDate($v['refer_hsender_doc_start'], 'dd/MM/yyyy') . '</td>';
+                    $table .= '<td style="text-align:center;">' . Yii::$app->formatter->asDate($v['refer_hsender_doc_expdate'], 'dd/MM/yyyy') . '</td>';
+                    $table .= '<td>' . $v['pt_ar_usage'] . '</td>';
+                    $table .= '</tr>';
+                    $no++;
+                }
+                $table .= '</tbody></table>';
+                $name = $Profile['pt_name'] . ' ' . 'อายุ ' . $Profile['pt_age_registry_date'] . ' ' . 'ปี HN ' . $Profile['pt_hospital_number'] . ' ' . ' VN ' . $Profile['pt_visit_number'];
+                $arr = [
+                    'name' => $name,
+                    'table' => $table,
+                ];
+                return $arr;
+            }
+        }
+    }
+
 
 }

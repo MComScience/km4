@@ -7,9 +7,11 @@ use fedemotta\datatables\DataTables;
 use johnitvn\ajaxcrud\CrudAsset;
 use yii\bootstrap\Modal;
 use frontend\assets\ModalFullScreenAsset;
+use frontend\assets\WaitMeAsset;
 
 CrudAsset::register($this);
 ModalFullScreenAsset::register($this);
+WaitMeAsset::register($this);
 
 $this->title = 'สถานะใบสั่งยา';
 $this->params['breadcrumbs'][] = $this->title;
