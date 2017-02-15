@@ -1,0 +1,70 @@
+/*
+ * Demo only style
+ */
+
+body {
+	margin: 0px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	color: #333;
+	background: #F3F3F3;
+}
+h2 {
+	margin-top: 0px;
+	font-size: 20px;
+}
+a {
+	color: #428bca;
+	text-decoration: none;
+}
+a:hover, a:focus {
+	color: #2a6496;
+	text-decoration: underline;
+}
+.clearfix:before,
+.clearfix:after {
+  content:"";
+  display:table;
+}
+.clearfix:after {
+  clear:both;
+}
+
+.avatar {
+	float: right;
+	border: 1px solid #ddd;
+	border-radius: 2px;
+	width: 100px;
+	height: 100px;
+}
+.demo-container {
+	max-width: 700px;
+	margin: 1.5em auto;
+	padding: 1em;
+	background: #fff;
+	border: 1px solid #D8D8D8;
+	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, .065);
+	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, .065);
+	box-shadow: 0 1px 4px rgba(0, 0, 0, .065);
+}
+
+.examples {
+	margin-top: 15px;
+}
+.examples h4 {
+	margin-bottom: 5px;
+}
+.examples ul {
+	margin: 0px;
+	padding-left: 17px;
+}
+.examples .active a {
+	color: #666;
+}
+
+.getit {
+	text-align: center;
+}
+.getit a {
+	color: #ec5d59;
+}

@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="vw_stk_yearcut2" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ccc3c3f0-9367-4637-9f06-19f9d8025243">
+	<property name="ireport.zoom" value="4.0"/>
+	<property name="ireport.x" value="308"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Years" class="java.lang.String"/>
+	<parameter name="catid" class="java.lang.String"/>
+	<parameter name="header" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT * FROM vw_stk_yearcut where ItemCatID = $P{catid} and YEAR = $P{Years}]]>
+	</queryString>
+	<field name="ItemID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[รหัสที่ รพ.กำหนด]]></fieldDescription>
+	</field>
+	<field name="ItemCatID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[ประเภทยาและเวชภัณฑ์]]></fieldDescription>
+	</field>
+	<field name="ItemName" class="java.lang.String">
+		<fieldDescription><![CDATA[ชื่อสินค้า หรือ FNS]]></fieldDescription>
+	</field>
+	<field name="DispUnit" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="YEAR" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="M01" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="M02" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="M03" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="M04" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="M05" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="M06" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="M07" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="M08" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="M09" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="M10" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="M11" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="M12" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MCum" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="123" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="178" height="20" uuid="2011a087-6d3d-4df4-bf79-1530b267c1f3"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[โรงพยาบาลมะเร็งอุดรธานี]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="255" y="69" width="29" height="20" uuid="a94c1604-d5bc-4b8a-bb2f-a99f2f07c7a3"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ปี]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="99" width="51" height="18" uuid="2b939b56-56be-4b62-acb4-7dfe2bee5dfe"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[รหัสสินค้า]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="52" y="99" width="182" height="18" uuid="e55df43d-2517-4063-a2f8-dfd1a6e58682"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[รายละเอียดสินค้า]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="234" y="99" width="38" height="18" uuid="47072379-ee18-4dae-8234-e5711fef7067"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[หน่วย]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="272" y="99" width="21" height="18" uuid="f6804143-d56f-4f06-9565-4e4bbfffacb8"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ม.ค.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="293" y="99" width="22" height="18" uuid="ca13e4c0-5356-4bf3-939e-deff10f5d3ab"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ก.พ.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="315" y="99" width="20" height="18" uuid="514d8a17-6ade-4f30-9a9e-b0a5ef1e907c"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[มี.ค.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="335" y="99" width="29" height="18" uuid="55df944f-520e-4e01-a342-600b32c2a427"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[เม.ย.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="365" y="99" width="20" height="18" uuid="a496a480-a639-4fc5-995f-5f6d97abcc9a"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[พ.ค.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="99" width="23" height="18" uuid="49814b96-837b-485e-8a41-d477170567cc"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[มิ.ย.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="408" y="99" width="21" height="18" uuid="5fa7743b-69c6-4613-92f7-81619ac700e4"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ก.ค.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="429" y="99" width="20" height="18" uuid="13b8768c-f2f4-465a-890c-fbd0549acb26"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ส.ค.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="449" y="99" width="19" height="18" uuid="dbf844f5-8157-439c-b5f5-ae2568320782"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ก.ย.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="468" y="99" width="19" height="18" uuid="e80aa79b-1f6a-47d4-adf7-c730e53c91dd"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ต.ค.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="487" y="99" width="20" height="18" uuid="ec976459-afaf-4af5-80f4-51be09faf5f2"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[พ.ย.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="507" y="99" width="21" height="18" uuid="51067378-7025-4cc5-95bb-971489230abb"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ธ.ค.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="530" y="99" width="25" height="18" uuid="71ef37ec-1ba6-4731-a359-03916542fa3c"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[รวม]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="95" width="554" height="1" uuid="6987f0ea-544c-4caa-893c-149b4a74eb78"/>
+			</line>
+			<line>
+				<reportElement x="0" y="119" width="555" height="1" uuid="42b43c04-c59e-43d4-a141-7f4820fa694f"/>
+			</line>
+			<textField>
+				<reportElement x="285" y="69" width="50" height="20" uuid="f756ed58-e512-44b9-9a70-b89f78264b66"/>
+				<textFieldExpression><![CDATA[$P{Years}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="514" y="75" width="41" height="20" uuid="180e4f6e-15d7-47fd-8da7-f30017fe6b5a"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="450" y="75" width="27" height="20" uuid="59d4962d-4273-48ed-a411-dc501331d8e4"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[หน้า]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="499" y="75" width="15" height="19" uuid="7a7789e9-f0a8-43b5-9391-bcbb50f31fca"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="478" y="75" width="21" height="20" uuid="0c4a2dd4-067e-42e1-bc0f-2975b6a3bf8e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="20" width="554" height="25" uuid="27a56cb2-b574-4261-93e0-eb1db2e7b8e4"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{header}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="35" splitType="Stretch">
+			<textField>
+				<reportElement x="1" y="4" width="51" height="18" uuid="607a8981-bcdb-4b6a-8424-77fe00245a27"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ItemID}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="52" y="4" width="182" height="18" uuid="8fca2e1d-eb88-4cbe-bb0b-ee856e6302b8"/>
+				<textFieldExpression><![CDATA[$F{ItemName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="234" y="4" width="38" height="18" uuid="ac9a2a4b-869b-413b-9b80-a0946663a090"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{DispUnit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="272" y="4" width="21" height="18" uuid="b843aca3-5b7d-460c-9682-8bc9b8ea1181"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{M01}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="293" y="4" width="21" height="18" uuid="75282880-8276-40ce-b63e-388d3a143706"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{M02}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="314" y="4" width="21" height="18" uuid="3055d75a-3ac3-4513-890e-326c50b0f0a5"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{M03}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="335" y="4" width="29" height="18" uuid="c87829e6-f7b8-4d90-9b3f-3c4f0d52de20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{M04}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="364" y="4" width="20" height="18" uuid="e8a74e5d-bcd2-46f7-ba0f-33be5fab8aae"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{M05}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="384" y="4" width="23" height="18" uuid="ebf4f027-20b3-47a4-bd1e-053bc5140d6d"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{M06}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="407" y="4" width="22" height="18" uuid="3c9ad5bb-3b99-4827-93f9-ef8cb2f0bc9c"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{M07}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="429" y="4" width="19" height="18" uuid="6c6b5d9e-c119-496b-8624-613acdb4b3b7"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{M08}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="449" y="4" width="19" height="18" uuid="377f4e4b-e957-4093-924f-8fb6e8e6afec"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{M09}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="468" y="4" width="19" height="18" uuid="10e5c845-ee99-4ff2-a32e-16b5df91f53e"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{M10}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="487" y="4" width="20" height="18" uuid="58cb2f64-0885-4480-8f84-c5e49ccaf436"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{M11}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="508" y="4" width="18" height="18" uuid="e1b010a2-49b5-4185-8f81-4af6120c1812"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{M12}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="530" y="4" width="25" height="18" uuid="7c14e2fc-18bb-4e91-8903-285104290d35"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{MCum}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="17" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f543420c-43e4-4c0b-909a-ea370f574918">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="date" class="java.lang.String"/>
+	<parameter name="catid" class="java.lang.String"/>
+	<parameter name="header" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * From vw_stk_balancetotal_ItemID where ItemCatID = $P{catid}]]>
+	</queryString>
+	<field name="ItemID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ItemCatID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[ประเภทยาและเวชภัณฑ์]]></fieldDescription>
+	</field>
+	<field name="ItemName" class="java.lang.String">
+		<fieldDescription><![CDATA[ชื่อสินค้า หรือ FNS]]></fieldDescription>
+	</field>
+	<field name="ItemQtyBalance" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DispUnit" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Reorderpoint" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TargetLevel" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ItemROPDiff" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ItemOnPO" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PODueDate" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="OverStock" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="variable1" class="java.lang.String" calculation="Count">
+		<variableExpression><![CDATA[$F{ItemID}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="35">
+			<staticText>
+				<reportElement x="0" y="1" width="210" height="23" uuid="92bdce0d-174d-43d5-8825-d7cba0111f44"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[โรงพยาบาลมะเร็งอุดรธานี]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="85">
+			<staticText>
+				<reportElement x="182" y="31" width="118" height="20" uuid="6def7d84-8c7a-4e15-b67c-ef7b6dcc7b39"/>
+				<text><![CDATA[พิมพ์ยอดคงเหลือ ณ วันที่]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="61" width="74" height="20" uuid="20643b6b-1f9a-44ae-b9ac-753a9f1c9603"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[รหัสสินค้า]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="74" y="61" width="239" height="20" uuid="96e7a437-cd06-41ca-b08b-d487ee24e6a7"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[รายละเอียด]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="313" y="61" width="75" height="20" uuid="3002eb7e-d3a4-4804-ae55-0f229ce8c1a9"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[หน่วย]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="388" y="61" width="92" height="20" uuid="3c0e5062-f334-4d8c-bf1c-156725ae9f58"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ยอดคงเหลือ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="61" width="75" height="19" uuid="3dba7d2d-0020-4720-934a-42f3baa5d917"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ต่ำกว่าจุดสั่งชื้อ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="57" width="555" height="1" uuid="3eaba7d4-d949-421f-9949-4c0e4b7f13d6"/>
+			</line>
+			<line>
+				<reportElement x="0" y="82" width="555" height="1" uuid="01c9a473-e11e-4717-b825-9037dfb46214"/>
+			</line>
+			<textField>
+				<reportElement x="298" y="31" width="64" height="20" uuid="bbad19b6-bd38-496e-a315-d157f7d081f5"/>
+				<textFieldExpression><![CDATA[$P{date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="499" y="37" width="15" height="19" uuid="adccbd48-55ca-40a7-a6fe-b02a2ecaf9b1"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="450" y="37" width="27" height="20" uuid="2dc98b5b-8a4f-4751-ac3a-297db90fccb4"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[หน้า]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="478" y="37" width="21" height="20" uuid="f99abb98-a7be-4129-8ba4-9c56829739a0"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="514" y="37" width="41" height="20" uuid="77c773b1-dead-4d79-b106-954c9efa9f67"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="555" height="28" uuid="08d120f7-ebf6-410e-b837-df14af9f8de1"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{header}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="29" splitType="Stretch">
+			<textField>
+				<reportElement x="2" y="4" width="72" height="20" uuid="651fd344-1ca0-42d6-8ae4-e2b8b9a85fad"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ItemID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="74" y="3" width="239" height="20" uuid="4372f5be-e703-45dc-91c1-8d89e74f9af3"/>
+				<textFieldExpression><![CDATA[$F{ItemName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="313" y="3" width="75" height="20" uuid="dbb1f16e-ecc7-49da-806e-7c649dad8d7d"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{DispUnit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="388" y="3" width="92" height="20" uuid="b1ced08d-9581-4ef0-bfe5-351149c19f08"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{ItemQtyBalance}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="3" width="75" height="20" uuid="d7bfa774-5caf-4d47-962d-df06416a8453"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{Reorderpoint}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="4" width="105" height="20" uuid="988d4b28-84f7-4f83-b5bf-b4bcef8e79ab"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[รวมทั้งสิ้น]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="213" y="5" width="60" height="20" uuid="c2e52bb3-3003-4aee-862f-db1f09df7f2e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[รายการ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="1" width="555" height="1" uuid="01c9a473-e11e-4717-b825-9037dfb46214"/>
+			</line>
+			<line>
+				<reportElement x="0" y="24" width="555" height="1" uuid="01c9a473-e11e-4717-b825-9037dfb46214"/>
+			</line>
+			<textField>
+				<reportElement x="110" y="5" width="100" height="19" uuid="f505ec8e-59ed-4e62-9502-588efbe9284a"/>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="22"/>
+	</summary>
+</jasperReport>

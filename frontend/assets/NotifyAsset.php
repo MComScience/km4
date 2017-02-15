@@ -1,0 +1,22 @@
+<?php
+
+namespace frontend\assets;
+
+use yii\web\AssetBundle;
+
+/**
+ * Main frontend application asset bundle.
+ */
+class NotifyAsset extends AssetBundle
+{
+    public $basePath = '@webroot';
+    public $baseUrl = '@web';
+    public $js = [
+        'vendor/js/toastr/toastr.js',
+    ];
+    public $depends = [
+        'yii\web\YiiAsset',
+        'yii\bootstrap\BootstrapAsset',
+        'frontend\assets\AppAsset',
+    ];
+}

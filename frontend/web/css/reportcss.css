@@ -1,0 +1,13 @@
+.tabletopgpuplan{
+    font-size:16pt;
+}
+.tabledetailgpuplan{
+    font-size:16pt
+}.tableheadergpuplan{
+    font-size:16pt;
+    text-align: center;
+}.tablefootergpuplan{
+    font-size:16pt;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}

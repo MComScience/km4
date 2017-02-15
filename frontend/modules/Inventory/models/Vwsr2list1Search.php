@@ -1,0 +1,222 @@
+<?php
+
+namespace app\modules\Inventory\models;
+
+use Yii;
+use yii\base\Model;
+use yii\data\ActiveDataProvider;
+use app\modules\Inventory\models\Vwsr2list1;
+
+/**
+ * Vwsr2listdrafSearch represents the model behind the search form about `app\modules\Inventory\models\Vwsr2listdraf`.
+ */
+class Vwsr2list1Search extends Vwsr2list1
+{
+    public $q;
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+        [['SRID', 'SRTypeID', 'SRIssue_stkID', 'SRReceive_stkID', 'SRStatus'], 'integer'],
+        [['SRDate', 'DepartmentDesc', 'SectionDecs', 'SRExpectDate', 'stk_issue', 'stk_receive', 'SRStatus', 'SRStatusDesc', 'SRNote'], 'safe'],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        // bypass scenarios() implementation in the parent class
+        return Model::scenarios();
+    }
+
+    /**
+     * Creates data provider instance with search query applied
+     *
+     * @param array $params
+     *
+     * @return ActiveDataProvider
+     */
+    public function search($params)
+    {
+        $query = Vwsr2list1::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $query->andFilterWhere([
+            'SRNum' => $this->SRNum,
+            'SRDate' => $this->SRDate,
+            'SRTypeID' => $this->SRTypeID,
+            'SRExpectDate' => $this->SRExpectDate,
+            'SRIssue_stkID' => $this->SRIssue_stkID,
+            'SRReceive_stkID' => $this->SRReceive_stkID,
+            ]);
+
+        $query->orFilterWhere(['like', 'DepartmentDesc', $this->q])
+        ->orFilterWhere(['like', 'SectionDecs', $this->q])
+        ->orFilterWhere(['like', 'stk_issue', $this->q])
+        ->orFilterWhere(['like', 'stk_receive', $this->q])
+        ->orFilterWhere(['like', 'SRStatus', $this->q])
+        ->orFilterWhere(['like', 'SRStatusDesc', $this->q])
+        ->orFilterWhere(['like', 'SRNote', $this->q])
+        ->andWhere(['SRStatus'=>'2']);
+
+        return $dataProvider;
+    }
+    public function searchpay($params) {
+        $query = Vwsr2list1::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $query->andFilterWhere([
+            'SRNum' => $this->SRNum,
+            'SRDate' => $this->SRDate,
+            'stk_issue' => $this->stk_issue,
+            'stk_receive' => $this->stk_receive,
+            'SRTypeID' => $this->SRTypeID,
+            'SRStatus' => $this->SRStatus,
+            ]);
+
+        $query->orFilterWhere(['like', 'SRNum', $this->q])
+        ->orFilterWhere(['like', 'SRDate', $this->q])
+        ->orFilterWhere(['like', 'stk_issue', $this->q])
+        ->orFilterWhere(['like', 'stk_receive', $this->q])
+        ->orFilterWhere(['like', 'SRStatus', $this->q])
+        ->orFilterWhere(['like', 'SRTypeID', $this->q])
+        ->andWhere(['SRStatus'=>'approved']);
+
+        return $dataProvider;
+    }
+    public function searchrecive($params) {
+        $query = Vwsr2list1::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $query->andFilterWhere([
+            'SRNum' => $this->SRNum,
+            'SRDate' => $this->SRDate,
+            'stk_issue' => $this->stk_issue,
+            'stk_receive' => $this->stk_receive,
+            'SRTypeID' => $this->SRTypeID,
+            'SRStatus' => $this->SRStatus,
+            ]);
+
+        $query->orFilterWhere(['like', 'SRNum', $this->q])
+        ->orFilterWhere(['like', 'SRDate', $this->q])
+        ->orFilterWhere(['like', 'stk_issue', $this->q])
+        ->orFilterWhere(['like', 'stk_receive', $this->q])
+        ->orFilterWhere(['like', 'SRStatus', $this->q])
+        ->orFilterWhere(['like', 'SRTypeID', $this->q])
+        ->andWhere(['SRStatus'=>'approved']);
+
+        return $dataProvider;
+    }
+    public function searchhistory($params) {
+        $query = Vwsr2list1::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $query->andFilterWhere([
+            'SRNum' => $this->SRNum,
+            'SRDate' => $this->SRDate,
+            'stk_issue' => $this->stk_issue,
+            'stk_receive' => $this->stk_receive,
+            'SRTypeID' => $this->SRTypeID,
+            'SRStatus' =>4,
+            ]);
+//
+        $query->orFilterWhere(['like', 'SRNum', $this->q])
+        ->orFilterWhere(['like', 'SRDate', $this->q])
+        ->orFilterWhere(['like', 'stk_issue', $this->q])
+        ->orFilterWhere(['like', 'stk_receive', $this->q])
+        ->orFilterWhere(['like', 'SRStatus', $this->q])
+        ->orFilterWhere(['like', 'SRTypeID', $this->q]);
+                //->orWhere(['SRStatus'=>'4']);
+
+        return $dataProvider;
+    }
+    public function searchhistoryspicking($params) {
+        $query = Vwsr2list1::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $query->andFilterWhere([
+            'SRNum' => $this->SRNum,
+            'SRDate' => $this->SRDate,
+            'stk_issue' => $this->stk_issue,
+            'stk_receive' => $this->stk_receive,
+            'SRTypeID' => $this->SRTypeID,
+            'SRStatus' =>4,
+            ]);
+        $array_stk = \app\modules\Inventory\models\TbStk::find()->where(['SectionID'=>$_SESSION['ss_sectionid']])->all();
+            if ($array_stk != null) {
+                foreach ($array_stk as $data) {
+                    $StkID[] = $data['StkID'];
+            }
+        }
+        $query->orFilterWhere(['like', 'SRNum', $this->q])
+        ->orFilterWhere(['like', 'SRDate', $this->q])
+        ->orFilterWhere(['like', 'stk_issue', $this->q])
+        ->orFilterWhere(['like', 'stk_receive', $this->q])
+        ->orFilterWhere(['like', 'SRStatus', $this->q])
+        ->orFilterWhere(['like', 'SRTypeID', $this->q]);
+                //->orWhere(['SRStatus'=>'4']);
+        if(!empty($StkID)){
+            $query->andWhere(['SRIssue_stkID'=>$StkID]);
+        }
+        return $dataProvider;
+    }
+}

@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report_plan_tradedrung" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="36796a05-2ee4-41f7-9756-789b5a2ddb11">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="ireport.zoom" value="2.8531167061100033"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="46"/>
+	<parameter name="Parameter1" class="java.lang.String"/>
+	<parameter name="PCPlanDate" class="java.lang.String"/>
+	<parameter name="DepartmentDesc" class="java.lang.String"/>
+	<parameter name="SectionDecs" class="java.lang.String"/>
+	<parameter name="PCPlanType" class="java.lang.String"/>
+	<parameter name="PCPlanStatus" class="java.lang.String"/>
+	<parameter name="PCPlanBeginDate" class="java.lang.String"/>
+	<parameter name="PCPlanEndDate" class="java.lang.String"/>
+	<parameter name="datenow" class="java.lang.String"/>
+	<parameter name="sumexten" class="java.lang.String"/>
+	<parameter name="user" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from fm_report_gpuplan_detail where PCPlanNum = '$P{Parameter1}']]>
+	</queryString>
+	<field name="PCPlanNum" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TMTID_GPU" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="FSN_GPU" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="GPUUnitCost" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="GPUOrderQty" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="GPUOrderQty2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="GPUExtendedCost2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="GPUExtendedCost" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ContVal_GPU" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ContUnit" class="java.lang.String">
+		<fieldDescription><![CDATA[หน่วยของบรรจุภัณฑ์]]></fieldDescription>
+	</field>
+	<field name="DispUnit" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PCPlanGPUItemStatusID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ids" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="variable1" class="java.lang.String" calculation="Count">
+		<variableExpression><![CDATA[$F{FSN_GPU}]]></variableExpression>
+	</variable>
+	<variable name="variable2" class="java.lang.String" calculation="Sum">
+		<variableExpression><![CDATA[$F{GPUExtendedCost}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="252" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="50" width="555" height="41" uuid="f9cd4ea0-07e3-40ed-8ed0-d10b0707e242"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="18"/>
+				</textElement>
+				<text><![CDATA[รายงานแผนการจัดชื้อยาสามัญ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="21" width="237" height="29" uuid="e5b223cf-b5d3-4a4b-a2a1-9451a0e02b25"/>
+				<textElement>
+					<font fontName="SansSerif" size="18"/>
+				</textElement>
+				<text><![CDATA[โรงพยาบาลมะเร็งอุดรธานี]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="227" width="54" height="20" uuid="fbcf36ab-333a-42ce-a07f-01881a26f40d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[ลำดับ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="58" y="227" width="65" height="20" uuid="2f5a1ab6-117a-4601-92a3-19007bb75ba2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[รหัสยาสามัญ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="123" y="227" width="188" height="20" uuid="9fdd876f-35af-4097-945b-f344e46c24e8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[รายละเอียดยาสามัญ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="311" y="227" width="72" height="20" uuid="c61d2a86-d107-46fa-933a-6d0f8c8dcfe8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[ราคาต่อหน่วย]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="384" y="227" width="51" height="20" uuid="f6dbadf4-c8cd-43eb-9160-a6f9933b72af"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[จำนวน]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="435" y="227" width="37" height="20" uuid="fe215167-6fa1-4668-a611-3091be63dd9a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[หน่วย]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="473" y="227" width="77" height="18" uuid="63c41a33-a1ab-4d0f-b25b-0f1e32727edc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[รวมเป็นเงิน]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="28" y="98" width="97" height="23" uuid="9ddb3425-67db-4d8f-8185-bd88aec5525d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<text><![CDATA[เลขที่แผนจัดชื้อ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="29" y="122" width="95" height="26" uuid="0f6ae208-d78f-45e9-96b5-cf69ef04297f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<text><![CDATA[วันที่]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="29" y="151" width="96" height="25" uuid="d2658896-7c48-4d7d-ab54-760ce98cee6f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<text><![CDATA[ประเภทแผน]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="122" width="86" height="22" uuid="f5f1fdb3-726b-4b41-b4b8-8af5f1425994"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<text><![CDATA[แผนก]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="286" y="98" width="87" height="22" uuid="1fbcdb8b-38cc-42f0-bb0c-ab5f9e49262d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<text><![CDATA[ฝ่าย]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="29" y="180" width="94" height="30" uuid="31a29828-1025-4877-93ec-421486d41b79"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<text><![CDATA[สถานะ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="151" width="87" height="25" uuid="e65baadd-1c2e-4954-bf02-aaf4e021b597"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<text><![CDATA[วันที่เริ่มแผน]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="180" width="86" height="24" uuid="1a63717e-b395-4371-b2fb-31fabd6a4a06"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<text><![CDATA[วันที่สิ้นสุดแผน]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="125" y="98" width="100" height="22" uuid="99210d09-63cd-4d21-999d-c07bd04c48ea"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{Parameter1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="125" y="122" width="100" height="26" uuid="00dfaf3f-9b05-47fb-86db-7adcea713ccb"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PCPlanDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="125" y="151" width="160" height="25" uuid="52bd532a-e0c9-46f2-bc2d-197f88e26d77"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PCPlanType}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="125" y="180" width="100" height="30" uuid="b8c08661-8acc-414f-b196-dca4af8e26f0"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PCPlanStatus}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="372" y="122" width="100" height="22" uuid="8fc060ae-0b99-4788-be3e-44006860f35d"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DepartmentDesc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="373" y="98" width="100" height="23" uuid="6ae070be-281c-464a-926e-66a304d509e7"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SectionDecs}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="372" y="151" width="100" height="26" uuid="874a7967-80b7-4f80-b9f6-f0d598c1c928"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PCPlanBeginDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="372" y="180" width="100" height="25" uuid="c5b5ce15-dad7-446e-beee-8d8f22999932"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PCPlanEndDate}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="247" width="555" height="1" uuid="eb29fe1d-f1b5-4fa2-a293-a1afa2d775ae"/>
+			</line>
+			<line>
+				<reportElement x="0" y="222" width="555" height="1" uuid="b55d1915-63d2-4d0f-8548-b8719ff3ffa8"/>
+			</line>
+			<staticText>
+				<reportElement x="450" y="202" width="27" height="20" uuid="01916aa8-3045-4bec-87e7-429d4ae0f827"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[หน้า]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="478" y="202" width="21" height="20" uuid="73e31aa0-1393-4368-b72e-8b8427940137"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="499" y="202" width="15" height="19" uuid="36b9ed56-d645-4952-a26f-4e5cd8dfba6b"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="514" y="202" width="41" height="20" uuid="a718e1a6-c4e8-4d5f-b6dc-b7a7803425d8"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="42" splitType="Stretch">
+			<textField>
+				<reportElement x="3" y="9" width="54" height="30" uuid="66011109-43a6-4d83-82ed-84daf51d7801"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="57" y="9" width="66" height="30" uuid="a0ee0e68-355b-4581-8a3b-5aec953ed209"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{TMTID_GPU}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="123" y="9" width="189" height="30" uuid="ce5d4910-8c0e-451e-a088-1164e0eef09b"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FSN_GPU}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="312" y="9" width="72" height="30" uuid="dd5834b8-371e-4224-a00e-fb01277b51bd"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{GPUUnitCost}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="435" y="9" width="38" height="30" uuid="7221dd84-bed7-4a20-876b-28f7088db0a1"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{DispUnit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="473" y="9" width="65" height="30" uuid="541f4b61-ddbc-4af2-9652-938c2af38b59"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{GPUExtendedCost2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="384" y="9" width="51" height="30" uuid="1affaadf-e091-43b2-abd9-1f20e0f9c13c"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{GPUOrderQty2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="32" splitType="Stretch"/>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="57">
+			<staticText>
+				<reportElement x="5" y="6" width="65" height="24" uuid="0e3ade41-bf0f-4cd7-9d00-f02960ad9f7b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[รวม]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="6" width="83" height="24" uuid="c62cf82e-f5c2-41ec-8a64-bac0e844f5ec"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[รายการ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="69" y="6" width="71" height="24" uuid="4590a92d-9ed9-4ed1-8281-f7a829490128"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="2" width="555" height="1" uuid="7481b966-bcc5-4cbd-a101-2fc29cfe895a"/>
+			</line>
+			<line>
+				<reportElement x="0" y="29" width="555" height="1" uuid="a0dc9fb2-fc36-47f0-8bd3-91c3b3da1a43"/>
+			</line>
+			<staticText>
+				<reportElement x="521" y="6" width="29" height="20" uuid="d69c904b-e29b-4726-adef-80a531db122b"/>
+				<text><![CDATA[บาท]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="373" y="6" width="62" height="20" uuid="eaaa17c6-70b8-4334-bd54-d82285d2e227"/>
+				<text><![CDATA[รวมเป็นเงิน]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="37" width="49" height="20" uuid="a5a667a4-7ade-4256-98ff-0222a99db6ee"/>
+				<text><![CDATA[Print date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="418" y="37" width="55" height="20" uuid="b4cff205-8602-42ad-8f4e-58b8508fcb46"/>
+				<text><![CDATA[Print by]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="49" y="37" width="68" height="20" uuid="a31d22ac-f609-4220-87b6-b98081af8288"/>
+				<textFieldExpression><![CDATA[$P{datenow}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="435" y="6" width="86" height="20" uuid="cd563a86-c75c-4c8d-800b-a40304fecee7"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{sumexten}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="456" y="37" width="99" height="20" uuid="a9937e60-477c-4bf9-9b2b-e93b2b61d62c"/>
+				<textFieldExpression><![CDATA[$P{user}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+</jasperReport>

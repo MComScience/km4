@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f543420c-43e4-4c0b-909a-ea370f574918">
+	<property name="ireport.zoom" value="3.39278094697988"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="date" class="java.lang.String"/>
+	<parameter name="catid" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * From vw_stk_balancetotal_lotnumber where ExpDate = 'Y' and ItemCatID = $P{catid}]]>
+	</queryString>
+	<field name="ItemID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ItemInternalLotNum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ItemName" class="java.lang.String">
+		<fieldDescription><![CDATA[ชื่อสินค้า หรือ FNS]]></fieldDescription>
+	</field>
+	<field name="ItemCatID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[ประเภทยาและเวชภัณฑ์]]></fieldDescription>
+	</field>
+	<field name="DispUnit" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ItemQtyBalance" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ItemExpDate" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ItemExpDate2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ItemExpDateControl" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DateLeftExp" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ExpDate" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="variable1" class="java.lang.String" calculation="Count">
+		<variableExpression><![CDATA[$F{ItemID}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="35">
+			<staticText>
+				<reportElement x="0" y="1" width="210" height="23" uuid="92bdce0d-174d-43d5-8825-d7cba0111f44"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[โรงพยาบาลมะเร็งอุดรธานี]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="85">
+			<staticText>
+				<reportElement x="171" y="3" width="194" height="25" uuid="e4054678-8df9-4a94-ab92-6e52ed5c3ef5"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[รายงานสินค้าจะหมดอายุ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="182" y="31" width="118" height="20" uuid="6def7d84-8c7a-4e15-b67c-ef7b6dcc7b39"/>
+				<text><![CDATA[พิมพ์ยอดคงเหลือ ณ วันที่]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="56" width="555" height="1" uuid="3eaba7d4-d949-421f-9949-4c0e4b7f13d6"/>
+			</line>
+			<line>
+				<reportElement x="0" y="81" width="555" height="1" uuid="01c9a473-e11e-4717-b825-9037dfb46214"/>
+			</line>
+			<textField>
+				<reportElement x="298" y="31" width="64" height="20" uuid="bbad19b6-bd38-496e-a315-d157f7d081f5"/>
+				<textFieldExpression><![CDATA[$P{date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="61" width="85" height="20" uuid="51099f8e-05eb-42da-b104-3246f9d10b40"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[รหัสสินค้า]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="87" y="61" width="100" height="20" uuid="9df371d7-561d-4d57-a519-f36b2cc74793"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ItemInternalLotNum]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="187" y="61" width="141" height="20" uuid="47ec2cc7-2bf5-4030-8d73-01fae2e636b0"/>
+				<textElement textAlignment="Justified"/>
+				<text><![CDATA[รายละเอียดสินค้า]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="328" y="62" width="51" height="20" uuid="aeaa5aa2-e1ad-4ba9-8af2-7c1a53ef604d"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[จำนวน]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="379" y="61" width="32" height="20" uuid="5ac96e0b-bc25-43f7-88a5-d552d31e51d4"/>
+				<text><![CDATA[หน่วย]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="411" y="61" width="59" height="20" uuid="6771ad13-58d5-4622-af55-2b4047d7b5e1"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[วันหมดอายุ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="470" y="61" width="85" height="20" uuid="3fd9dd69-8ce3-41ad-b22a-d57e9ad73d5c"/>
+				<text><![CDATA[เปลี่ยนสินค้าภายใน]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="499" y="36" width="15" height="19" uuid="f5ba9717-b78d-47fa-bc69-3a53ae2efb3f"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="450" y="36" width="27" height="20" uuid="0cb5eb76-6507-49b2-9dba-4572ea8b16c7"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[หน้า]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="514" y="36" width="41" height="20" uuid="93f233cf-7c47-4188-8f84-72d6dcaeccad"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="478" y="36" width="21" height="20" uuid="897aa54f-2bc4-429f-ac25-e1fce0d9f96e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="29" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="85" height="20" uuid="5447ea5c-1dea-4ae7-b9d8-454f2e438777"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ItemID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="86" y="0" width="100" height="20" uuid="a3d3da8c-43b0-4dfb-a4a5-3330fe9d0e22"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ItemInternalLotNum}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="187" y="0" width="141" height="20" uuid="306ddcde-9351-4ba8-847b-d14da0dcb698"/>
+				<textFieldExpression><![CDATA[$F{ItemName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="328" y="0" width="51" height="20" uuid="ddf05505-8a48-4dfa-93c6-390798894094"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{ItemQtyBalance}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="379" y="0" width="32" height="20" uuid="f1b71996-a5ea-44f0-9a86-81b838ad28d8"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{DispUnit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="470" y="0" width="85" height="20" uuid="d473ca3d-24c4-4e72-ae92-3c6c11bfc469"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ItemExpDateControl}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="411" y="0" width="59" height="20" uuid="8200971e-8724-4887-92a2-3ae6431f4e98"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ItemExpDate2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement x="30" y="6" width="79" height="20" uuid="988d4b28-84f7-4f83-b5bf-b4bcef8e79ab"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[รวมทั้งสิ้น]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="5" width="60" height="20" uuid="c2e52bb3-3003-4aee-862f-db1f09df7f2e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[รายการ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="2" width="555" height="1" uuid="01c9a473-e11e-4717-b825-9037dfb46214"/>
+			</line>
+			<line>
+				<reportElement x="0" y="24" width="555" height="1" uuid="01c9a473-e11e-4717-b825-9037dfb46214"/>
+			</line>
+			<textField>
+				<reportElement x="109" y="6" width="51" height="20" uuid="e3489985-1604-4c96-a7b7-2eac90ef0de9"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="22"/>
+	</summary>
+</jasperReport>

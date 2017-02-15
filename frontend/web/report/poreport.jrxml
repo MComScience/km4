@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f543420c-43e4-4c0b-909a-ea370f574918">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="POID" class="java.lang.String"/>
+	<parameter name="PONum" class="java.lang.String"/>
+	<parameter name="PRType" class="java.lang.String"/>
+	<parameter name="POType" class="java.lang.String"/>
+	<parameter name="POStatus" class="java.lang.String"/>
+	<parameter name="PODate" class="java.lang.String"/>
+	<parameter name="POContID" class="java.lang.String"/>
+	<parameter name="PODueDate" class="java.lang.String"/>
+	<parameter name="PRExpectDate" class="java.lang.String"/>
+	<parameter name="VendorID" class="java.lang.String"/>
+	<parameter name="VenderName" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * From vw_po2_detail2_new where POID = $P{POID} and POItemType = 1]]>
+	</queryString>
+	<field name="ids" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PONum" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PRNum" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PCPlanNum" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="POItemNum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ItemID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TMTID_GPU" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TMTID_TPU" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ItemDetail" class="java.lang.String"/>
+	<field name="POID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="POItemType" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PRPackQtyApprove" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PRPackCostApprove" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ItemPackID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PRPackunit" class="java.lang.String"/>
+	<field name="ItemPackSKUQty" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PRApprovedOrderQty" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PRApprovedUnitCost" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="POPackQtyApprove" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="POPackCostApprove" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="POItemPackID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="POPackUnit" class="java.lang.String"/>
+	<field name="POApprovedUnitCost" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="POApprovedOrderQty" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DispUnit" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PRQty" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PRUnit" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PRUnitCost" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PRExtenedCost" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="POQty" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="POUnit" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="POUnitCost" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="POExtenedCost" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="variable1" class="java.lang.String" calculation="Sum">
+		<variableExpression><![CDATA[$F{POExtenedCost}]]></variableExpression>
+	</variable>
+	<variable name="variable2" class="java.lang.String" calculation="Count">
+		<variableExpression><![CDATA[$F{ids}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="218">
+			<line>
+				<reportElement x="0" y="186" width="555" height="1" uuid="3eaba7d4-d949-421f-9949-4c0e4b7f13d6"/>
+			</line>
+			<line>
+				<reportElement x="0" y="214" width="555" height="1" uuid="01c9a473-e11e-4717-b825-9037dfb46214"/>
+			</line>
+			<textField>
+				<reportElement x="477" y="166" width="21" height="20" uuid="914d893a-3d28-4e7e-9188-7a92439e732e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="513" y="166" width="41" height="20" uuid="bf87de04-8d4e-4aba-8769-908d465660d2"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="1" width="210" height="23" uuid="92bdce0d-174d-43d5-8825-d7cba0111f44"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[โรงพยาบาลมะเร็งอุดรธานี]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="83" width="82" height="20" uuid="d9bf1b81-75e7-4bff-81bb-dd09c506e574"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ประเภทใบขอชื้อ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="103" width="82" height="20" uuid="17444e5d-57e5-42c5-9416-f1cda15d4c01"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ประเภทการสั่งชื้อ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="63" width="111" height="20" uuid="c6da082c-60e1-40d4-be14-d9acc9a80977"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[สัญญาจะชื้อจะขายเลขที่]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="123" width="82" height="20" uuid="1876cebe-82ab-4638-827c-71dd9d2f54e5"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[สถานะ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="161" y="62" width="23" height="20" uuid="fc53751d-6553-485f-a755-8a3e75a72d70"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[วันที่]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="498" y="166" width="15" height="19" uuid="839b8756-1790-4e75-89cc-501aeff88b80"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="449" y="166" width="27" height="20" uuid="f5fef3f7-2712-44cb-834e-fd46eb57d988"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[หน้า]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="191" width="61" height="20" uuid="7580ba32-c9d7-49ca-be4b-95f91107a97e"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[รหัสสินค้า]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="61" y="191" width="83" height="20" uuid="90142457-e57d-4f38-b46b-20bfd45626df"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ประเภทสินค้า]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="144" y="191" width="177" height="20" uuid="8fc8677a-b203-4f2f-a918-27bf20e2c24a"/>
+				<textElement textAlignment="Justified"/>
+				<text><![CDATA[รายละเอียดสินค้า]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="321" y="191" width="47" height="20" uuid="54a4e95f-25c0-4d94-821d-702faff90b4a"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[จำนวน]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="369" y="191" width="59" height="20" uuid="56883858-bf63-4932-98da-a77186b2f7a8"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ราคา/หน่วย]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="428" y="191" width="50" height="20" uuid="9da143ca-5b48-4380-9021-a276e11f36c4"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[หน่วย]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="478" y="190" width="78" height="20" uuid="06936568-8f87-4d05-8a93-77ed51f8fcf6"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ราคารวม]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="83" width="111" height="20" uuid="2034c728-3bff-4f7f-8774-0dfbc7de3398"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[กำหนดการส่งมอบ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="103" width="152" height="20" uuid="177a7caf-573e-4e50-a8d0-118bd02cb02e"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[กำหนดเวลาการส่งมอบภายใน]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="122" width="79" height="20" uuid="c81a976c-80f5-4895-af05-b5bcd7649dfc"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[เลขที่ผู้จำหน่าย]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="142" width="79" height="20" uuid="89732516-86d3-41d8-9c94-0f2236395fbd"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ชื่อผู้จำหน่าย]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="84" y="63" width="77" height="20" uuid="b5f1222c-3667-491a-b2de-3d205cc7c956"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PONum}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="84" y="83" width="100" height="20" uuid="5292f3f5-dc9a-4d20-8790-29d31ae36721"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PRType}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="84" y="103" width="100" height="20" uuid="7f0e6b5f-dd90-455c-b9e7-908e89e4e48b"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{POType}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="84" y="123" width="100" height="20" uuid="fcc57e3c-a2e8-4512-a6f8-7d7e9feb669d"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{POStatus}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="184" y="62" width="100" height="20" uuid="7a19e509-1939-4cdc-8812-2735e9db7682"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PODate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="440" y="64" width="100" height="20" uuid="b7af2a7e-089f-434e-a777-98953dd5cf87"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{POContID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="440" y="83" width="100" height="20" uuid="df1ca2ce-4648-44c4-8085-aefe58cba386"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PODueDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="440" y="103" width="19" height="20" uuid="87e237a9-4058-44d7-99ca-bcb124b41d15"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PRExpectDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="440" y="122" width="100" height="20" uuid="51bcf1fb-8bb2-495a-9717-f4914bbf6c56"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{VendorID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="440" y="142" width="84" height="20" uuid="01bdcb90-d5cf-4f7c-8187-137f7bc2788a"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{VenderName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="33" width="554" height="20" uuid="fbc09af6-01fb-4d4a-b41c-d92ae065f2a0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ใบสั่งชื้อ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="63" width="82" height="20" uuid="84049018-6ef4-462b-9394-f9950abcf9bc"/>
+				<textElement verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ใบสั่งชื้อเลขที่]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="459" y="103" width="22" height="20" uuid="8dcd06b6-7efe-4052-b044-2f5ec618628c"/>
+				<text><![CDATA[วัน]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="2" y="0" width="59" height="20" uuid="bba7d703-540f-4d66-bfc9-3cfc7d3bb7a2"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ItemID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="61" y="0" width="83" height="20" uuid="a84ee756-0556-4fe1-8375-eff5ee053507"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{POItemType}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="144" y="-1" width="177" height="21" uuid="bff7c7b1-cee4-4bec-a936-b6894b35be74"/>
+				<textFieldExpression><![CDATA[$F{ItemDetail}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="368" y="0" width="59" height="20" uuid="44388672-2dde-4dbb-a317-12fb62e13064"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{POUnitCost}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="427" y="0" width="50" height="20" uuid="c37794e7-bce4-44a9-ba96-c0cd56869c4b"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{POUnit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="477" y="0" width="77" height="20" uuid="bd3a7cb6-458e-48fd-80d8-ff61b388cd11"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{POExtenedCost}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="323" y="0" width="44" height="20" uuid="76a57507-5b85-40a8-a34a-074562b3aa36"/>
+				<textElement textAlignment="Right" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{POQty}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="27"/>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="80">
+			<line>
+				<reportElement x="1" y="25" width="555" height="1" uuid="fc18d48a-48bb-448f-9f6f-5e480d8cb5e2"/>
+			</line>
+			<staticText>
+				<reportElement x="1" y="6" width="73" height="20" uuid="ff388e25-9a46-4ef6-81b3-f54ee3134a71"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[รวมทั้งสิน]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="154" y="5" width="45" height="20" uuid="c13335ea-38ed-41e9-9051-e0135b391472"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[รายการ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="357" y="32" width="59" height="20" uuid="0780fd2b-8b55-44d8-9f26-9bbc3c744ad8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[ผู้ทวนสอบ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="357" y="54" width="59" height="20" uuid="adf4a772-864e-4226-b29f-b952da7f54ae"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[ผู้อนุมัติ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="417" y="3" width="100" height="20" uuid="20da25c0-f199-4b02-bdab-ca1fa9b16d0f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="341" y="6" width="59" height="20" uuid="26f47262-4c1d-4e06-90c1-aa97bbb72157"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[ราคารวม]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="522" y="5" width="33" height="20" uuid="7c25f3f9-4bf3-40cf-995f-9b565282e799"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[บาท]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="1" width="555" height="1" uuid="0df04ee3-fdcb-47de-a1c6-1f6ce7e7d0ad"/>
+			</line>
+			<textField>
+				<reportElement x="74" y="6" width="80" height="20" uuid="5e25b642-ca84-4908-9ab5-9c63c352aab7"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$V{variable2}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="426" y="71" width="100" height="1" uuid="b19feaa0-1863-46bf-92e3-b9e0f1dec320"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="426" y="48" width="100" height="1" uuid="4c0b4837-f69e-4b32-bac8-1501b4051871"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+		</band>
+	</lastPageFooter>
+</jasperReport>
