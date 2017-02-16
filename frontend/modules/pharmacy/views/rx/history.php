@@ -4,24 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\Pjax;
 use yii\helpers\Url;
 use fedemotta\datatables\DataTables;
-use johnitvn\ajaxcrud\CrudAsset;
-use yii\bootstrap\Modal;
-use frontend\assets\ModalFullScreenAsset;
 use frontend\assets\WaitMeAsset;
 
-CrudAsset::register($this);
-ModalFullScreenAsset::register($this);
 WaitMeAsset::register($this);
 
 $this->title = 'สถานะใบสั่งยา';
 $this->params['breadcrumbs'][] = $this->title;
 
-$script = <<< JS
-    $(document).ready(function () {
-        $('#tabB').addClass("active");
-    });
-JS;
-$this->registerJs($script);
 
 $script1 = <<< JS
 function init_click_handlers() {
@@ -54,7 +43,7 @@ function init_click_handlers() {
     });
 }
 init_click_handlers(); //first run
-$('#cpoeindex-pjax').on('pjax:success', function () {
+$('#history-pjax').on('pjax:success', function () {
     init_click_handlers(); //reactivate links in grid after pjax update
 });        
 JS;
@@ -73,7 +62,7 @@ $this->registerJs($script1);
                 <div id="tabB" class="tab-pane in active">
                     <div class="row">
                         <div class="col-lg-12 col-sm-6 col-xs-12">
-                            <?php Pjax::begin(['id' => 'cpoeindex-pjax']); ?>    
+                            <?php Pjax::begin(['id' => 'history-pjax']); ?>    
                             <?=
                             DataTables::widget([
                                 'dataProvider' => $dataProvider,
@@ -228,14 +217,3 @@ $this->registerJs($script1);
         <div class="horizontal-space"></div>
     </div>
 </div>
-
-<?php
-Modal::begin([
-    "id" => "ajaxCrudModal",
-    'size' => 'modal-lg',
-    'clientOptions' => ['backdrop' => 'static', 'keyboard' => false],
-    "footer" => "", // always need it for jquery plugin
-    'options' => ['tabindex' => false,],
-])
-?>
-<?php Modal::end(); ?>

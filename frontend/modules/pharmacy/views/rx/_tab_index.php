@@ -16,11 +16,12 @@ $this->registerJs($script);
 ?>
 
 <ul class="nav nav-tabs" id="myTab">
+    <?php /*
     <li class="tab-success TabA <?php echo $action == 'index' ? 'active' : ''?>">
         <a data-toggle="tab" href="#TabA">
             <?= Html::encode('รายชื่อผู้ป่วยนอก'); ?>
         </a>
-    </li>
+    </li>*/?>
 
     <li class="tab-success TabB <?php echo $action == 'order-status' ? 'active' : ''?>">
         <a data-toggle="tab" href="#TabB">
@@ -28,9 +29,9 @@ $this->registerJs($script);
         </a>
     </li>
 
-    <li class="tab-success TabC">
-        <a data-toggle="tab" href="#TabC">
-            <?= Html::encode('ใบสั่งยารออนุมัติ'); ?>
+    <li class="tab-success <?php echo $action == 'history' ? 'active' : ''?>">
+        <a href="<?= yii\helpers\Url::to(['/pharmacy/rx/history']) ?>">
+            <?= Html::encode('ประวัติใบสั่งยา'); ?>
         </a>
     </li>
 </ul>

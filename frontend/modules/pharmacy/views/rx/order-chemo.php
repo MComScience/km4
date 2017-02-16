@@ -103,7 +103,7 @@ $this->registerJs($script);
                 <ul class="nav nav-tabs" id="myTab">
                     <li class="active">
                         <a data-toggle="tab" href="#home">
-                            Chemo Order : ผู้ป่วยนอก
+                            <?php echo $modelCpoe->cpoetype->cpoe_type_decs; ?>
                         </a>
                     </li>
                 </ul>
@@ -167,7 +167,7 @@ $this->registerJs($script);
 
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12" style="text-align: right;">
-                                    <?= Html::a('Close', ['/pharmacy/rx/index'], ['class' => 'btn btn-default']); ?>
+                                    <?= Html::a('Close', ['/pharmacy/rx/order-status'], ['class' => 'btn btn-default']); ?>
                                     <?= Html::button('SaveDraft', ['class' => 'btn btn-success ladda-button', 'id' => 'btn-savedraft-cpoe', 'data-style' => 'expand-left', 'disabled' => $modelCpoe['cpoe_status'] == 2 ? true : false]); ?>
                                     <?= Html::button('Save', ['class' => 'btn btn-success ladda-button', 'id' => 'btn-save-cpoe', 'data-style' => 'expand-left', 'disabled' => empty($modelCpoe['cpoe_status']) || $modelCpoe['cpoe_status'] == 1 ? true : false]); ?>
                                     <div class="btn-group">

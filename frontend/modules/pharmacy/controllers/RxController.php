@@ -54,19 +54,20 @@ class RxController extends Controller {
         ];
     }
 
-    public function actionCreateOrderChemo($data, $type) {
+    public function actionCreateOrderChemo($data, $type, $schd) {
         $userid = Yii::$app->user->identity->id;
         $maxid = TbCpoe::find()->max('cpoe_id') + 1;
-        if ($type == 'chemo') {
-            $cpoetype = '1012';
-        } elseif ($type == 'homemed') {
-            $cpoetype = '1011';
-        }
-        Yii::$app->db->createCommand('CALL cmd_pt_rxorder_create(:pt_vn_number,:userid,:cpoe_id,:cpoe_type);')
+        /* if ($type == 'chemo') {
+          $cpoetype = '1012';
+          } elseif ($type == 'homemed') {
+          $cpoetype = '1011';
+          } */
+        Yii::$app->db->createCommand('CALL cmd_pt_rxorder_create(:pt_vn_number,:userid,:cpoe_id,:cpoe_type,:cpoe_schedule_type);')
                 ->bindParam(':pt_vn_number', $data)
                 ->bindParam(':userid', $userid)
                 ->bindParam(':cpoe_id', $maxid)
-                ->bindParam(':cpoe_type', $cpoetype)
+                ->bindParam(':cpoe_type', $type)
+                ->bindParam(':cpoe_schedule_type', $schd)
                 ->execute();
         return $this->redirect(['order-chemo', 'id' => $maxid, 'type' => $type]);
     }
@@ -76,7 +77,7 @@ class RxController extends Controller {
         if (empty($type)) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-        if ($type == 'chemo' || $type == 'homemed') {
+        if ($type == '1012' || $type == '1011') {
             if (($header = VwPtServiceListOp::findOne($modelCpoe['pt_vn_number'])) !== null) {
                 $ptar = VwPtAr::find()->where(['pt_visit_number' => $modelCpoe['pt_vn_number']])->one();
                 $headermodal = $header->getHeadermodalOP($modelCpoe['pt_vn_number']);
@@ -113,6 +114,26 @@ class RxController extends Controller {
         $dataProvider->pagination->pageSize = 10;
 
         return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionOrderStatus() {
+        $searchModel = new VwCpoeRxHeaderSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('order_status', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionHistory() {
+        $searchModel = new VwCpoeRxHeaderSearch();
+        $dataProvider = $searchModel->search_history(Yii::$app->request->queryParams);
+
+        return $this->render('history', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
         ]);
@@ -1713,16 +1734,6 @@ class RxController extends Controller {
         }
     }
 
-    public function actionOrderStatus() {
-        $searchModel = new VwCpoeRxHeaderSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('order_status', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
-        ]);
-    }
-
     public function actionSelectProtocol() {
         $request = Yii::$app->request;
         if ($request->isAjax) {
@@ -2097,11 +2108,11 @@ class RxController extends Controller {
                 $arr = [
                     'name' => $name,
                     'table' => $table,
+                    'vn' => $Profile['pt_visit_number'],
                 ];
                 return $arr;
             }
         }
     }
-
 
 }

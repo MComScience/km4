@@ -16,9 +16,12 @@ $form = ActiveForm::begin([
         ])
 ?>
 <div class="form-group">
-    <label class="col-sm-1 control-label no-padding-right">ค้นหา</label>
+    <label class="col-sm-1 control-label no-padding-right"><h4>HN</h4></label>
     <div class="col-sm-4">
-        <?= Html::input('text', 'HN', '', ['class' => 'form-control input-lg', 'placeholder' => 'กรอกรหัส HN', 'autofocus' => true]) ?>
+        <?= Html::input('text', 'HN', '', ['class' => 'form-control input-lg', 'placeholder' => 'กรอกรหัส HN', 'autofocus' => true, 'required' => true,]) ?>
+    </div>
+    <div class="col-sm-2">
+        <?= Html::input('text', 'VN', '', ['class' => 'form-control input-lg', 'id' => 'VN', 'type' => 'hidden',]) ?>
     </div>
 </div>
 
@@ -78,23 +81,23 @@ $form = ActiveForm::begin([
         <?= Html::button('Close', ['class' => 'btn btn-default', 'data-dismiss' => "modal"]); ?>
         <div class="btn-group dropdown">
             <a class="btn btn-success dropdown-toggle"  data-toggle="dropdown" data-hover="dropdown" data-delay="100">
-                Action <i class="fa fa-angle-down"></i>
+                บันทึกใบสั่งยา <i class="fa fa-angle-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-success">
                 <li>
-                    <a href="javascript:void(0);">Rx Order</a>
+                    <?= Html::a('Rx Order', 'javascript:void(0);', ['onclick' => 'CreateRxOrder(1011,1);']) ?>
                 </li>
                 <li>
-                    <a href="javascript:void(0);">Chemo Order</a>
+                    <?= Html::a('Chemo Order', 'javascript:void(0);', ['onclick' => 'CreateRxOrder(1012,1);']) ?>
                 </li>
                 <li>
-                    <a href="javascript:void(0);">Pre-Rx Order</a>
+                    <?= Html::a('Pre-Rx Order', 'javascript:void(0);', []) ?>
                 </li>
                 <li>
-                    <a href="javascript:void(0);">Pre-Chemo Order</a>
+                    <?= Html::a('Pre-Chemo Order', 'javascript:void(0);', []) ?>
                 </li>
                 <li>
-                    <a href="javascript:void(0);">รับรองชื่อยานอกบัญชี รพ.</a>
+                    <?= Html::a('รับรองชื่อยานอกบัญชี รพ.', 'javascript:void(0);', []) ?>
                 </li>
             </ul>
         </div>
@@ -128,6 +131,7 @@ $form = ActiveForm::begin([
                 } else {
                     $('.panel-title').html(result.name);
                     $('#content-search').html(result.table);
+                    $('#VN').val(result.vn);
                 }
                 $('.modal-body').waitMe('hide');
             },
@@ -155,6 +159,19 @@ $form = ActiveForm::begin([
             onClose: function () {
             }
         });
+    }
+    function CreateRxOrder(type, schd) {
+        var VN = $('#VN').val() || null;
+        if (VN === null) {
+            swal({
+                title: "กรุณาเลือกผู้ป่วย!",
+                text: "",
+                type: "error",
+                confirmButtonText: "OK"
+            });
+        } else {
+            window.location.href = 'create-order-chemo?data=' + VN + '&type=' + type + '&schd=' + schd;
+        }
     }
 </script>
 <?php $this->registerJsFile(Yii::getAlias('@web') . '/js/bootstrap-dropdownhover.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
