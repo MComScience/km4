@@ -279,15 +279,15 @@ class NotifyController extends Controller {
         if (!$last_thread) {
             $last_thread = new LineBot();
             $last_thread->type = 'forum';
-            $last_thread->last_id = 144;
+            $last_thread->last_id = 145;
             $last_thread->save();
-            $message = 'ทดสอบ Line Bot http://www.udcancer.org/km4/user/login';
+            $message = 'ทดสอบ Line Notify By : MComScience.';
             $res = $this->notify_message($message);
         } else {
-            if ($last_thread->last_id != 144) {
-                $message = 'ทดสอบ Line Bot http://www.udcancer.org/km4/user/login';
+            if ($last_thread->last_id != 145) {
+                $message = 'ทดสอบ Line Notify By : MComScience.';
                 $res = $this->notify_message($message);
-                $last_thread->last_id = 144;
+                $last_thread->last_id = 145;
                 $last_thread->save();
             }
         }
