@@ -4,18 +4,14 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
 use yii\helpers\Url;
+echo $this->render('/config/Asset_Js.php');
+$header_style = ['style' => 'text-align:center;color:#000000;'];
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\Payment\models\VwInvForRepListSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = "ร่างบันทึกการชำระเงิน";
 $this->params['breadcrumbs'][] = $this->title;
-$script = <<< JS
-$(document).ready(function () {
-        $('#tab_B').addClass("active");
-    });
-JS;
-$this->registerJs($script);
 ?>
 <div class="tabbable">
     <?php echo $this->render('_tab_menu_payment'); ?>
@@ -23,21 +19,21 @@ $this->registerJs($script);
         <div id="tab" class="tab-pane in active ">
             <div class="vw-inv-for-rep-list-index">
                 <?php Pjax::begin(['id' => 'rep_pjax', 'timeout' => 5000]) ?>
-                <?php echo $this->render('_search_rep', ['model' => $searchModel]); ?>
+                
                 <?=
                 GridView::widget([
                     'dataProvider' => $dataProvider,
-                    'bootstrap' => true,
-                    'responsiveWrap' => FALSE,
-                    'responsive' => true,
                     'hover' => true,
                     'pjax' => true,
-                    'striped' => false,
+                    'striped' => true,
                     'condensed' => true,
-                    'toggleData' => true,
-                    'layout' => Yii::$app->componentdate->layoutgridview(),
+                    'bordered' => true,
+                    'layout' => "{items}",
+                    'responsive' => false,
+                    'showOnEmpty' => false,
+                    'export' => false,
                     'headerRowOptions' => ['class' => \kartik\grid\GridView::TYPE_SUCCESS],
-                    'pageSummaryRowOptions' => ['class' => 'kv-page-summary default'],
+                    'tableOptions' => ['class' => GridView::TYPE_DEFAULT,'style' => 'width:100%','id'=>'grid_index'],
                     'columns' => [
                         [
                             'class' => 'kartik\grid\SerialColumn',
@@ -61,131 +57,156 @@ $this->registerJs($script);
                             'detailUrl' => \yii\helpers\Url::to(['view-detail-rep']),
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'ใบแจ้งค่าใช้จ่าย',
                             'hAlign' => GridView::ALIGN_CENTER,
                             'value' => function ($model) {
-                        if ($model->rep_num == null) {
-                            return '-';
-                        } else {
-                            return $model->rep_num;
-                        }
-                    }
+                                if ($model->rep_num == null) {
+                                    return '-';
+                                } else {
+                                    return $model->rep_num;
+                                }
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'HN',
                             'hAlign' => GridView::ALIGN_CENTER,
                             'value' => function ($model) {
-                        if ($model->pt_hospital_number == null) {
-                            return '-';
-                        } else {
-                            return $model->pt_hospital_number;
-                        }
-                    }
+                                if ($model->pt_hospital_number == null) {
+                                    return '-';
+                                } else {
+                                    return $model->pt_hospital_number;
+                                }
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'VN : AN',
                             'hAlign' => GridView::ALIGN_CENTER,
                             'value' => function ($model) {
-                        if ($model->pt_hospital_number == null) {
-                            return '-';
-                        } else {
-                            return $model->pt_hospital_number;
-                        }
-                    }
+                                if ($model->pt_hospital_number == null) {
+                                    return '-';
+                                } else {
+                                    return $model->pt_hospital_number;
+                                }
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'ชื่อ-นามสกุลผู้ป่วย',
                             'hAlign' => GridView::ALIGN_LEFT,
                             'value' => function ($model) {
-                        if ($model->pt_name == null) {
-                            return '-';
-                        } else {
-                            return $model->pt_name;
-                        }
-                    }
+                                if ($model->pt_name == null) {
+                                    return '-';
+                                } else {
+                                    return $model->pt_name;
+                                }
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'จำนวนเงิน',
                             'format' => ['decimal', 2],
                             'hAlign' => GridView::ALIGN_RIGHT,
                             'value' => function ($model) {
-                        if ($model->Item_Amt == null) {
-                            return '0.00';
-                        } else {
-                            return $model->Item_Amt;
-                        }
-                    }
+                                if ($model->Item_Amt == null) {
+                                    return '0';
+                                } else {
+                                    return $model->Item_Amt;
+                                }
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'เบิกได้',
                             'format' => ['decimal', 2],
                             'hAlign' => GridView::ALIGN_RIGHT,
                             'value' => function ($model) {
-                        if ($model->Item_Cr_Amt_Sum == null) {
-                            return '0.00';
-                        } else {
-                            return $model->Item_Cr_Amt_Sum;
-                        }
-                    }
+                                if ($model->Item_Cr_Amt_Sum == null) {
+                                    return '0';
+                                } else {
+                                    return $model->Item_Cr_Amt_Sum;
+                                }
+                            }
                         ],
                         [
                             'class' => 'kartik\grid\ActionColumn',
-                            'options' => ['style' => 'width:160px;'],
                             'header' => 'Actions',
+                            'noWrap' => true,
                             'hAlign' => GridView::ALIGN_CENTER,
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'template' => '{select} {owed}',
                             'buttons' => [
                                 'select' => function ($url, $model) {
-                                    return Html::a('<span class="btn btn-success btn-xs">Select</span>','#', [
-                                                    'title' => Yii::t('app', 'Select'),
-                                                    'onclick' => "select_rep($model->rep_id)",
-                                            ]);
+                                    return Html::a('<span class="btn btn-success btn-xs">Select</span>',false, [
+                                            'title' => Yii::t('app', 'Select'),
+                                            'onclick' => "select_rep($model->rep_id)",
+                                        ]);
                                 },
-                                       'owed' => function ($url, $model) {
-                                    return Html::a('<span class="btn btn-warning btn-xs">บันทึกค้างชำระ</span>','#', [
-                                                    'title' => Yii::t('app', 'บันทึกค้างชำระ'),
-                                                    'onclick' => "select_owed($model->rep_id)",
-                                            ]);
+                               'owed' => function ($url, $model) {
+                                    return Html::a('<span class="btn btn-warning btn-xs">บันทึกค้างชำระ</span>',false, [
+                                            'title' => Yii::t('app', 'บันทึกค้างชำระ'),
+                                            'onclick' => "select_owed($model->rep_id)",
+                                        ]);
                                 },
-                                    ],
+                                ],
                                     'urlCreator' => function ($action, $model, $key, $index) {
-                                //Update
-//                                if ($action === 'select') {
-//                                    return Url::to(['create', 'inv_id' => $model['inv_id']]);
-//                                }
-//                                if ($action === 'owed') {//Delete
-//                                    return Url::to(['delete']);
-//                                }
                             }
                                 ],
                             ],
                         ]);
                         ?>
                         <?php Pjax::end() ?>
-                        <div class="form-group" style="margin-top:30px;text-align: right">
-                                <?= Html::a('Close', ['rep-create'], ['class' => 'btn btn-default']) ?>
-                        </div>
+                        <?php echo $this->render('/config/btn_close.php'); ?>
                     </div>
                 </div>
             </div>
         </div>
-        <?php
-        $script = <<< JS
-                
+<?php
+$script = <<< JS
+$(document).ready(function () {
+    $('table.default').DataTable({
+        "dom": '<"pull-left"f><"pull-right"l>t<"pull-left"i>p',
+        "pageLength": 10,
+        "responsive": true,
+        "columns": [
+            null,
+            {"bSortable": false},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {"bSortable": false}
+        ],
+        "language": {
+            // "search": "ค้นหา : _INPUT_ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><span class='text'></span><input type='checkbox' class='colored-success' id='chk_box'  data-toggle='checkbox-x'><span class='text'> แสดงเฉพาะรายการที่ยังไม่บันทึกลูกหนี้</span></label>",
+            "search": "ค้นหา : _INPUT_ ",
+            /*"searchPlaceholder": "ค้นหาข้อมูล...",*/
+            "lengthMenu": "_MENU_",
+            "infoEmpty": "No records available",
+            "info": "แสดง _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
+            //"infoFiltered": "(ค้นหาจากทั้งหมด _MAX_ รายการ)"
+        },
+        "aLengthMenu": [
+            [5, 10, 15, 20, 100, -1],
+            [5, 10, 15, 20, 100, "All"]
+        ],
+        /*"paging":   false,
+         "ordering": false,
+         "info":     false*/
+    });
+
+});                             
 JS;
 $this->registerJs($script);
 ?>
 <script>
 function select_rep(rep_id){
         $.get(
-                'index.php?r=Payment/payment/rep-to-create',
+                'rep-to-create',
                 {
                     rep_id
                 },

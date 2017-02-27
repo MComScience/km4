@@ -14,7 +14,7 @@ use kartik\widgets\ActiveForm;
         <div class="profile-container">
             <div class="profile-header row">
                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 text-center" style="margin-top: 15px;">
-                    <img src="assets/img/avatars/admin.png" alt="" class="header-avatar" />
+                    <img src="/km4/assets/img/avatars/admin.png" alt="" class="header-avatar" />
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 profile-info">
                     <?=
@@ -64,9 +64,3 @@ use kartik\widgets\ActiveForm;
         </div>
     </div>
 </div>
-<?php
-$script = <<< JS
-    
-JS;
-$this->registerJs($script);
-?> 

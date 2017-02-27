@@ -43,7 +43,7 @@ class ImportExcelStmController extends Controller {
             $random_str = substr(Yii::$app->getSecurity()->generateRandomString(), 5);
             $excel_file = UploadedFile::getInstanceByName('excel_file');
             $type_file = $this->type_file($excel_file->name);
-            //print_r($type_files);
+            $file_name = $this->file_name($excel_file->name);
             $newFileName = $random_str . '.' . $type_file;
             $fullPath = Yii::$app->basePath . '/web/uploads/' . $newFileName;
             $excel_file->saveAs($fullPath);
@@ -195,6 +195,11 @@ class ImportExcelStmController extends Controller {
         $index_array = ( --$count_array);
         $type_files = $array_file[$index_array];
         return $type_files;
+    }
+    private function file_name($file_name) {
+        $array_name = explode(".", $file_name);
+        $name_files = $array_name[0];
+        return $name_files;
     }
 
 }

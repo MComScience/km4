@@ -12,10 +12,3 @@ use yii\helpers\Html;
     </li>
 
 </ul>
-
-<?php
-$script = <<< JS
-  
-JS;
-$this->registerJs($script);
-?>

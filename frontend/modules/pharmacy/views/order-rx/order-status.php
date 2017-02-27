@@ -4,6 +4,12 @@ use yii\helpers\Html;
 use yii\widgets\Pjax;
 use yii\helpers\Url;
 use fedemotta\datatables\DataTables;
+use johnitvn\ajaxcrud\CrudAsset;
+use yii\bootstrap\Modal;
+use frontend\assets\WaitMeAsset;
+
+CrudAsset::register($this);
+WaitMeAsset::register($this);
 
 $this->title = 'สถานะใบสั่งยา';
 $this->params['breadcrumbs'][] = ['label' => 'งานเภสัชกรรม', 'url' => ['/pharmacy/order-rx/index']];
@@ -34,7 +40,7 @@ function init_click_handlers() {
                 function (isConfirm) {
                     if (isConfirm) {
                         $.post(
-                                'index.php?r=pharmacy/rx/delete',
+                                'delete',
                                 {
                                     id: fID
                                 },
@@ -69,9 +75,9 @@ $this->registerJs($script1);
             <?php echo $this->render('_tab_menu_index'); ?>
             <div class="tab-content">
                 <div id="tabB" class="tab-pane in active">
+                    <?php Pjax::begin(['id' => 'cpoeindex-pjax']); ?>  
                     <div class="row">
                         <div class="col-lg-12 col-sm-6 col-xs-12">
-                            <?php Pjax::begin(['id' => 'cpoeindex-pjax']); ?>    
                             <?=
                             DataTables::widget([
                                 'dataProvider' => $dataProvider,
@@ -91,28 +97,28 @@ $this->registerJs($script1);
                                         'info' => 'แสดง _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ',
                                         'lengthMenu' => '_MENU_',
                                         //'sSearchPlaceholder' => 'ค้นหาข้อมูล...',
-                                        'search' => 'ค้นหา : _INPUT_'
+                                        'search' => 'Active Order _INPUT_' . ' ' . Html::a('บันทึกใบสั่งยา', ['search-hn', 'schedule_type' => 1], ['class' => 'btn btn-success', 'role' => 'modal-remote'])
                                     ],
                                     "lengthMenu" => [[10, -1], [10, "All"]],
                                     "responsive" => true,
                                     "dom" => '<"pull-left"f><"pull-right"l>t<"pull-left"i>p',
                                 ],
                                 'columns' => [
-                                        [
+                                    [
                                         'class' => 'yii\grid\SerialColumn',
                                         'contentOptions' => ['class' => 'text-center'],
                                         'headerOptions' => ['style' => 'text-align:center;color:black;width: 25px;'],
                                     ],
-                                        [
+                                    [
                                         'attribute' => 'cpoe_num',
-                                        'header' => 'เลขที่ใบสั่งยา',
+                                        'header' => 'เลขที่',
                                         'contentOptions' => ['class' => 'text-center', 'noWrap' => true,],
                                         'headerOptions' => ['style' => 'text-align:center;color:black;'],
                                         'value' => function ($model) {
                                             return empty($model->cpoe_num) ? '-' : $model->cpoe_num;
                                         }
                                     ],
-                                        [
+                                    [
                                         'attribute' => 'HNVN',
                                         'header' => 'HN:VN',
                                         'contentOptions' => ['class' => 'text-center', 'noWrap' => true,],
@@ -121,16 +127,16 @@ $this->registerJs($script1);
                                             return empty($model->HNVN) ? '-' : $model->HNVN;
                                         }
                                     ],
-                                        [
+                                    [
                                         'attribute' => 'pt_name',
-                                        'header' => 'ชื่อ-นามสกุลผู้ป่วย',
+                                        'header' => 'ชื่อผู้ป่วย',
                                         'contentOptions' => ['class' => 'text-left', 'noWrap' => true,],
                                         'headerOptions' => ['style' => 'text-align:center;color:black;'],
                                         'value' => function ($model) {
                                             return empty($model->pt_name) ? '-' : $model->pt_name;
                                         }
                                     ],
-                                        [
+                                    [
                                         'attribute' => 'pt_age_registry_date',
                                         'header' => 'อายุ',
                                         'contentOptions' => ['class' => 'text-center', 'noWrap' => true,],
@@ -139,7 +145,7 @@ $this->registerJs($script1);
                                             return empty($model->pt_age_registry_date) ? '-' : $model->pt_age_registry_date . ' ปี';
                                         }
                                     ],
-                                        [
+                                    [
                                         'attribute' => 'cpoe_order_by',
                                         'header' => 'แพทย์',
                                         'contentOptions' => ['class' => 'text-left', 'noWrap' => true,],
@@ -148,7 +154,25 @@ $this->registerJs($script1);
                                             return empty($model->User_name) ? '-' : $model->User_name;
                                         }
                                     ],
-                                        [
+                                    [
+                                        'attribute' => 'cpoe_order_section',
+                                        'header' => 'แผนก',
+                                        'contentOptions' => ['class' => 'text-left'],
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'value' => function ($model) {
+                                            return empty($model->cpoe_order_section) ? '-' : $model->cpoe_order_section;
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'pt_right',
+                                        'header' => 'สิทธิการรักษา',
+                                        'contentOptions' => ['class' => 'text-left'],
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'value' => function ($model) {
+                                            return empty($model->pt_right) ? '-' : $model->pt_right;
+                                        }
+                                    ],
+                                    [
                                         'attribute' => 'cpoe_status',
                                         'header' => 'สถานะใบสั่งยา',
                                         'contentOptions' => ['class' => 'text-center', 'noWrap' => true,],
@@ -157,7 +181,7 @@ $this->registerJs($script1);
                                             return empty($model->cpoe_status_decs) ? '-' : $model->cpoe_status_decs;
                                         }
                                     ],
-                                        [
+                                    [
                                         'class' => 'yii\grid\ActionColumn',
                                         'header' => 'Actions',
                                         'contentOptions' => ['class' => 'text-center', 'noWrap' => true,],
@@ -189,9 +213,150 @@ $this->registerJs($script1);
                                 ],
                             ]);
                             ?>
-                            <?php Pjax::end(); ?>
+
                         </div>
                     </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-6 col-xs-12">
+                            <?=
+                            DataTables::widget([
+                                'dataProvider' => $dataProvider2,
+                                'tableOptions' => [
+                                    'class' => 'default responsive kv-grid-table table table-hover table-striped table-condensed kv-table-wrap dataTable no-footer dtr-inline',
+                                ],
+                                'options' => [
+                                    'retrieve' => true
+                                ],
+                                'clientOptions' => [
+                                    'bSortable' => false,
+                                    'bAutoWidth' => true,
+                                    'ordering' => false,
+                                    'pageLength' => 10,
+                                    //'bFilter' => false,
+                                    'language' => [
+                                        'info' => 'แสดง _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ',
+                                        'lengthMenu' => '_MENU_',
+                                        //'sSearchPlaceholder' => 'ค้นหาข้อมูล...',
+                                        'search' => 'Pre Order _INPUT_' . ' ' . Html::a('บันทึกใบสั่งยา', ['search-hn', 'schedule_type' => 4], ['class' => 'btn btn-success', 'role' => 'modal-remote'])
+                                    ],
+                                    "lengthMenu" => [[10, -1], [10, "All"]],
+                                    "responsive" => true,
+                                    "dom" => '<"pull-left"f><"pull-right"l>t<"pull-left"i>p',
+                                ],
+                                'columns' => [
+                                    [
+                                        'class' => 'yii\grid\SerialColumn',
+                                        'contentOptions' => ['class' => 'text-center'],
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;width: 25px;'],
+                                    ],
+                                    [
+                                        'attribute' => 'cpoe_num',
+                                        'header' => 'เลขที่',
+                                        'contentOptions' => ['class' => 'text-center', 'noWrap' => true,],
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'value' => function ($model) {
+                                            return empty($model->cpoe_num) ? '-' : $model->cpoe_num;
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'HNVN',
+                                        'header' => 'HN:VN',
+                                        'contentOptions' => ['class' => 'text-center', 'noWrap' => true,],
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'value' => function ($model) {
+                                            return empty($model->HNVN) ? '-' : $model->HNVN;
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'pt_name',
+                                        'header' => 'ชื่อผู้ป่วย',
+                                        'contentOptions' => ['class' => 'text-left', 'noWrap' => true,],
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'value' => function ($model) {
+                                            return empty($model->pt_name) ? '-' : $model->pt_name;
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'pt_age_registry_date',
+                                        'header' => 'อายุ',
+                                        'contentOptions' => ['class' => 'text-center', 'noWrap' => true,],
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'value' => function ($model) {
+                                            return empty($model->pt_age_registry_date) ? '-' : $model->pt_age_registry_date . ' ปี';
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'cpoe_order_by',
+                                        'header' => 'แพทย์',
+                                        'contentOptions' => ['class' => 'text-left', 'noWrap' => true,],
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'value' => function ($model) {
+                                            return empty($model->User_name) ? '-' : $model->User_name;
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'cpoe_order_section',
+                                        'header' => 'แผนก',
+                                        'contentOptions' => ['class' => 'text-left'],
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'value' => function ($model) {
+                                            return empty($model->cpoe_order_section) ? '-' : $model->cpoe_order_section;
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'pt_right',
+                                        'header' => 'สิทธิการรักษา',
+                                        'contentOptions' => ['class' => 'text-left'],
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'value' => function ($model) {
+                                            return empty($model->pt_right) ? '-' : $model->pt_right;
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'cpoe_status',
+                                        'header' => 'สถานะใบสั่งยา',
+                                        'contentOptions' => ['class' => 'text-center', 'noWrap' => true,],
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'value' => function ($model) {
+                                            return empty($model->cpoe_status_decs) ? '-' : $model->cpoe_status_decs;
+                                        }
+                                    ],
+                                    [
+                                        'class' => 'yii\grid\ActionColumn',
+                                        'header' => 'Actions',
+                                        'contentOptions' => ['class' => 'text-center', 'noWrap' => true,],
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'template' => '{update} {delete} ',
+                                        'buttons' => [
+                                            'update' => function ($url, $model, $key) {
+                                                if ($model['cpoe_type'] == '1011') {
+                                                    return Html::a('<span class="btn btn-info btn-xs"> Edit </span>', Url::to(['/pharmacy/order-rx/update', 'id' => $key]), [
+                                                                'title' => 'Edit',
+                                                                'data-pjax' => 0,
+                                                    ]);
+                                                } elseif ($model['cpoe_type'] == '1012') {
+                                                    return Html::a('<span class="btn btn-info btn-xs"> Edit </span>', Url::to(['/pharmacy/order-rx/update', 'id' => $key]), [
+                                                                'title' => 'Edit',
+                                                                'data-pjax' => 0,
+                                                    ]);
+                                                }
+                                            },
+                                            'delete' => function ($url, $model) {
+                                                return Html::a('<span class="btn btn-danger btn-xs"> Delete </span> ', '#', [
+                                                            'title' => 'Delete',
+                                                            'data-toggle' => 'modal',
+                                                            'class' => 'activity-delete-link',
+                                                ]);
+                                            },
+                                        ]
+                                    ],
+                                ],
+                            ]);
+                            ?>
+                        </div>
+                    </div>
+                    <?php Pjax::end(); ?>
                     <div class="row">
                         <div class="col-lg-12 col-sm-6 col-xs-12">
 
@@ -209,3 +374,13 @@ $this->registerJs($script1);
     </div>
 </div>
 
+<?php
+Modal::begin([
+    "id" => "ajaxCrudModal",
+    'size' => 'modal-lg',
+    'clientOptions' => ['backdrop' => 'static', 'keyboard' => false],
+    "footer" => "", // always need it for jquery plugin
+    'options' => ['tabindex' => false,],
+])
+?>
+<?php Modal::end(); ?>

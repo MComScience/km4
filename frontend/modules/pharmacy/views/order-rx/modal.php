@@ -11,7 +11,7 @@ $QueryType = TbCpoeItemtype::find()->where(['cpoe_itemtype_id' => [10, 20]])->al
 <?php
 Modal::begin([
     'id' => 'solution-modal',
-    'header' => '<h4 class="modal-title">' . 'IV Solution' . ' <span class="pull-right"> ' . $TitleModal . ' </span> ' . '</h4>',
+    'header' => '<h4 class="modal-title solution-title">' . 'IV Solution' . ' <span class="pull-right"> ' . $TitleModal . ' </span> ' . '</h4>',
     'size' => 'modal-lg modal-primary',
     'clientOptions' => ['backdrop' => 'static', 'keyboard' => false],
     'options' => ['tabindex' => false, 'class' => 'modal-fullscreen'],
@@ -36,7 +36,7 @@ Modal::begin([
 <?php
 Modal::begin([
     'id' => 'modal-default-table',
-    'header' => '<h4 class="modal-title">' . '<text id="titlemodal"></text>' . ' <span class="pull-right"> ' . $TitleModal . ' </span> ' . '</h4>',
+    'header' => '<h4 class="modal-title default-title">' . '<text id="titlemodal"></text>' . ' <span class="pull-right"> ' . $TitleModal . ' </span> ' . '</h4>',
     'size' => 'modal-lg modal-primary',
     'clientOptions' => ['backdrop' => 'static', 'keyboard' => false],
     'options' => ['tabindex' => false, 'class' => 'modal-fullscreen'],

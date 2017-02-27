@@ -8,17 +8,7 @@ use yii\widgets\Pjax;
 use kartik\widgets\Select2;
 use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
-use frontend\assets\WaitMeAsset;
-use frontend\assets\AutoNumericAsset;
-use frontend\assets\LaddaAsset;
-use frontend\assets\SweetAlertAsset;
-use frontend\assets\DataTableAsset;
-
-WaitMeAsset::register($this);
-AutoNumericAsset::register($this);
-LaddaAsset::register($this);
-SweetAlertAsset::register($this);
-DataTableAsset::register($this);
+echo $this->render('/config/Asset_Js.php');
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\Payment\models\VwFiNhsoArSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -59,22 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'header' => 'ลำดับ',
                             'headerOptions' => ['class' => 'kartik-sheet-style', 'style' => 'color:#000000;']
                         ],
-                        // [
-                        //     'class' => 'kartik\grid\ExpandRowColumn',
-                        //     'value' => function ($model, $key, $index, $column) {
-                        //         return kartik\grid\GridView::ROW_COLLAPSED;
-                        //     },
-                        //         'headerOptions' => ['class' => 'kartik-sheet-style', 'style' => 'background-color: #ddd;color:#000000;'],
-                        //         'expandOneOnly' => true,
-                        //                             //'header' => '<a>Detail</a>',
-                        //                             //'expandIcon' => '<a class="btn btn-success btn-xs">Detail</a>',
-                        //                             //'collapseIcon' => '<a class="btn btn-success btn-xs">Detail</a>',
-                        //         'detailAnimationDuration' => 'slow', //fast
-                        //         'detailRowCssClass' => kartik\grid\GridView::TYPE_DEFAULT,
-                        //         'detailUrl' => \yii\helpers\Url::to(['detail']),
-                                                    
-                        // ],
-                        [   
+                    [   
                             'headerOptions' => $headerGrid,
                             'header' => 'REP',
                             'filterOptions' => $filterGrid,
@@ -223,11 +198,12 @@ $this->params['breadcrumbs'][] = $this->title;
 					],
                 ])
             ?>
+            
             <?php Pjax::end() ?>
         </div>
         <div class="form-group" style="text-align: right">
-            <?= Html::a('สร้างหนังสือเรียกเก็บ','#',['class'=>'btn btn-success','onclick'=>"btn_select();"]) ?>
-            <?= Html::a('Close','index.php?r=',['class'=>'btn btn-default']) ?>
+            <?= Html::a('Close',['index'],['class'=>'btn btn-default']) ?>
+            <?= Html::a('สร้างหนังสือเรียกเก็บ',false,['class'=>'btn btn-success','onclick'=>"btn_select();"]) ?>
         </div>
       </div>
     </div>
@@ -273,8 +249,8 @@ $this->params['breadcrumbs'][] = $this->title;
     });
     
     swal({   
-        title: "",   
-        text: "ยืนยันคำสั่ง?",   
+        title: "ยืนยันคำสั่ง?",   
+        text: "",   
         type: "warning",   
         showCancelButton: true,   
         confirmButtonColor: "#53a93f",   
@@ -292,9 +268,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     if(data != false){
                         $('#_form_inv').trigger('reset');
                         $('#_nhso_ar').waitMe('hide');
-                        var nhso_inv_id = data;
-                        var url = "createform?nhso_inv_id="+nhso_inv_id;
-                        window.location.replace(url);
+                        // var nhso_inv_id = data;
+                        // var url = "createform?nhso_inv_id="+nhso_inv_id;
+                        // window.location.replace(url);
                     }else{
                         $('#_nhso_ar').waitMe('hide');
                         swal('','กรุณาเลือกโรงพยาบาลต้นสังกัดและประเภทผู้ป่วยเดียวกันหรือไม่ได้เลือก','warning');

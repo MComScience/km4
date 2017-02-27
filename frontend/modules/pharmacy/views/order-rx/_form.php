@@ -49,6 +49,7 @@ use app\modules\pharmacy\models\VwUserprofile;
         <div class="col-sm-1">
             <?= $form->field($model, 'cpoe_id', ['showLabels' => false])->hiddenInput() ?>
             <?= $form->field($model, 'cpoe_comment', ['showLabels' => false])->hiddenInput() ?>
+            
         </div>
     </div>
     <?php if ($model['cpoe_type'] == '1012') : ?>
@@ -79,8 +80,7 @@ use app\modules\pharmacy\models\VwUserprofile;
             </div>
 
             <div class="col-sm-1">
-                <?= $form->field($model, 'cpoe_type', ['showLabels' => false])->hiddenInput() ?>
-                <?= $form->field($model, 'pt_vn_number', ['showLabels' => false])->hiddenInput() ?>
+                
             </div>
         </div>
 
@@ -105,7 +105,9 @@ use app\modules\pharmacy\models\VwUserprofile;
 
 
     <div class="form-group">
-        <div class="col-sm-12" style="text-align: right;">
+        <div class="col-sm-12">
+            <?= $form->field($model, 'pt_vn_number', ['showLabels' => false])->hiddenInput() ?>
+            <?= $form->field($model, 'cpoe_type', ['showLabels' => false])->hiddenInput() ?>
             <?php // Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])  ?>
         </div>
     </div>

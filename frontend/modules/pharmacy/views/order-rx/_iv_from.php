@@ -77,7 +77,7 @@ $form = ActiveForm::begin([
                                         <?php echo $v['Item_Pay_Amt_Sum']; ?>
                                     </td>
                                     <td style="text-align: center;">
-                                        <?= Html::a('Edit', false, ['class' => 'btn btn-primary btn-xs','onclick' => 'EditByType(this);','ids' => $v['cpoe_ids'],'item-type' => 51]) ?>
+                                        <?= Html::a('Edit', false, ['class' => 'btn btn-primary btn-xs','onclick' => 'EditByType(this);','ids' => $v['cpoe_ids'],'item-type' => 41,'title-modal' => 'Base Solution']) ?>
                                         <?= Html::a('Delete', false, ['class' => 'btn btn-danger btn-xs', 'onclick' => 'DeleteSubparent(' . $v['cpoe_ids'] . ');']) ?>
                                     </td>
                                 </tr>
@@ -141,8 +141,8 @@ $form = ActiveForm::begin([
                                         <?php echo $v['Item_Pay_Amt_Sum']; ?>
                                     </td>
                                     <td style="text-align: center;">
-                                        <?= Html::a('Edit', false, ['class' => 'btn btn-primary btn-xs']) ?>
-                                        <?= Html::a('Delete', false, ['class' => 'btn btn-danger btn-xs']) ?>
+                                        <?= Html::a('Edit', false, ['class' => 'btn btn-primary btn-xs','onclick' => 'EditByType(this);','ids' => $v['cpoe_ids'],'item-type' => 42,'title-modal' => 'Additive']) ?>
+                                        <?= Html::a('Delete', false, ['class' => 'btn btn-danger btn-xs', 'onclick' => 'DeleteSubparent(' . $v['cpoe_ids'] . ');']) ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -713,8 +713,8 @@ $form = ActiveForm::begin([
         <?= $form->field($model, 'cpoe_once', ['showLabels' => false])->hiddenInput(['value' => empty($model['cpoe_once']) ? '1' : $model['cpoe_once']]) ?>
         <?= $form->field($model, 'ItemPrice', ['showLabels' => false])->hiddenInput(['value' => empty($model['ItemPrice']) ? $ItemOP['ItemPrice'] : $model['ItemPrice']]) ?>
         <?= $form->field($model, 'ItemID', ['showLabels' => false])->hiddenInput(['value' => empty($model['ItemID']) ? $Item['ItemID'] : $model['ItemID']]) ?>
-        <?= $form->field($model, 'cpoe_id', ['showLabels' => false])->hiddenInput() ?>
-        <?= $form->field($model, 'cpoe_Itemtype', ['showLabels' => false])->hiddenInput(['value' => $Itemtype == 'homemed' ? '' : $Itemtype]) ?>
+        <?= $form->field($model, 'cpoe_id', ['showLabels' => false])->hiddenInput(['id' => 'tbcpoedetail-cpoe_id2']) ?>
+        <?= $form->field($model, 'cpoe_Itemtype', ['showLabels' => false])->hiddenInput(['value' => $Itemtype]) ?>
         <?= $form->field($model, 'Item_comment1', ['showLabels' => false])->hiddenInput(['value' => empty($model['Item_comment1']) ? $Item['DrugAdminstration'] : $model['Item_comment1']]) ?>
     </div>
 </div>
@@ -724,7 +724,7 @@ $form = ActiveForm::begin([
         <div class="form-group" style="text-align: right;">
             <?= Html::button('<i class="glyphicon glyphicon-chevron-left"></i> ' . 'Prev', ['class' => 'btn btn-default', 'id' => 'btn-backsteb2']) ?>
             <?= Html::button('Close', ['type' => 'button', 'data-dismiss' => 'modal', 'class' => 'btn btn-default']); ?>
-            <?= Html::button('Save', ['type' => 'button', 'class' => 'btn btn-success ladda-button', 'id' => 'btn-savecpoe-details', 'data-style' => 'expand-left', 'disabled' => true]); ?>
+            <?= Html::button('Save', ['type' => 'button', 'class' => 'btn btn-success ladda-button', 'id' => 'btn-savecpoe-ivform', 'data-style' => 'expand-left',]); ?>
         </div>
     </div>
 </div> 
@@ -1108,13 +1108,15 @@ $form = ActiveForm::begin([
     }
 
     $(document).ready(function () {
-        DefaultSIG();
-        DefaultOrderOneDay();
-        DefaultRoute();
-        DefaultPeriodUnit();
-        DefautlOnceRepeat();
-        CheckedSelectAutoDay();
-        CheckedPRN();
+        GettbBasesolution();
+        GettbDrugAdditive();
+//        DefaultSIG();
+//        DefaultOrderOneDay();
+//        DefaultRoute();
+//        DefaultPeriodUnit();
+//        DefautlOnceRepeat();
+//        CheckedSelectAutoDay();
+//        CheckedPRN();
         $('#tbcpoedetail-cpoe_id').val($('#tbcpoe-cpoe_id').val());
         $('#pt_visit_number').val($('#tbcpoe-pt_vn_number').val());
         $('#tbcpoedetail-itemqty').autoNumeric('init');
@@ -1158,10 +1160,10 @@ $form = ActiveForm::begin([
     }
 
     //Submit From
-    $('#btn-savecpoe-details').click(function (e) {
-        var frm = $('#form_cpoedetail');
+    $('#btn-savecpoe-ivform').click(function (e) {
+        var frm = $('#form_cpoeiv');
         var qty = $('#tbcpoedetail-itemqty').val();
-        var l = $('#btn-savecpoe-details').ladda();
+        var l = $(this).ladda();
         if (qty === '' || qty === null) {
             swal("กรุณาคำนวณ Dispense!", "", "warning");
         } else {
@@ -1182,10 +1184,9 @@ $form = ActiveForm::begin([
                             function (isConfirm) {
                                 if (isConfirm) {
                                     l.ladda('stop');
-                                    $('#form_cpoedetail').trigger("reset");
+                                    $('#form_cpoeiv').trigger("reset");
                                     $('#from-input').html('');//Query From
-                                    $('#modal-default-table').modal('hide');
-                                    $.pjax({container: '#cpoedetail-pjax'});
+                                    $('#solution-modal').modal('hide');
                                 }
                             });
                 },
@@ -1218,10 +1219,12 @@ $form = ActiveForm::begin([
 
     function GettbBasesolution() {
         var parent = '<?= $model['cpoe_ids']; ?>';
+        var cpoe_id = '<?= $model['cpoe_id']; ?>';
+        var ItemType = '<?= $model['cpoe_Itemtype']; ?>' === "40" ? "41" : "51";
         $.ajax({
             url: "gettb-basesolution",
             type: "POST",
-            data: {parent: parent},
+            data: {parent: parent,cpoe_id:cpoe_id,ItemType:ItemType},
             dataType: "JSON",
             success: function (result) {
                 $('#detailsBaseSolution').html(result.table);
@@ -1239,7 +1242,7 @@ $form = ActiveForm::begin([
                         "lengthMenu": "",
                         "infoEmpty": "",
                         "info": "แสดง _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
-                        "search": "ค้นหา : _INPUT_ " + '<a class="btn btn-success" title-modal="Base Solution" item-type="51" onclick="CreateByType(this);"><i class="glyphicon glyphicon-plus"></i>Add</a>'
+                        "search": "ค้นหา : _INPUT_ " + '<a class="btn btn-success" title-modal="Base Solution" item-type="'+ItemType+'" onclick="CreateByType(this);"><i class="glyphicon glyphicon-plus"></i>Add</a>'
                     },
                     "aLengthMenu": [
                         [5, 10, 15, 20, 100, -1],
@@ -1252,10 +1255,11 @@ $form = ActiveForm::begin([
 
     function GettbDrugAdditive() {
         var parent = '<?= $model['cpoe_ids']; ?>';
+        var ItemType = '<?= $model['cpoe_Itemtype']; ?>' === "40" ? "42" : "52";
         $.ajax({
             url: "gettb-drugadditive",
             type: "POST",
-            data: {parent: parent},
+            data: {parent: parent,ItemType:ItemType},
             dataType: "JSON",
             success: function (result) {
                 $('#detailsDrugAdditive').html(result.table);
@@ -1273,7 +1277,7 @@ $form = ActiveForm::begin([
                         "lengthMenu": "",
                         "infoEmpty": "",
                         "info": "แสดง _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
-                        "search": "ค้นหา : _INPUT_ " + '<a class="btn btn-success" title-modal="Drug Additive" item-type="52" onclick="CreateByType(this);"><i class="glyphicon glyphicon-plus"></i>Add</a>'
+                        "search": "ค้นหา : _INPUT_ " + '<a class="btn btn-success" title-modal="Additive" item-type="'+ItemType+'" onclick="CreateByType(this);"><i class="glyphicon glyphicon-plus"></i>Add</a>'
                     },
                     "aLengthMenu": [
                         [5, 10, 15, 20, 100, -1],

@@ -50,7 +50,7 @@ use kartik\widgets\ActiveForm;
 </div>
 <?php
 $script = <<< JS
-	// $(document).ready(function(){
+ // $(document).ready(function(){
  //    var now = new Date();
  //    var month = (now.getMonth() + 1);               
  //    var day = now.getDate();

@@ -14,35 +14,19 @@ $countHitory = app\modules\Payment\models\VwFiRepHeader::find()
 ?>
 
 <ul class="nav nav-tabs" id="myTab">
-    <li class="tab-success" id="tab_A">
-        <a data-toggle="tab" href="#tab">
-            <?= Html::encode('รายการใบแจ้งค่าใช้จ่าย') ?> <span ><?php  echo '(' . $countInv . ')'; ?></span>
+    <li id="tab_A" class="<?= Yii::$app->controller->action->id=='index'?'active':''; ?>">
+        <a href="index">
+            <?= Html::encode('รายการใบแจ้งค่าใช้จ่าย') ?> <span style="font-weight: bold;"><?php  echo '(' . $countInv . ')'; ?></span>
         </a>
     </li>
-    <li class="tab-success" id="tab_B">
-        <a data-toggle="tab" href="#tab">
-            <?= Html::encode('ร่างบันทึกการชำระเงิน') ?> <span ><?php  echo '(' . $countRep . ')'; ?></span>
+    <li id="tab_B" class="<?= Yii::$app->controller->action->id=='rep-create'?'active':''; ?>">
+        <a href="rep-create">
+            <?= Html::encode('ร่างบันทึกการชำระเงิน') ?> <span style="font-weight: bold;"><?php  echo '(' . $countRep . ')'; ?></span>
         </a>
-    </li>
-    <li class="tab-success" id="tab_C">
-        <a data-toggle="tab" href="#tab">
-            <?= Html::encode('ประวัติชำระเงิน') ?> <span ><?php  echo '(' . $countHitory . ')'; ?></span>
+    </li>                     
+    <li id="tab_C" class="<?= Yii::$app->controller->action->id=='history'?'active':''; ?>">
+        <a href="history">
+            <?= Html::encode('ประวัติชำระเงิน') ?> <span style="font-weight: bold;"><?php  echo '(' . $countHitory . ')'; ?></span>
         </a>
     </li>
 </ul>
-
-<?php
-$script = <<< JS
-$("#tab_A").click(function (e) {
-    window.location.replace("index.php?r=Payment/payment/index");
-});
-$("#tab_B").click(function (e) {
-    window.location.replace("index.php?r=Payment/payment/rep-create");
-});     
-$("#tab_C").click(function (e) {
-    window.location.replace("index.php?r=Payment/payment/history");
-});
-
-JS;
-$this->registerJs($script);
-?>

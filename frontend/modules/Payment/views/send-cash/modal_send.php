@@ -5,6 +5,7 @@ use kartik\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use kartik\widgets\Select2;
 use kartik\grid\GridView;
+echo $this->render('/config/Asset_Js.php');
 ?>
 
 <div class="row">
@@ -19,7 +20,7 @@ use kartik\grid\GridView;
                         'maxlength' => true,
                         'readonly' => true,
                         'style' => 'background-color:white;text-align: right;font-size: 18px;',
-                        'value' => $modelSummary['sum_cash1'] == null ? '0.00' : $modelSummary['sum_cash1'],
+                        'value' => $modelSummary['sum_cash1'] == null ? '0.00' : number_format($modelSummary['sum_cash1'],2),
                     ])
                     ?>
                 </div>
@@ -220,9 +221,8 @@ use kartik\grid\GridView;
             <input type="hidden" class="form-control" style="background-color: white;text-align:right" readonly="" name="rep_summary_section" id="rep_summary_section" value="<?php echo $rep_summary_section; ?>">
             <input type="hidden" class="form-control" style="background-color: white;text-align:right" readonly="" name="rep_summary_remark" id="rep_summary_remark" value="<?php echo $rep_summary_remark; ?>">
             <div class="form-group" style="text-align: right">
-                <button href="#" class="btn btn-default" data-dismiss="modal">Close</button>
-                <a class="btn btn-danger" id="Clear">Clear</a>
-                <button class="btn btn-success" type="submit">Save</button>
+                <?= Html::a('Close',false,['class'=>'btn btn-default','data-dismiss'=>'modal']) ?>
+                <?= Html::a('Save',false,['class'=>'btn btn-success','type'=>'submit']) ?>
             </div>
             <?php ActiveForm::end(); ?>
         </div>
@@ -431,7 +431,7 @@ $script = <<< JS
                                 \$form.serialize()
                                 )
                         .done(function(result){
-                        if(result != ''){
+                        if(result){
                             $('#form_send').modal('hide');
                             //setTimeout(print_report(result), 8000);
                             print_report(result);
@@ -461,7 +461,7 @@ $script = <<< JS
 		                //         \$form.serialize()
 		                //         )
 		                // .done(function(result){
-		                // if(result != ''){
+		                // if(result){
 		                //     $('#form_send').modal('hide');
 		                //     swal("","Saved","success");
 		                //     $.pjax.reload({container:'#pjax_PSC'});
@@ -495,7 +495,7 @@ $script = <<< JS
                 },
                 function(isConfirm){   
                 	if (isConfirm) {
-                		window.open("http://www.udcancer.org/km4d/frontend/web/index.php?r=Payment/send-cash/summary&id="+result,'_blank');     
+                		window.open("/km4/Payment/send-cash/summary?id="+result,'_blank');     
                 		$.pjax.reload({container:'#pjax_PSC'});   
                 	} else {     
                 		 $.pjax.reload({container:'#pjax_PSC'}); 

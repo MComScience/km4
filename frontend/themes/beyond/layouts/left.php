@@ -803,7 +803,7 @@ $url = '/' . $ctrl->module->id . '/' . $ctrl->id . '/' . $ctrl->action->id;
                                     #บันทึกใบสั่งยา V.2
                                     [
                                         'label' => 'บันทึกใบสั่งยา V.6', 'icon' => 'fa fa-circle-thin',
-                                        'url' => Url::to(['/pharmacy/rx/index']), 'active' => $url == '/pharmacy/rx/index',
+                                        'url' => Url::to(['/pharmacy/order-rx/index']), 'active' => $url == '/pharmacy/order-rx/index',
                                         'visible' => Yii::$app->user->can('menuleft'),
                                     ],
                                     #สั่งจัดยาใบสั่งยา

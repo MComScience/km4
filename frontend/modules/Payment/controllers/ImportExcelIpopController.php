@@ -7,7 +7,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
-
+use \app\modules\Payment\models\TbFiNhsoRep;
 /**
  * ImportExcelController implements the CRUD actions for StmImportTest model.
  */
@@ -48,7 +48,7 @@ class ImportExcelIpopController extends Controller {
            	$newFileName = $random_str . '.' . $type_file;
             $fullPath = Yii::$app->basePath . '/web/uploads/' . $newFileName;
             $excel_file->saveAs($fullPath);
-            $chk_duplicate = \app\modules\Payment\models\TbFiNhsoRep::findOne(['invoice_eclaim_num'=>$file_name]);
+            $chk_duplicate = TbFiNhsoRep::findOne(['invoice_eclaim_num'=>$file_name]);
             if(empty($chk_duplicate)){
             if ($excel_file) {
                 try {
@@ -111,10 +111,7 @@ class ImportExcelIpopController extends Controller {
                                 ->bindParam(':import_by', $import_by)
                                 ->bindParam(':doc_type', $doc_type)
 								->execute();        
-                    $max = \app\modules\Payment\models\TbFiNhsoRep::find()
-                            ->select('max(nhso_rep_id)')
-                            ->scalar();
-
+                    $max = TbFiNhsoRep::find()->max('nhso_rep_id');
                     for ($row = 9; $row <= $highestRow; $row++) {
                         $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, FALSE, FALSE);
                         $data = $rowData[0];
@@ -333,25 +330,9 @@ class ImportExcelIpopController extends Controller {
                     echo 'Error loading file';
                 }
             }
-            Yii::$app->getSession()->setFlash('alert1', [
-                'type' => 'success',
-                'duration' => 5000,
-                'icon' => 'fa fa-check-square-o ',
-                'title' => Yii::t('app', \yii\helpers\Html::encode('Upload...')),
-                'message' => Yii::t('app', \yii\helpers\Html::encode('อัพโหลดไฟล์เรียบร้อยแล้ว!')),
-                'positonY' => 'top',
-                'positonX' => 'right'
-            ]);
-        	}else{
-	        	Yii::$app->getSession()->setFlash('alert1', [
-	                'type' => 'warning',
-	                'duration' => 5000,
-	                'icon' => 'fa fa-exclamation-triangle ',
-	                'title' => Yii::t('app', \yii\helpers\Html::encode('Duplicate...')),
-	                'message' => Yii::t('app', \yii\helpers\Html::encode('มีข้อมูลนำเข้าแล้ว!')),
-	                'positonY' => 'top',
-	                'positonX' => 'right'
-	            ]);
+            	$this->render('/config/_alert_success.php');
+            }else{
+            	$this->render('/config/_alert_duplicate.php');
             }
         }
         
@@ -370,8 +351,8 @@ class ImportExcelIpopController extends Controller {
             $key = $_POST['expandRowKey'];
             $searchModel = new \app\modules\Payment\models\VwRepUcOpipListSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $key);
-            $dataProvider->pagination->pageSize = 999;
-            return $this->renderPartial('_detail', ['dataProvider' => $dataProvider]);
+            $dataProvider->pagination->pageSize = false;
+            return $this->renderAjax('_expand_detail', ['dataProvider' => $dataProvider]);
         } else {
             return '<div class="alert alert-danger">No data found</div>';
         }
@@ -384,15 +365,11 @@ class ImportExcelIpopController extends Controller {
 				->bindParam(':create_by', $create_by)
  				->execute();
  		Yii::$app->getSession()->setFlash('alert1', [
-                'type' => 'success',
-                'duration' => 5000,
-                'icon' => 'fa fa-check-square-o ',
-                'title' => Yii::t('app', \yii\helpers\Html::encode('Upload...')),
-                'message' => Yii::t('app', \yii\helpers\Html::encode('บันทึกลูกหนี้เรียบร้อยแล้ว!')),
-                'positonY' => 'top',
-                'positonX' => 'right'
+                    'type' => 'success',
+                    'title' => 'Success!',
+                    'message' => 'บันทึกลูกหนี้เรียบร้อยแล้ว',
         ]);	
-        $this->redirect('index.php?r=Payment/import-excel-ipop/index');	
+        $this->redirect('index');	
     }
     private function type_file($type_name) {
         $array_file = explode(".", $type_name);

@@ -11,27 +11,15 @@ $countHistory = app\modules\Payment\models\VwFiRepSummary::find()
 ?>
 
 <ul class="nav nav-tabs" id="myTab">
-    <li class="tab-success" id="tab_A">
-        <a data-toggle="tab" href="#tab">
-            <?= Html::encode('รายการรอนำส่งการชำระเงิน ') ?><span > <?php  echo '(' . $countRep . ')'; ?></span>
+    <li id="tab_A" class="<?= Yii::$app->controller->action->id=='index'?'active':''; ?>">
+        <a href="index">
+            <?= Html::encode('รายการรอนำส่งการชำระเงิน ') ?><span style="font-weight: bold;"><?php  echo '(' . $countRep . ')'; ?></span>
         </a>
     </li>
 
-    <li class="tab-success" id="tab_B">
-        <a data-toggle="tab" href="#tab">
-            <?= Html::encode('ประวัติรายการนำส่งการชำระเงิน ') ?> <span > <?php  echo '(' . $countHistory . ')'; ?></span>
+    <li id="tab_B" class="<?= Yii::$app->controller->action->id=='history'?'active':''; ?>">
+        <a href="history">
+            <?= Html::encode('ประวัติรายการนำส่งการชำระเงิน ') ?><span style="font-weight: bold;"><?php  echo '(' . $countHistory . ')'; ?></span>
         </a>
     </li>
 </ul>
-
-<?php
-$script = <<< JS
-$("#tab_A").click(function (e) { 
-    window.location.replace("index.php?r=Payment/send-cash/index");
-});
-$("#tab_B").click(function (e) {               
-    window.location.replace("index.php?r=Payment/send-cash/history");
-});
-JS;
-$this->registerJs($script);
-?>

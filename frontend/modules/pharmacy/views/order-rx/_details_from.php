@@ -12,6 +12,7 @@ use app\modules\pharmacy\models\TbCpoePrnReason;
 use app\modules\pharmacy\models\TbCpoePeriodUnit;
 use yii\jui\DatePicker;
 use kartik\widgets\TimePicker;
+use app\modules\pharmacy\models\TbDrugroute;
 ?>
 <?php
 $form = ActiveForm::begin([
@@ -35,7 +36,7 @@ $form = ActiveForm::begin([
 
     </div>
 </div>
-<?php if ($Itemtype != 51) : ?>
+<?php if (($Itemtype != 41) && ($Itemtype != 42) && ($Itemtype != 51) && ($Itemtype != 52)) : ?>
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-6">
             <h5 class="success"><b><?= Html::encode('Drug Instruction :') ?></b></h5>
@@ -45,12 +46,12 @@ $form = ActiveForm::begin([
                     <div class="form-group">
                         <?= Html::activeLabel($model, 'cpoe_doseqty', ['label' => 'จำนวน', 'class' => 'col-sm-2 control-label no-padding-right text-align-right']) ?>
                         <div class="col-sm-8">
-                            <?=
-                            $form->field($model, 'cpoe_doseqty', ['showLabels' => false])->textInput([
-                                'value' => empty($model['cpoe_doseqty']) ? '1' : $model['cpoe_doseqty'],
-                                'style' => 'background-color: white',
-                            ]);
-                            ?>
+                                <?=
+                                $form->field($model, 'cpoe_doseqty', ['showLabels' => false])->textInput([
+                                    'value' => empty($model['cpoe_doseqty']) ? '1' : $model['cpoe_doseqty'],
+                                    'style' => 'background-color: white',
+                                ]);
+                                ?>
                         </div>
                         <div class="col-sm-2">
                             <?= Html::label($Item['DispUnit'], 'DispUnit', ['class' => 'text']) ?>
@@ -64,7 +65,8 @@ $form = ActiveForm::begin([
                         <div class="col-sm-8">
                             <?php
                             echo $form->field($model, 'cpoe_route_id', ['showLabels' => false])->widget(Select2::classname(), [
-                                'data' => ArrayHelper::map(VwCpoeDrugadmitDefault::find()->where(['TMTID_GPU' => $Item['TMTID_GPU']])->all(), 'DrugRouteID', 'DrugRouteName'),
+                                /* ->where(['TMTID_GPU' => $Item['TMTID_GPU']]) */
+                                'data' => ArrayHelper::map(TbDrugroute::find()->all(), 'DrugRouteID', 'DrugRouteName'),
                                 'language' => 'en',
                                 'options' => ['placeholder' => '----- Select Route -----'],
                                 'pluginOptions' => [
@@ -540,6 +542,7 @@ $form = ActiveForm::begin([
             <div class="row">
                 <div class="col-xs-12 col-sm-6 col-md-6">
                     <div class="form-group">
+                        <?php if(($Itemtype != 41) && ($Itemtype != 42) && ($Itemtype != 51) && ($Itemtype != 52)) :  ?>
                         <table style="width: 100%" border="0">
                             <tbody>
                                 <tr>
@@ -554,6 +557,23 @@ $form = ActiveForm::begin([
                                 </tr>
                             </tbody>
                         </table>
+                        <?php elseif($Itemtype == 42) : ?>
+                        <?=
+                        $form->field($model, 'cpoe_doseqty', ['showLabels' => false])->textInput([
+                            'style' => [
+                                'height' => '40px',
+                                'font-size' => '25pt',
+                                'text-align' => 'right',
+                                'background-color' => 'white',
+                                'width' => '100%'
+                            ],
+                            'class' => 'form-control cpoe_doseqty',
+                            'placeholder' => 'mg',
+                            'required' => true,
+                            'value' => empty($model['cpoe_doseqty']) ? null : number_format($model['cpoe_doseqty'], 2)
+                        ])
+                        ?>
+                        <?php endif; ?>
                     </div> 
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-5">
@@ -597,7 +617,7 @@ $form = ActiveForm::begin([
         <?= $form->field($model, 'cpoe_once', ['showLabels' => false])->hiddenInput(['value' => empty($model['cpoe_once']) ? '1' : $model['cpoe_once']]) ?>
         <?= $form->field($model, 'ItemPrice', ['showLabels' => false])->hiddenInput(['value' => empty($model['ItemPrice']) ? $ItemOP['ItemPrice'] : $model['ItemPrice']]) ?>
         <?= $form->field($model, 'ItemID', ['showLabels' => false])->hiddenInput(['value' => empty($model['ItemID']) ? $Item['ItemID'] : $model['ItemID']]) ?>
-        <?= $form->field($model, 'cpoe_id', ['showLabels' => false])->hiddenInput() ?>
+        <?= $form->field($model, 'cpoe_id', ['showLabels' => false])->hiddenInput(['value' => $model['cpoe_id']]) ?>
         <?= $form->field($model, 'cpoe_Itemtype', ['showLabels' => false])->hiddenInput(['value' => $Itemtype == 'homemed' ? '' : $Itemtype]) ?>
         <?= $form->field($model, 'Item_comment1', ['showLabels' => false])->hiddenInput(['value' => empty($model['Item_comment1']) ? $Item['DrugAdminstration'] : $model['Item_comment1']]) ?>
     </div>
@@ -608,10 +628,10 @@ $form = ActiveForm::begin([
         <div class="form-group" style="text-align: right;">
             <?= Html::button('<i class="glyphicon glyphicon-chevron-left"></i> ' . 'Prev', ['class' => 'btn btn-default', 'id' => 'btn-backsteb2']) ?>
             <?= Html::button('Close', ['type' => 'button', 'data-dismiss' => 'modal', 'class' => 'btn btn-default']); ?>
-            <?php if ($Itemtype == 51) : ?>
+            <?php if (($Itemtype == 41) || ($Itemtype == 42) || ($Itemtype == 51) || ($Itemtype == 52)) : ?>
                 <?= Html::button('Save', ['type' => 'button', 'class' => 'btn btn-success ladda-button', 'id' => 'btn-savecpoe-iv', 'data-style' => 'expand-left']); ?>
             <?php else : ?>
-                <?= Html::button('Save', ['type' => 'button', 'class' => 'btn btn-success ladda-button', 'id' => 'btn-savecpoe-details', 'data-style' => 'expand-left', 'disabled' => true]); ?>
+                <?= Html::button('Save', ['type' => 'button', 'class' => 'btn btn-success ladda-button', 'id' => 'btn-savecpoe-details', 'data-style' => 'expand-left']); ?>
             <?php endif; ?>
         </div>
     </div>
@@ -678,9 +698,11 @@ $form = ActiveForm::begin([
             $(this).prop('checked', false);
             $('#tbcpoedetail-cpoe_period_value').val(null);
             $("#tbcpoedetail-cpoe_period_unit").val(null).trigger("change");
+            CalculateQty();
         } else {
             $('#tbcpoedetail-cpoe_period_value').val($(this).val());
             $("#tbcpoedetail-cpoe_period_unit").val('1').trigger("change");
+            CalculateQty();
         }
     });
 
@@ -689,9 +711,17 @@ $form = ActiveForm::begin([
         var value = $(this).val();
         if ((value === '7') || (value === '14') || (value === '21') || (value === '28') || (value === '60') || (value === '90')) {
             $('#' + value + 'd').prop('checked', true);
+            CalculateQty();
         } else {
             $('.auto-day').prop('checked', false);
+            CalculateQty();
         }
+    });
+
+    /* Event จำนวน */
+    $("#tbcpoedetail-cpoe_doseqty").keyup(function () {
+        var value = $(this).val();
+        CalculateQty();
     });
 
     /* FN ในกรณีที่เลือก Repeat ใน tab วิธีการใช้ยา */
@@ -996,13 +1026,15 @@ $form = ActiveForm::begin([
     }
 
     $(document).ready(function () {
-        DefaultSIG();
-        DefaultOrderOneDay();
-        DefaultRoute();
-        DefaultPeriodUnit();
-        DefautlOnceRepeat();
-        CheckedSelectAutoDay();
-        CheckedPRN();
+        if (('<?= $model['cpoe_Itemtype']; ?>' !== 42) && ('<?= $model['cpoe_Itemtype']; ?>' !== 42)){
+            DefaultSIG();
+            DefaultOrderOneDay();
+            DefaultRoute();
+            DefaultPeriodUnit();
+            DefautlOnceRepeat();
+            CheckedSelectAutoDay();
+            CheckedPRN();
+        }
         $('#tbcpoedetail-cpoe_id').val($('#tbcpoe-cpoe_id').val());
         $('#pt_visit_number').val($('#tbcpoe-pt_vn_number').val());
         $('#tbcpoedetail-itemqty').autoNumeric('init');
@@ -1013,7 +1045,7 @@ $form = ActiveForm::begin([
         var frm = $('#form_cpoedetail');
         var qty = $('#tbcpoedetail-itemqty').val();
         var l = $('#CalculateQty').ladda();
-        l.ladda('start');
+        //l.ladda('start');
         $.ajax({
             type: frm.attr('method'),
             url: 'calculate-qty',
@@ -1025,13 +1057,13 @@ $form = ActiveForm::begin([
                 $('.showItem_Cr_Amt').html(data.Item_Cr_Amt);//เบิกได้
                 $('.showItem_Pay_Amt').html(data.Item_Pay_Amt);//เบิกไม่ได้
                 var msg = '<div class="alert alert-success fade in"><i class="fa-fw fa fa-check"></i><strong>Calculated!</strong></div>';
-                $('#msgqty').addClass('alert-success').removeClass('alert-error').html(msg).show();
+                //$('#msgqty').addClass('alert-success').removeClass('alert-error').html(msg).show();
                 setTimeout(function () {
                     $('#msgqty').addClass('alert-error').removeClass('alert-success').html('').hide();
                 }, 1000);
                 //Notify('Calculated', 'bottom-left', '2000', 'success', 'fa-check', true);
-                l.ladda('stop');
-                document.getElementById("btn-savecpoe-details").disabled = false;
+                //l.ladda('stop');
+                //document.getElementById("btn-savecpoe-details").disabled = false;
             },
             error: function (xhr, status, error) {
                 swal({
@@ -1059,6 +1091,7 @@ $form = ActiveForm::begin([
                 url: frm.attr('action'),
                 data: frm.serialize(),
                 success: function (data) {
+                    //QueryTabledetails();
                     swal({
                         title: "",
                         text: "Save Complete!",
@@ -1073,7 +1106,7 @@ $form = ActiveForm::begin([
                                     $('#form_cpoedetail').trigger("reset");
                                     $('#from-input').html('');//Query From
                                     $('#modal-default-table').modal('hide');
-                                    $.pjax({container: '#cpoedetail-pjax'});
+                                    $.pjax({container: '#cpoedetails-pjax'});
                                 }
                             });
                 },
@@ -1119,6 +1152,7 @@ $form = ActiveForm::begin([
                                 $('#from-input').html('');//Query From
                                 $('#modal-default-table').modal('hide');
                                 GettbBasesolution();
+                                GettbDrugAdditive();
                             }
                         });
             },
@@ -1147,4 +1181,5 @@ $form = ActiveForm::begin([
             $("input[id=PRN]").prop('checked', true);
         }
     }
+    
 </script>

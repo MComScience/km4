@@ -10,15 +10,15 @@ $coountHistory_cr = \app\modules\Payment\models\VwFiCrSummary::find()
 ?>
 
 <ul class="nav nav-tabs" id="myTab">
-    <li class="tab-success" id="tab_A">
-        <a data-toggle="tab" href="#tab">
-            <?= Html::encode('รายการใบแจ้งค่าใช้จ่าย') ?> <span ><?php  echo '(' . $countCr . ')'; ?></span>
+    <li id="tab_A" class="<?= Yii::$app->controller->action->id=='index'?'active':''; ?>">
+        <a href="index">
+            <?= Html::encode('รายการใบแจ้งค่าใช้จ่าย') ?> <span style="font-weight: bold;"><?php  echo '(' . $countCr . ')'; ?></span>
         </a>
     </li>
 
-    <li class="tab-success" id="tab_B">
-        <a data-toggle="tab" href="#tab">
-            <?= Html::encode('ประวัติการนำส่งใบแจ้งค่าใช้จ่าย ') ?> <span ><?php  echo '(' . $coountHistory_cr . ')'; ?></span>
+    <li id="tab_B" class="<?= Yii::$app->controller->action->id=='history'?'active':''; ?>">
+        <a href="history">
+            <?= Html::encode('ประวัติการนำส่งใบแจ้งค่าใช้จ่าย ') ?> <span style="font-weight: bold;"><?php  echo '(' . $coountHistory_cr . ')'; ?></span>
         </a>
     </li>
 </ul>
@@ -29,13 +29,6 @@ $script = <<< JS
     //     var type_pt = $('#vwfiinvcrlistsearch-pt_visit_type').val();
     //     alert(type_pt);
     // });
-
-$("#tab_A").click(function (e) {               
-window.location.replace("index.php?r=Payment/cr-payment/index");
-});
-$("#tab_B").click(function (e) {               
-window.location.replace("index.php?r=Payment/cr-payment/history");
-});
 JS;
 $this->registerJs($script);
 ?>

@@ -8,14 +8,14 @@ use kartik\widgets\ActiveForm;
 use kartik\widgets\Select2;
 use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
-
+$header_style = ['style' => 'text-align:center;color:#000000;'];
+echo $this->render('/config/Asset_Js.php');
 //$_SESSION['section_view'] = $SectionID;
 /* @var $this yii\web-\View */
 /* @var $searchModel ----app\modules\Payment\models\VwFiRepListSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 $this->title = "ประวัติการนำส่งใบแจ้งค่าใช้จ่าย";
 $this->params['breadcrumbs'][] = $this->title;
-$this->registerJs('$("#tab_B").addClass("active");');
 
 $layout = <<< HTML
 <div class="pull-right">{toggleData}{export}</div>
@@ -101,7 +101,6 @@ $pdfFooter = [
                         ],
                         [
                         'header' => '<font color="black">เลขที่เอกสาร</font>',
-                        'options' => ['style' => 'width:140px;'],
                         'attribute' => 'cr_summary_id',
                         'hAlign' => kartik\grid\GridView::ALIGN_CENTER,
                         'vAlign' => 'middle',
@@ -119,11 +118,10 @@ $pdfFooter = [
                             
                             'header' => '<font color="black">วันที่</font>',
                             'attribute' => 'cr_summary_date',
-                            'options' => ['style' => 'width:240px;'],
                             'format' => ['date', 'php:d/m/Y'],
                             'hAlign' => GridView::ALIGN_CENTER,
                             'value' => function ($model) {
-                                return (!empty($model->cr_summary_date)? $model->cr_summary_date:'');
+                                return $model->cr_summary_date;
                             },
                             'filterType' => GridView::FILTER_DATE,
                             'filterWidgetOptions' => [
@@ -151,7 +149,8 @@ $pdfFooter = [
                             'filterInputOptions' => ['placeholder' => 'ประเภท'],
                         ],
                         [   
-                            'headerOptions' => ['style' => 'text-align:center;'],
+                            'headerOptions' => ['class'=>'kv-align-middle','style' => 'text-align:center;color:#000000;','rowspan'=>'2'],
+                            'filterOptions' => ['style'=>'display:none;'],
                             'header' => '<font color="black">เป็นเงิน</font>',
                             //'attribute' => 'ItemID',
                             'hAlign' => GridView::ALIGN_RIGHT,
@@ -177,28 +176,28 @@ $pdfFooter = [
                         ],
                         [
                             'class' => 'kartik\grid\ActionColumn',
-                            'options' => ['style' => 'width:160px;'],
                             'header' => 'Actions',
+                            'noWrap' => true,
                             'hAlign' => GridView::ALIGN_CENTER,
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'template' => '{select} {edit} {delete}',
                             'buttons' => [
                                 'select' => function ($url, $model) {
-                                    return Html::a('<span class="btn btn-success btn-xs">Select</span>','#', [
+                                    return Html::a('<span class="btn btn-success btn-xs">Select</span>',false, [
                                                     'title' => Yii::t('app', 'Select'),
                                                     'class' => 'activity-select-link',
                                                     'data-id' => $model->cr_summary_id,
                                             ]);
                                 },
                                        'edit' => function ($url, $model) {
-                                    return Html::a('<span class="btn btn-info btn-xs">Edit</span>','#', [
+                                    return Html::a('<span class="btn btn-info btn-xs">Edit</span>',false, [
                                                     'title' => Yii::t('app', 'Edit'),
                                                     'class' => 'activity-edit-link',
                                                     'data-id' => $model->cr_summary_id,
                                             ]);
                                 },
                                     'delete' => function ($url, $model) {
-                                        return Html::a('<span class="btn btn-danger btn-xs">Delete</span>','#', [
+                                        return Html::a('<span class="btn btn-danger btn-xs">Delete</span>',false, [
                                                         'title' => Yii::t('app', 'Delete'),
                                                         'class' => 'activity-delete-link',
                                                         'data-id' => $model->cr_summary_id,
@@ -253,7 +252,7 @@ $pdfFooter = [
                                 'showPageSummary' => true,
                                 'showFooter' => true,
                                 'showCaption' => true,
-                                'filename' => 'report_cr_summary',
+                                'filename' => 'cr_summary',
                                 'alertMsg' => 'The EXCEL export file will be generated for download.',
                                 'options' => ['title' => 'Microsoft Excel 95+'],
                                 'mime' => 'application/vnd.ms-excel',
@@ -300,7 +299,7 @@ $script = <<< JS
         var cr_summary_id = $(this).attr("data-id");
         console.log(cr_summary_id);
         $.get(
-                    'index.php?r=Payment/cr-payment/detail-summary',
+                    'detail-summary',
                     {
                        cr_summary_id
                     },

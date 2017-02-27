@@ -39,7 +39,7 @@ use kartik\widgets\ActiveForm;
 $script = <<< JS
 
     $(document).ready(function(){
-        if(localStorage.checkbox_import == 'true'){
+        if(localStorage.checkbox_import_orf == 'true'){
             document.getElementById("chk_orf").checked = true;
         }else{
             document.getElementById("chk_orf").checked = false;
@@ -49,12 +49,12 @@ $script = <<< JS
     if ($(this).is(":checked"))
     {   
         console.log('check_box');
-        localStorage.checkbox_import = 'true';
+        localStorage.checkbox_import_orf = 'true';
         $('#chk_orf').val('รอบันทึกลูกหนี้');
         $('#btn_Search').click();
             
     }else{
-        localStorage.checkbox_import = 'false';
+        localStorage.checkbox_import_orf = 'false';
         $('#chk_orf').val('');
         $('#btn_Search').click();
         
