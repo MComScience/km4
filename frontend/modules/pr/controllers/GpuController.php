@@ -119,7 +119,7 @@ class GpuController extends Controller {
 
     public function actionUpdate($id) {
         $model = $this->findModel($id);
-        $post = Yii::$app->request->post('TbPr2Temp',[]);
+        $post = Yii::$app->request->post('TbPr2Temp', []);
 
         $type = empty($model['PRNum']) ? 'new' : 'edit';
 
@@ -221,7 +221,7 @@ class GpuController extends Controller {
     }
 
     public function actionUpdateRejectVerify($data) {
-        $post = Yii::$app->request->post('TbPr2',[]);
+        $post = Yii::$app->request->post('TbPr2', []);
         if (($model = TbPr2::findOne($data)) !== null) {
             $type = 'edit';
             if ($model->load($post)) {
@@ -636,7 +636,7 @@ class GpuController extends Controller {
     }
 
     public function actionSaveItemdetails() {
-        $request = Yii::$app->request->post('TbPritemdetail2Temp',[]);
+        $request = Yii::$app->request->post('TbPritemdetail2Temp', []);
         if ($request) {
             $cmd = null;
             $ItemID = isset($request['ItemID']) ? $request['ItemID'] : NULL;
@@ -1214,19 +1214,23 @@ class GpuController extends Controller {
     public function actionAutoApprove() {
         $request = Yii::$app->request;
         if ($request->isPost) {
-            $PRExtendedCost = TbPritemdetail2::find()
-                    ->where(['PRID' => $request->post('PRID'), 'PRItemNumStatusID' => 2])
-                    ->sum('PRExtendedCost');
-            $modelPR = TbPr2::findOne($request->post('PRID'));
-            $modelPR->PRStatusID = 11;
-            $modelPR->PRApprovaDate = date('Y-m-d');
-            $modelPR->PRApprovatime = date('H:i:s');
-            $modelPR->PRTotal = number_format($PRExtendedCost, 2);
-            $modelPR->PRApproveBy = Yii::$app->user->getId();
-            $modelPR->PRVerifyBy = Yii::$app->user->getId();
-            $modelPR->save();
+            $count = TbPritemdetail2::find()->where(['PRVerifyQty' => null, 'PRID' => $request->post('PRID')])->count('ids');
+            if ($count == 0) {
+                return 'ต้องมีอย่างน้อย 1 รายการ ที่ ok';
+            } else {
+                $PRExtendedCost = TbPritemdetail2::find()
+                        ->where(['PRID' => $request->post('PRID'), 'PRItemNumStatusID' => 2])
+                        ->sum('PRExtendedCost');
+                $modelPR = TbPr2::findOne($request->post('PRID'));
+                $modelPR->PRStatusID = 11;
+                $modelPR->PRApprovaDate = date('Y-m-d');
+                $modelPR->PRApprovatime = date('H:i:s');
+                $modelPR->PRTotal = number_format($PRExtendedCost, 2);
+                $modelPR->PRApproveBy = Yii::$app->user->getId();
+                $modelPR->PRVerifyBy = Yii::$app->user->getId();
+                $modelPR->save();
 
-            $sql = "
+                $sql = "
                  UPDATE tb_pritemdetail2
                     SET PRPackQtyApprove = PRPackQtyVerify,
                      ItemPackCostApprove = ItemPackCostVerify,
@@ -1236,9 +1240,10 @@ class GpuController extends Controller {
                     WHERE
                             PRID = $modelPR->PRID;
                  ";
-            Yii::$app->db->createCommand($sql)->execute();
-            Yii::$app->session->setFlash('success', 'Send ' . $modelPR['PRNum'] . ' To Approve Success!');
-            return $this->redirect('/km4/pr/default/list-verify');
+                Yii::$app->db->createCommand($sql)->execute();
+                Yii::$app->session->setFlash('success', 'Send ' . $modelPR['PRNum'] . ' To Approve Success!');
+                return $this->redirect('/km4/pr/default/list-verify');
+            }
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

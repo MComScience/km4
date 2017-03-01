@@ -13,6 +13,7 @@ use app\modules\pharmacy\models\TbCpoePeriodUnit;
 use yii\jui\DatePicker;
 use kartik\widgets\TimePicker;
 use app\modules\pharmacy\models\TbDrugroute;
+use app\models\TbItem;
 ?>
 <?php
 $form = ActiveForm::begin([
@@ -35,6 +36,15 @@ $form = ActiveForm::begin([
         </ul>
 
     </div>
+    <?php if (($Itemtype == 42) || ($Itemtype == 52)) : ?>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <h5 class="success">
+                <b><?= Html::encode('ภาพสินค้า :') ?></b>
+            </h5>
+            <?php $path = TbItem::getImgname($Item['ItemID'], 1) ?>
+            <?= empty($path) ? 'ไม่มีภาพสินค้า' : Html::img('/km4/' . $path) ?>
+        </div>
+    <?php endif; ?>
 </div>
 <?php if (($Itemtype != 41) && ($Itemtype != 42) && ($Itemtype != 51) && ($Itemtype != 52)) : ?>
     <div class="row">
@@ -46,15 +56,15 @@ $form = ActiveForm::begin([
                     <div class="form-group">
                         <?= Html::activeLabel($model, 'cpoe_doseqty', ['label' => 'จำนวน', 'class' => 'col-sm-2 control-label no-padding-right text-align-right']) ?>
                         <div class="col-sm-8">
-                                <?=
-                                $form->field($model, 'cpoe_doseqty', ['showLabels' => false])->textInput([
-                                    'value' => empty($model['cpoe_doseqty']) ? '1' : $model['cpoe_doseqty'],
-                                    'style' => 'background-color: white',
-                                ]);
-                                ?>
+                            <?=
+                            $form->field($model, 'cpoe_doseqty', ['showLabels' => false])->textInput([
+                                'value' => empty($model['cpoe_doseqty']) ? '1' : $model['cpoe_doseqty'],
+                                'style' => 'background-color: white',
+                            ]);
+                            ?>
                         </div>
                         <div class="col-sm-2">
-                            <?= Html::label($Item['DispUnit'], 'DispUnit', ['class' => 'text']) ?>
+                            <div id="DispUnit-form"><?= Html::label($Item['DispUnit'], 'DispUnit', ['class' => 'text']) ?></div>
                         </div>
                     </div>
                 </div>
@@ -540,42 +550,53 @@ $form = ActiveForm::begin([
         <div class="well">
             <!-- Begin Row -->
             <div class="row">
-                <div class="col-xs-12 col-sm-6 col-md-6">
-                    <div class="form-group">
-                        <?php if(($Itemtype != 41) && ($Itemtype != 42) && ($Itemtype != 51) && ($Itemtype != 52)) :  ?>
-                        <table style="width: 100%" border="0">
-                            <tbody>
-                                <tr>
-                                    <td style="font-size: 12pt;width: 33.33%;text-align: center;"><b><?= Html::encode('เป็นเงิน'); ?></b></td>
-                                    <td style="font-size: 12pt;width: 33.33%;text-align: center;border-left: 1px solid black;"><b><?= Html::encode('เบิกได้'); ?></b></td>
-                                    <td style="font-size: 12pt;width: 33.33%;text-align: center;border-left: 1px solid black;"><b><?= Html::encode('เบิกไม่ได้'); ?></b></td>
-                                </tr>
-                                <tr>
-                                    <td style="font-size: 12pt;width: 33.33%;text-align: center;"><span id="showItem_Total_Amt" class="showItem_Total_Amt"></span></td>
-                                    <td style="font-size: 12pt;width: 33.33%;text-align: center;border-left: 1px solid black;"><span id="showItem_Cr_Amt" class="showItem_Cr_Amt"></span></td>
-                                    <td style="font-size: 12pt;width: 33.33%;text-align: center;border-left: 1px solid black;"><span id="showItem_Pay_Amt" class="showItem_Pay_Amt"></span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <?php elseif($Itemtype == 42) : ?>
-                        <?=
-                        $form->field($model, 'cpoe_doseqty', ['showLabels' => false])->textInput([
-                            'style' => [
-                                'height' => '40px',
-                                'font-size' => '25pt',
-                                'text-align' => 'right',
-                                'background-color' => 'white',
-                                'width' => '100%'
-                            ],
-                            'class' => 'form-control cpoe_doseqty',
-                            'placeholder' => 'mg',
-                            'required' => true,
-                            'value' => empty($model['cpoe_doseqty']) ? null : number_format($model['cpoe_doseqty'], 2)
-                        ])
-                        ?>
-                        <?php endif; ?>
-                    </div> 
-                </div>
+                <?php if (($Itemtype != 41) && ($Itemtype != 42) && ($Itemtype != 51) && ($Itemtype != 52)) : ?>
+                    <div class="col-xs-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <table style="width: 100%" border="0">
+                                <tbody>
+                                    <tr>
+                                        <td style="font-size: 12pt;width: 33.33%;text-align: center;"><b><?= Html::encode('เป็นเงิน'); ?></b></td>
+                                        <td style="font-size: 12pt;width: 33.33%;text-align: center;border-left: 1px solid black;"><b><?= Html::encode('เบิกได้'); ?></b></td>
+                                        <td style="font-size: 12pt;width: 33.33%;text-align: center;border-left: 1px solid black;"><b><?= Html::encode('เบิกไม่ได้'); ?></b></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-size: 12pt;width: 33.33%;text-align: center;"><span id="showItem_Total_Amt" class="showItem_Total_Amt"></span></td>
+                                        <td style="font-size: 12pt;width: 33.33%;text-align: center;border-left: 1px solid black;"><span id="showItem_Cr_Amt" class="showItem_Cr_Amt"></span></td>
+                                        <td style="font-size: 12pt;width: 33.33%;text-align: center;border-left: 1px solid black;"><span id="showItem_Pay_Amt" class="showItem_Pay_Amt"></span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div> 
+                    </div>
+                <?php elseif (($Itemtype == 42) || ($Itemtype == 52)) : ?>
+                    <div class="col-xs-12 col-sm-6 col-md-5">
+                        <div class="form-group">
+                            <?=
+                            $form->field($model, 'cpoe_doseqty', ['showLabels' => false])->textInput([
+                                'style' => [
+                                    'height' => '40px',
+                                    'font-size' => '25pt',
+                                    'text-align' => 'right',
+                                    'background-color' => 'white',
+                                    'width' => '100%'
+                                ],
+                                'id' => 'tbcpoedetail-cpoe_doseqty2',
+                                'class' => 'form-control cpoe_doseqty',
+                                //'placeholder' => 'mg',
+                                'required' => true,
+                                'value' => empty($model['cpoe_doseqty']) ? null : number_format($model['cpoe_doseqty'], 2)
+                            ])
+                            ?>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-1">
+                        <div class="form-group">
+                            <p></p>
+                            <span class="disunitontable2" style="font-size: 13pt;"></span>
+                        </div>
+                    </div>
+                <?php endif; ?>
                 <div class="col-xs-12 col-sm-6 col-md-5">
                     <div class="form-group">
                         <?=
@@ -587,6 +608,7 @@ $form = ActiveForm::begin([
                                 'background-color' => 'white',
                                 'width' => '100%'
                             ],
+                            'id' => 'itemqty',
                             'class' => 'form-control itemqty',
                             'required' => true,
                             'value' => empty($model['ItemQty']) ? null : number_format($model['ItemQty'], 2)
@@ -610,6 +632,7 @@ $form = ActiveForm::begin([
         <?= Html::input('hidden', 'pt_visit_number', '', ['class' => 'form-control', 'id' => 'pt_visit_number']) ?>
         <?= $form->field($model, 'cpoe_frequency', ['showLabels' => false])->hiddenInput() ?>
         <?= $form->field($model, 'cpoe_ids', ['showLabels' => false])->hiddenInput() ?>
+        <?= $form->field($model, 'cpoe_seq', ['showLabels' => false])->hiddenInput(['id' => 'tbcpoedetail-cpoe_seq2']) ?>
         <?= $form->field($model, 'cpoe_parentid', ['showLabels' => false])->hiddenInput([]) ?>
         <?= $form->field($model, 'cpoe_dayrepeat', ['showLabels' => false])->hiddenInput() ?>
         <?= $form->field($model, 'cpoe_repeat', ['showLabels' => false])->hiddenInput() ?>
@@ -1026,7 +1049,8 @@ $form = ActiveForm::begin([
     }
 
     $(document).ready(function () {
-        if (('<?= $model['cpoe_Itemtype']; ?>' !== 42) && ('<?= $model['cpoe_Itemtype']; ?>' !== 42)){
+        $('#tbcpoedetail-cpoe_doseqty2,#itemqty').autoNumeric('init');
+        if (('<?= $model['cpoe_Itemtype']; ?>' !== 42) && ('<?= $model['cpoe_Itemtype']; ?>' !== 42)) {
             DefaultSIG();
             DefaultOrderOneDay();
             DefaultRoute();
@@ -1034,6 +1058,13 @@ $form = ActiveForm::begin([
             DefautlOnceRepeat();
             CheckedSelectAutoDay();
             CheckedPRN();
+        }
+        if ('<?= $model['cpoe_Itemtype']; ?>' === '53') {
+            CheckDoseqty();
+            $("#tbcpoedetail-cpoe_route_id").val('12').trigger("change");
+        }
+        if (('<?= $model['cpoe_Itemtype']; ?>' === '42') || ('<?= $model['cpoe_Itemtype']; ?>' === '52')) {
+            CheckDoseqtyIV();
         }
         $('#tbcpoedetail-cpoe_id').val($('#tbcpoe-cpoe_id').val());
         $('#pt_visit_number').val($('#tbcpoe-pt_vn_number').val());
@@ -1052,7 +1083,7 @@ $form = ActiveForm::begin([
             data: frm.serialize(),
             dataType: "JSON",
             success: function (data) {
-                $('input[id=tbcpoedetail-itemqty]').val(data.Qty);
+                $('input[id=itemqty]').val(data.Qty);
                 $('.showItem_Total_Amt').html(data.Item_Total_Amt);//เป็นเงิน
                 $('.showItem_Cr_Amt').html(data.Item_Cr_Amt);//เบิกได้
                 $('.showItem_Pay_Amt').html(data.Item_Pay_Amt);//เบิกไม่ได้
@@ -1181,5 +1212,71 @@ $form = ActiveForm::begin([
             $("input[id=PRN]").prop('checked', true);
         }
     }
-    
+
+    function CheckDoseqty() {
+        var ItemID = '<?= $Item['ItemID']; ?>';
+        $.ajax({
+            type: 'POST',
+            url: 'check-doseqty',
+            data: {ItemID: ItemID},
+            success: function (result) {
+                $('#DispUnit-form').html(result);
+            },
+            error: function (xhr, status, error) {
+                swal({
+                    title: error,
+                    text: "",
+                    type: "error",
+                    confirmButtonText: "OK"
+                });
+            }
+        });
+    }
+
+    function CheckDoseqtyIV() {
+        var ItemID = '<?= $Item['ItemID']; ?>';
+        $.ajax({
+            type: 'POST',
+            url: 'check-doseqty',
+            data: {ItemID: ItemID},
+            success: function (result) {
+                if (result === 'mg.') {
+                    $('.disunitontable2').html(result);
+                    $('#tbcpoedetail-cpoe_doseqty2').css('background-color', '#FFFF99');
+                } else {
+                    $('.disunitontable2').html(result);
+                    $('.itemqty').css('background-color', '#FFFF99');
+                    $("#tbcpoedetail-cpoe_doseqty2").attr('readonly', 'readonly');
+                }
+            },
+            error: function (xhr, status, error) {
+                swal({
+                    title: error,
+                    text: "",
+                    type: "error",
+                    confirmButtonText: "OK"
+                });
+            }
+        });
+    }
+    $('#tbcpoedetail-cpoe_doseqty2').keyup(function (e) {
+        var ItemID = '<?= $Item['ItemID']; ?>';
+        var doseqty = parseFloat($(this).val().replace(/[,]/g, "")) || 0;
+        $.ajax({
+            type: 'POST',
+            url: 'convertmg',
+            data: {ItemID: ItemID,doseqty:doseqty},
+            success: function (result) {
+                $('#itemqty').val(result);
+            },
+            error: function (xhr, status, error) {
+                swal({
+                    title: error,
+                    text: "",
+                    type: "error",
+                    confirmButtonText: "OK"
+                });
+            }
+        });
+    });
 </script>

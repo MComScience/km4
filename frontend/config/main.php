@@ -22,13 +22,61 @@ return [
             'confirmWithin' => 21600,
             'cost' => 12,
             'admins' => ['mcomscience'], #'admin',
-            'mailer' => [
-                'sender' => ['procurementuch@gmail.com' => 'KM4'], // or ['no-reply@myhost.com' => 'Sender name']
-                'welcomeSubject' => 'Welcome subject',
-                'confirmationSubject' => 'Confirmation subject',
-                'reconfirmationSubject' => 'Email change subject',
-                'recoverySubject' => 'Recovery Password',
-            ],
+//            'mailer' => [
+//                'sender' => ['procurementuch@gmail.com' => 'KM4'], // or ['no-reply@myhost.com' => 'Sender name']
+//                'welcomeSubject' => 'Welcome subject',
+//                'confirmationSubject' => 'Confirmation subject',
+//                'reconfirmationSubject' => 'Email change subject',
+//                'recoverySubject' => 'Recovery Password',
+//            ],
+            /*
+            'controllerMap' => [
+                'admin' => [
+                    'class' => common\themes\beyond\controllers\AdminController::className(),
+                ],
+                'profile' => [
+                    'class' => common\themes\beyond\controllers\ProfileController::className(),
+                ],
+                'recovery' => [
+                    'class' => common\themes\beyond\controllers\RecoveryController::className(),
+                ],
+                'registration' => [
+                    'class' => common\themes\beyond\controllers\RegistrationController::className(),
+                ],
+                'security' => [
+                    'class' => common\themes\beyond\controllers\SecurityController::className(),
+                ],
+                'settings' => [
+                    'class' => common\themes\beyond\controllers\SettingsController::className(),
+                ],
+            ],*/
+            /*
+            'modelMap' => [
+                'Account' => [
+                    'class' => '\common\themes\beyond\models\Account',
+                ],
+                'LoginForm' => [
+                    'class' => '\common\themes\beyond\models\LoginForm',
+                ],
+                'Profile' => [
+                    'class' => '\common\themes\beyond\models\Profile',
+                ],
+                'RegistrationForm' => [
+                    'class' => '\common\themes\beyond\models\RegistrationForm',
+                ],
+//                'ResendForm' => [
+//                    'class' => '\common\themes\beyond\models\ResendForm',
+//                ],
+//                'SettingsForm' => [
+//                    'class' => '\common\themes\beyond\models\SettingsForm',
+//                ],
+                'User' => [
+                    'class' => '\common\themes\beyond\models\User',
+                ],
+                'UserSearch' => [
+                    'class' => '\common\themes\beyond\models\UserSearch',
+                ],
+            ],*/
         ],
         # Yii2-Admin Extension
         'admin' => [
@@ -109,7 +157,6 @@ return [
         ],
     ],
     'components' => [
-        
         'request' => [
             //'csrfParam' => '_csrf-frontend',
             'baseUrl' => $baseUrl,
@@ -125,6 +172,7 @@ return [
             'class' => 'yii\image\ImageDriver',
             'driver' => 'GD', //GD or Imagick
         ],
+        /*
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'viewPath' => '@frontend/mail',
@@ -137,7 +185,7 @@ return [
                 'port' => '465', #gmail port 465 สำหรับ ssl ,port 587 สำหรับ tls
                 'encryption' => 'ssl', #tls
             ],
-        ],
+        ],*/
         # Yii2-User Extension
         'user' => [
             'identityClass' => 'dektrium\user\models\User', // or 'common\models\User'
@@ -178,14 +226,15 @@ return [
         'view' => [
             'theme' => [
                 'pathMap' => [
-                    '@frontend/views' => '@frontend/themes/beyond'
+                    '@frontend/views' => '@frontend/themes/beyond',
+                    //'@dektrium/user/views' => '@common/themes/beyond/views/user',
                 ],
             ],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
-                    [
+                [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],

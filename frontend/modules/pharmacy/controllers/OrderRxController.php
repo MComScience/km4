@@ -77,6 +77,7 @@ class OrderRxController extends Controller {
         $searchModel = new VwCpoeRxHeaderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider2 = $searchModel->search2(Yii::$app->request->queryParams);
+        $dataProvider->sort->sortParam = false;
 
         return $this->render('order-status', [
                     'searchModel' => $searchModel,
@@ -123,10 +124,10 @@ class OrderRxController extends Controller {
                 ->execute();
         return $this->redirect(['update', 'id' => $maxid]);
     }
-    
-    public function actionCreateHistory($data, $type, $schd,$cpoeids) {
+
+    public function actionCreateHistory($data, $type, $schd, $cpoeids) {
         $userid = Yii::$app->user->identity->id;
-        
+
         Yii::$app->db->createCommand('CALL cmd_pt_rx_create_remed(:pt_vn_number,:userid,:cpoe_type,:cpoe_schedule_type,:xcpoe_ids);')
                 ->bindParam(':pt_vn_number', $data)
                 ->bindParam(':userid', $userid)
@@ -156,7 +157,7 @@ class OrderRxController extends Controller {
                 $searchModel = new VwCpoeRxDetail2Search();
                 $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $id);
                 $dataProvider->pagination->pageSize = false;
-                $dataProvider->sort->defaultOrder = ['cpoe_seq' => SORT_ASC, 'cpoe_Itemtype' => SORT_ASC];
+                $dataProvider->sort->defaultOrder = ['cpoe_seq' => SORT_ASC];
                 return $this->render('update', [
                             'modelCpoe' => $modelCpoe,
                             'ptar' => $ptar,
@@ -626,12 +627,16 @@ class OrderRxController extends Controller {
             $Acpoe_ids = !empty($post['TbCpoeDetail']['cpoe_parentid']) ? $post['TbCpoeDetail']['cpoe_parentid'] : null;
             $Acpoe_seq = !empty($post['TbCpoeDetail']['cpoe_seq']) ? $post['TbCpoeDetail']['cpoe_seq'] : null;
             $cpoe_level = !empty($post['TbCpoeDetail']['cpoe_level']) ? $post['TbCpoeDetail']['cpoe_level'] : null;
+            $cpoe_seq = !empty($post['TbCpoeDetail']['cpoe_seq']) ? $post['TbCpoeDetail']['cpoe_seq'] : Yii::$app->db->createCommand('SELECT ifnull((SELECT tb_cpoe_detail.cpoe_seq FROM tb_cpoe_detail WHERE tb_cpoe_detail.cpoe_id = :cpoe_id ORDER BY tb_cpoe_detail.cpoe_seq DESC LIMIT 1),0)+1')
+                    ->bindParam(':cpoe_id', $cpoe_id)
+                    ->queryScalar();
             $cpoe_drugset_id = null;
             if ($cpoe_Itemtype == 21) {
                 Yii::$app->db->createCommand('CALL cmd_cpoe_rxitemsave_kvosolution('
                                 . ':cpoe_ids,'
                                 . ':cpoe_detail_date,'
                                 . ':cpoe_detail_time,'
+                                . ':cpoe_seq,'
                                 . ':cpoe_id,'
                                 . ':cpoe_Itemtype,'
                                 . ':cpoe_rxordertype,'
@@ -680,6 +685,7 @@ class OrderRxController extends Controller {
                         ->bindParam(':cpoe_ids', $cpoe_ids)
                         ->bindParam(':cpoe_detail_date', $cpoe_detail_date)
                         ->bindParam(':cpoe_detail_time', $cpoe_detail_time)
+                        ->bindParam(':cpoe_seq', $cpoe_seq)
                         ->bindParam(':cpoe_id', $cpoe_id)
                         ->bindParam(':cpoe_Itemtype', $cpoe_Itemtype)
                         ->bindParam(':cpoe_rxordertype', $cpoe_rxordertype)
@@ -732,6 +738,7 @@ class OrderRxController extends Controller {
                                 . ':cpoe_ids,'
                                 . ':cpoe_detail_date,'
                                 . ':cpoe_detail_time,'
+                                . ':cpoe_seq,'
                                 . ':cpoe_id,'
                                 . ':cpoe_Itemtype,'
                                 . ':cpoe_rxordertype,'
@@ -780,6 +787,7 @@ class OrderRxController extends Controller {
                         ->bindParam(':cpoe_ids', $cpoe_ids)
                         ->bindParam(':cpoe_detail_date', $cpoe_detail_date)
                         ->bindParam(':cpoe_detail_time', $cpoe_detail_time)
+                        ->bindParam(':cpoe_seq', $cpoe_seq)
                         ->bindParam(':cpoe_id', $cpoe_id)
                         ->bindParam(':cpoe_Itemtype', $cpoe_Itemtype)
                         ->bindParam(':cpoe_rxordertype', $cpoe_rxordertype)
@@ -894,6 +902,7 @@ class OrderRxController extends Controller {
                                 . ':cpoe_Itemtype,'
                                 . ':cpoe_rxordertype,'
                                 . ':ItemID,'
+                                . ':cpoe_doseqty,'
                                 . ':ItemQty,'
                                 . ':ItemPrice,'
                                 . ':Item_Amt,'
@@ -917,6 +926,7 @@ class OrderRxController extends Controller {
                         ->bindParam(':cpoe_Itemtype', $cpoe_Itemtype)
                         ->bindParam(':cpoe_rxordertype', $cpoe_rxordertype)
                         ->bindParam(':ItemID', $ItemID)
+                        ->bindParam(':cpoe_doseqty', $cpoe_doseqty)
                         ->bindParam(':ItemQty', $ItemQty)
                         ->bindParam(':ItemPrice', $ItemPrice)
                         ->bindParam(':Item_Amt', $Item_Amt)
@@ -1037,6 +1047,7 @@ class OrderRxController extends Controller {
                                 . ':cpoe_ids,'
                                 . ':cpoe_detail_date,'
                                 . ':cpoe_detail_time,'
+                                . ':cpoe_seq,'
                                 . ':cpoe_id,'
                                 . ':cpoe_Itemtype,'
                                 . ':cpoe_rxordertype,'
@@ -1086,6 +1097,7 @@ class OrderRxController extends Controller {
                         ->bindParam(':cpoe_ids', $cpoe_ids)
                         ->bindParam(':cpoe_detail_date', $cpoe_detail_date)
                         ->bindParam(':cpoe_detail_time', $cpoe_detail_time)
+                        ->bindParam(':cpoe_seq', $cpoe_seq)
                         ->bindParam(':cpoe_id', $cpoe_id)
                         ->bindParam(':cpoe_Itemtype', $cpoe_Itemtype)
                         ->bindParam(':cpoe_rxordertype', $cpoe_rxordertype)
@@ -1139,6 +1151,7 @@ class OrderRxController extends Controller {
                                 . ':cpoe_ids,'
                                 . ':cpoe_detail_date,'
                                 . ':cpoe_detail_time,'
+                                . ':cpoe_seq,'
                                 . ':cpoe_id,'
                                 . ':cpoe_Itemtype,'
                                 . ':cpoe_rxordertype,'
@@ -1187,6 +1200,7 @@ class OrderRxController extends Controller {
                         ->bindParam(':cpoe_ids', $cpoe_ids)
                         ->bindParam(':cpoe_detail_date', $cpoe_detail_date)
                         ->bindParam(':cpoe_detail_time', $cpoe_detail_time)
+                        ->bindParam(':cpoe_seq', $cpoe_seq)
                         ->bindParam(':cpoe_id', $cpoe_id)
                         ->bindParam(':cpoe_Itemtype', $cpoe_Itemtype)
                         ->bindParam(':cpoe_rxordertype', $cpoe_rxordertype)
@@ -2069,6 +2083,7 @@ class OrderRxController extends Controller {
             $searchModel = new VwCpoeRxDetail2Search();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $cpoeid);
             $dataProvider->pagination->pageSize = false;
+            $dataProvider->sort->defaultOrder = ['cpoe_seq' => SORT_ASC, 'cpoe_Itemtype' => SORT_ASC];
             return [
                 'title' => 'ใบสั่งยาเลขที่ ' . $model['cpoe_num'],
                 'content' => $this->renderAjax('view', [
@@ -2087,9 +2102,17 @@ class OrderRxController extends Controller {
             $ptar = VwPtAr::find()->where(['pt_visit_number' => $modelCpoe['pt_vn_number']])->one();
             $TitleModal = $profile->getHeadermodalOP($modelCpoe['pt_vn_number']);
             $provider = new ActiveDataProvider([
-                'query' => VwCpoeRxHeader::find()->where(['pt_vn_number' => $modelCpoe['pt_vn_number']]),
+                'query' => VwCpoeRxHeader::find()
+                        ->where(['pt_vn_number' => $modelCpoe['pt_vn_number']])
+                        ->andWhere(['IN', 'cpoe_status', [5]])
+                        ->orderBy('cpoe_id DESC'),
                 'pagination' => [
                     'pageSize' => 20,
+                ],
+                'sort' => [
+                    'defaultOrder' => [
+                        'cpoe_id' => SORT_DESC,
+                    ]
                 ],
             ]);
             return $this->render('update-history', [
@@ -2101,6 +2124,32 @@ class OrderRxController extends Controller {
             ]);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    public function actionCheckDoseqty() {
+        $request = Yii::$app->request;
+        if ($request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $ItemID = $request->post('ItemID');
+            $Disunit = Yii::$app->db->createCommand('SELECT func_cal_cpoe_doseqtycheck(:ItemID) AS Disunit;')
+                    ->bindParam(':ItemID', $ItemID)
+                    ->queryScalar();
+            return $Disunit;
+        }
+    }
+
+    public function actionConvertmg() {
+        $request = Yii::$app->request;
+        if ($request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $ItemID = $request->post('ItemID');
+            $cpoe_doseqty = $request->post('doseqty');
+            $Qty = Yii::$app->db->createCommand('SELECT func_cal_cpoe_doseqty(:ItemID,:cpoe_doseqty) AS Qty;')
+                    ->bindParam(':ItemID', $ItemID)
+                    ->bindParam(':cpoe_doseqty', $cpoe_doseqty)
+                    ->queryScalar();
+            return $Qty == null ? '0.00' : $Qty;
         }
     }
 

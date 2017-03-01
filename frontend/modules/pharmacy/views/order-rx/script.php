@@ -251,6 +251,7 @@ $this->registerJs($script);
         console.log(e.getAttribute("title-modal"));
         $('#modal-default-table').modal('show');
         var TitleModal = (e.getAttribute("title-modal"));
+        $('input[id=seq]').val(e.getAttribute("seq"));
         $('.default-title').html(TitleModal);
         $('#Itemtype').val(e.getAttribute("item-type"));
         if (e.getAttribute("item-type") === '21') {
@@ -272,7 +273,7 @@ $this->registerJs($script);
         } else if (e.getAttribute("item-type") === '42') {
             $('text[id=numbersteb1]').html('เลือกตัวยา');
             $('#textstep3').html('Dispense Qty');
-        }else if (e.getAttribute("item-type") === '51') {
+        } else if (e.getAttribute("item-type") === '51') {
             $('text[id=numbersteb1]').html('เลือก Base Solution');
             $('#textstep3').html('Dispense Qty');
         } else if (e.getAttribute("item-type") === '52') {
@@ -339,7 +340,7 @@ $this->registerJs($script);
                     type: "error",
                     confirmButtonText: "OK"
                 });
-                $('.modal-body').waitMe('hide');
+                $('.page-content').waitMe('hide');
             }
         });
     }
@@ -400,6 +401,7 @@ $this->registerJs($script);
         var NED = (e.getAttribute("ned"));
         var GP = (e.getAttribute("gp"));
         var ItemType = $('#Itemtype').val();
+        var seq = $('input[id=seq]').val();
         LoadingClass();
         $.ajax({
             url: 'details-from',
@@ -411,6 +413,7 @@ $this->registerJs($script);
                 $('.ItemName').html(ItemName);
                 CheckNED(NED, GP);
                 $('.modal-body').waitMe('hide');
+                $('#tbcpoedetail-cpoe_seq2').val(seq);
             },
             error: function (xhr, status, error) {
                 swal({
@@ -621,7 +624,7 @@ $this->registerJs($script);
                     }
                 });
     }
-    
+
     function CheckPrint(ids) {
         $.post(
                 'check-print-label',
@@ -655,7 +658,7 @@ $this->registerJs($script);
             swal("Oops...", error, "error");
         });
     }
-    
+
     function PrintSingle(ids) {
         $.post(
                 'print-single-label',
@@ -756,5 +759,36 @@ $this->registerJs($script);
                         });
             }
         });
+    }
+
+    function DeleteDetails(ids) {
+        swal({
+            title: "ยืนยันการลบ?",
+            text: "",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#53a93f",
+            closeOnConfirm: false,
+            closeOnCancel: true,
+            confirmButtonText: "Confirm",
+            showLoaderOnConfirm: true,
+        },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $.post(
+                                'delete-details',
+                                {
+                                    id: ids
+                                },
+                                function (data)
+                                {
+                                    setTimeout(function () {
+                                        swal("Deleted!", "", "success");
+                                        $.pjax.reload({container: '#cpoedetails-pjax'});
+                                    }, 0);
+                                }
+                        );
+                    }
+                });
     }
 </script>

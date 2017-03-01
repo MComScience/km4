@@ -12,6 +12,7 @@ use app\modules\pharmacy\models\TbCpoePrnReason;
 use app\modules\pharmacy\models\TbCpoePeriodUnit;
 use yii\jui\DatePicker;
 use kartik\widgets\TimePicker;
+use app\modules\pharmacy\models\TbDrugroute;
 ?>
 <?php
 $form = ActiveForm::begin([
@@ -181,7 +182,7 @@ $form = ActiveForm::begin([
                     <div class="col-sm-8">
                         <?php
                         echo $form->field($model, 'cpoe_route_id', ['showLabels' => false])->widget(Select2::classname(), [
-                            'data' => ArrayHelper::map(VwCpoeDrugadmitDefault::find()->where(['TMTID_GPU' => $Item['TMTID_GPU']])->all(), 'DrugRouteID', 'DrugRouteName'),
+                            'data' => ArrayHelper::map(TbDrugroute::find()->all(), 'DrugRouteID', 'DrugRouteName'),
                             'language' => 'en',
                             'options' => ['placeholder' => '----- Select Route -----'],
                             'pluginOptions' => [

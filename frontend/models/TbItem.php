@@ -312,5 +312,20 @@ class TbItem extends \yii\db\ActiveRecord
         return $this->hasOne(\app\modules\Inventory\models\VwItemBalance::className(), ['ItemID' => 'ItemID']);
     }
     
+    public static function getImgname($ItemID,$type){
+        $model = $this->findOne($ItemID);
+        if($type == 1){
+            return $model['ItemPic1'];
+        }
+        if($type == 2){
+            return $model['ItemPic2'];
+        }
+        if($type == 3){
+            return $model['ItemPic3'];
+        }
+        if($type == 4){
+            return $model['ItemPic4'];
+        }
+    }
      
 }

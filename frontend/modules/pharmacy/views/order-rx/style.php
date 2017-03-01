@@ -11,4 +11,7 @@
         white-space: nowrap;
         color: black;
     }
+    table .kv-grid-table thead tr th{
+        font-size: 18pt;
+    }
 </style>

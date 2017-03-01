@@ -40,14 +40,14 @@ class VwCpoeRxDetail2Search extends VwCpoeRxDetail2 {
      */
     public function search($params, $data) {
         $query = VwCpoeRxDetail2::find()->where(['cpoe_id' => $data, /* 'cpoe_Itemtype' => [10,20,21,22,40,50,53,54] */])
-        ->orderBy('cpoe_seq ASC');
+                ->orderBy('cpoe_seq ASC');
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => ['defaultOrder' => [
                     'cpoe_seq' => SORT_ASC,
-                    'cpoe_Itemtype' =>  SORT_ASC
+                    //'cpoe_Itemtype' => SORT_ASC
                 ]],
         ]);
 

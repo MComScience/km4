@@ -43,12 +43,14 @@ class VwCpoeRxHeaderSearch extends VwCpoeRxHeader
     {
         $query = VwCpoeRxHeader::find()
                 ->where(['schedule_type' => 1])
-                ->andWhere(['IN','cpoe_status',[1,2,3]]);
+                ->andWhere(['IN','cpoe_status',[1,2,3]])
+                ->orderBy('cpoe_id DESC');
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> ['defaultOrder' => ['cpoe_id'=>SORT_DESC]]
         ]);
 
         $this->load($params);
@@ -99,12 +101,14 @@ class VwCpoeRxHeaderSearch extends VwCpoeRxHeader
     {
         $query = VwCpoeRxHeader::find()
                 ->where(['schedule_type' => 4])
-                ->andWhere(['IN','cpoe_status',[1,2,3]]);
+                ->andWhere(['IN','cpoe_status',[1,2,3]])
+                ->orderBy('cpoe_id DESC');
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> ['defaultOrder' => ['cpoe_id'=>SORT_DESC]]
         ]);
 
         $this->load($params);
@@ -153,12 +157,15 @@ class VwCpoeRxHeaderSearch extends VwCpoeRxHeader
     
      public function search_history($params)
     {
-        $query = VwCpoeRxHeader::find();
+        $query = VwCpoeRxHeader::find()
+                ->andWhere(['IN','cpoe_status',[5]])
+                ->orderBy('cpoe_id DESC');
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> ['defaultOrder' => ['cpoe_id'=>SORT_DESC]]
         ]);
 
         $this->load($params);

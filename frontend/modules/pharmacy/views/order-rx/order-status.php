@@ -64,7 +64,7 @@ $this->registerJs($script1);
     table#datatables_w0 thead tr th{
         background-color: white;
         text-align: center;
-        white-space: nowrap;
+        /*white-space: nowrap;*/
         color: black;
         border-top: 1px solid #ddd;
     }
@@ -119,6 +119,24 @@ $this->registerJs($script1);
                                         }
                                     ],
                                     [
+                                        'attribute' => 'cpoe_type_decs',
+                                        'header' => 'ประเภท',
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'value' => function ($model) {
+                                            return empty($model->cpoe_type_decs) ? '-' : $model->cpoe_type_decs;
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'cpoe_date',
+                                        'header' => 'วันที่',
+                                        'contentOptions' => ['class' => 'text-center'],
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'format' => ['date', 'php:d/m/Y'],
+                                        'value' => function ($model) {
+                                            return empty($model->cpoe_date) ? '' : $model->cpoe_date;
+                                        }
+                                    ],
+                                    [
                                         'attribute' => 'HNVN',
                                         'header' => 'HN:VN',
                                         'contentOptions' => ['class' => 'text-center', 'noWrap' => true,],
@@ -137,12 +155,48 @@ $this->registerJs($script1);
                                         }
                                     ],
                                     [
-                                        'attribute' => 'pt_age_registry_date',
-                                        'header' => 'อายุ',
-                                        'contentOptions' => ['class' => 'text-center', 'noWrap' => true,],
+                                        'attribute' => 'pt_right',
+                                        'header' => 'สิทธิการรักษา',
+                                        'contentOptions' => ['class' => 'text-left'],
                                         'headerOptions' => ['style' => 'text-align:center;color:black;'],
                                         'value' => function ($model) {
-                                            return empty($model->pt_age_registry_date) ? '-' : $model->pt_age_registry_date . ' ปี';
+                                            return empty($model->pt_right) ? '-' : $model->pt_right;
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'pt_trp_regimen_paycode',
+                                        'header' => 'รหัสเบิกจ่าย',
+                                        'contentOptions' => ['class' => 'text-left'],
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'value' => function ($model) {
+                                            return empty($model->pt_trp_regimen_paycode) ? '-' : $model->pt_trp_regimen_paycode;
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'pt_trp_regimen_name',
+                                        'header' => 'Regimen',
+                                        'contentOptions' => ['class' => 'text-left'],
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'value' => function ($model) {
+                                            return empty($model->pt_trp_regimen_name) ? '-' : $model->pt_trp_regimen_name;
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'chemo_cycle_seq',
+                                        'header' => 'Cycle',
+                                        'contentOptions' => ['class' => 'text-left'],
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'value' => function ($model) {
+                                            return empty($model->chemo_cycle_seq) ? '-' : $model->chemo_cycle_seq;
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'chemo_cycle_day',
+                                        'header' => 'Day',
+                                        'contentOptions' => ['class' => 'text-left'],
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'value' => function ($model) {
+                                            return empty($model->chemo_cycle_day) ? '-' : $model->chemo_cycle_day;
                                         }
                                     ],
                                     [
@@ -161,15 +215,6 @@ $this->registerJs($script1);
                                         'headerOptions' => ['style' => 'text-align:center;color:black;'],
                                         'value' => function ($model) {
                                             return empty($model->cpoe_order_section) ? '-' : $model->cpoe_order_section;
-                                        }
-                                    ],
-                                    [
-                                        'attribute' => 'pt_right',
-                                        'header' => 'สิทธิการรักษา',
-                                        'contentOptions' => ['class' => 'text-left'],
-                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
-                                        'value' => function ($model) {
-                                            return empty($model->pt_right) ? '-' : $model->pt_right;
                                         }
                                     ],
                                     [
@@ -260,6 +305,24 @@ $this->registerJs($script1);
                                         }
                                     ],
                                     [
+                                        'attribute' => 'cpoe_type_decs',
+                                        'header' => 'ประเภท',
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'value' => function ($model) {
+                                            return empty($model->cpoe_type_decs) ? '-' : $model->cpoe_type_decs;
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'cpoe_date',
+                                        'header' => 'วันที่',
+                                        'contentOptions' => ['class' => 'text-center'],
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'format' => ['date', 'php:d/m/Y'],
+                                        'value' => function ($model) {
+                                            return empty($model->cpoe_date) ? '' : $model->cpoe_date;
+                                        }
+                                    ],
+                                    [
                                         'attribute' => 'HNVN',
                                         'header' => 'HN:VN',
                                         'contentOptions' => ['class' => 'text-center', 'noWrap' => true,],
@@ -278,12 +341,48 @@ $this->registerJs($script1);
                                         }
                                     ],
                                     [
-                                        'attribute' => 'pt_age_registry_date',
-                                        'header' => 'อายุ',
-                                        'contentOptions' => ['class' => 'text-center', 'noWrap' => true,],
+                                        'attribute' => 'pt_right',
+                                        'header' => 'สิทธิการรักษา',
+                                        'contentOptions' => ['class' => 'text-left'],
                                         'headerOptions' => ['style' => 'text-align:center;color:black;'],
                                         'value' => function ($model) {
-                                            return empty($model->pt_age_registry_date) ? '-' : $model->pt_age_registry_date . ' ปี';
+                                            return empty($model->pt_right) ? '-' : $model->pt_right;
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'pt_trp_regimen_paycode',
+                                        'header' => 'รหัสเบิกจ่าย',
+                                        'contentOptions' => ['class' => 'text-left'],
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'value' => function ($model) {
+                                            return empty($model->pt_trp_regimen_paycode) ? '-' : $model->pt_trp_regimen_paycode;
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'pt_trp_regimen_name',
+                                        'header' => 'Regimen',
+                                        'contentOptions' => ['class' => 'text-left'],
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'value' => function ($model) {
+                                            return empty($model->pt_trp_regimen_name) ? '-' : $model->pt_trp_regimen_name;
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'chemo_cycle_seq',
+                                        'header' => 'Cycle',
+                                        'contentOptions' => ['class' => 'text-left'],
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'value' => function ($model) {
+                                            return empty($model->chemo_cycle_seq) ? '-' : $model->chemo_cycle_seq;
+                                        }
+                                    ],
+                                    [
+                                        'attribute' => 'chemo_cycle_day',
+                                        'header' => 'Day',
+                                        'contentOptions' => ['class' => 'text-left'],
+                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
+                                        'value' => function ($model) {
+                                            return empty($model->chemo_cycle_day) ? '-' : $model->chemo_cycle_day;
                                         }
                                     ],
                                     [
@@ -302,15 +401,6 @@ $this->registerJs($script1);
                                         'headerOptions' => ['style' => 'text-align:center;color:black;'],
                                         'value' => function ($model) {
                                             return empty($model->cpoe_order_section) ? '-' : $model->cpoe_order_section;
-                                        }
-                                    ],
-                                    [
-                                        'attribute' => 'pt_right',
-                                        'header' => 'สิทธิการรักษา',
-                                        'contentOptions' => ['class' => 'text-left'],
-                                        'headerOptions' => ['style' => 'text-align:center;color:black;'],
-                                        'value' => function ($model) {
-                                            return empty($model->pt_right) ? '-' : $model->pt_right;
                                         }
                                     ],
                                     [

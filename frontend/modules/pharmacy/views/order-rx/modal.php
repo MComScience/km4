@@ -116,6 +116,7 @@ Modal::begin([
 <input type="hidden"  id="ItemQtyAvalible" name="min">
 <input type="hidden"  id="Item_Cr_Amt" name="max">
 <input type="hidden"  id="Itemtype">
+<input type="hidden"  id="seq" name="seq">
 <?php Modal::end(); ?>
 
 

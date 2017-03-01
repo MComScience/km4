@@ -73,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
-                                    <div class="panel panel-primary">
+                                    <div class="panel panel-success">
                                         <div class="panel-heading">
                                             <h3 class="panel-title">รายการใบสั่งยา</h3>
                                         </div>
