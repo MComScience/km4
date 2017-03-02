@@ -10,7 +10,7 @@ DeleteButtonAsset::register($this);
 AvatarAsset::register($this);
 $avatar = ($userAvatar = Yii::$app->user->identity->getAvatar('large', Yii::$app->user->getId())) ? $userAvatar : AvatarAsset::getDefaultAvatar('admin');
 ?>
-
+<?php $this->registerCssFile(Yii::getAlias('@web') . '/css/bootstrap-dropdownhover.min.css', ['depends' => [yii\bootstrap\BootstrapAsset::className()]]); ?>
 <!-- Navbar -->
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
@@ -114,7 +114,7 @@ $avatar = ($userAvatar = Yii::$app->user->identity->getAvatar('large', Yii::$app
                             </li>
                         <?php endif; ?>
                         <li>
-                            <a class="login-area dropdown-toggle" data-toggle="dropdown">
+                            <a class="login-area dropdown-toggle dropdown" data-toggle="dropdown" data-hover="dropdown" data-delay="100">
                                 <div class="avatar" title="View your public profile">
                                     <img src="<?= $avatar ?>">
                                 </div>
@@ -252,3 +252,4 @@ $avatar = ($userAvatar = Yii::$app->user->identity->getAvatar('large', Yii::$app
     </div>
 </div>
 <!-- /Navbar -->
+<?php $this->registerJsFile(Yii::getAlias('@web') . '/js/bootstrap-dropdownhover.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>

@@ -85,7 +85,7 @@ GridView::widget([
             'contentOptions' => ['class' => 'text-center',],
             'headerOptions' => ['style' => 'color:black; text-align:center;font-size:12pt;'],
             'value' => function($model, $key, $index) {
-                return false;
+                return $model['cpoe_seq'];
             },
             //'group' => true,
         ],
@@ -148,10 +148,11 @@ GridView::widget([
         [
             'header' => 'รายการ',
             'attribute' => 'ItemDetail',
+            'format' => 'raw',
             'contentOptions' => ['class' => 'text-left'],
             'headerOptions' => ['style' => 'color:black;text-align:center;font-size:12pt;'],
             'value' => function($model, $key, $index) {
-                return empty($model->ItemDetail) ? '' : $model->ItemDetail;
+                return empty($model->ItemDetail) ? '' : $model->ItemDetail.'<p> - '.$model['sig_decs'].'</p>';
             },
         ],
         [
@@ -306,7 +307,7 @@ GridView::widget([
                         return Html::a('<span class="btn btn-danger btn-xs"> Delete </span> ', false, [
                                     'title' => 'Delete',
                                     'class' => 'activity-delete-link',
-                                    'onclick' => 'DeleteDetails('.$model['cpoe_ids'].');'
+                                    'onclick' => 'DeleteDetails('.$model['cpoe_ids'].','.$model['cpoe_id'].');',
                         ]);
                     }
                 },

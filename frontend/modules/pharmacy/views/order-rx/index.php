@@ -8,8 +8,8 @@ use frontend\assets\DataTableAsset;
 DataTableAsset::register($this);
 
 $this->title = 'รายชื่อผู้ป่วยนอก';
-$this->params['breadcrumbs'][] = ['label' => 'งานเภสัชกรรม', 'url' => ['/pharmacy/order-rx/index']];
-$this->params['breadcrumbs'][] = ['label' => 'สั่งจ่ายยาผู้ป่วยนอก', 'url' => ['/pharmacy/order-rx/index']];
+$this->params['breadcrumbs'][] = ['label' => 'งานเภสัชกรรม', 'url' => ['/pharmacy/order-rx/check-list']];
+$this->params['breadcrumbs'][] = ['label' => 'สั่งจ่ายยาผู้ป่วยนอก', 'url' => ['/pharmacy/order-rx/check-list']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $style = 'border-top: 1px solid #ddd;';

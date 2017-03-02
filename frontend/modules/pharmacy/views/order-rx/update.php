@@ -14,7 +14,7 @@ LaddaAsset::register($this);
 AutoNumericAsset::register($this);
 
 $this->title = 'ใบสั่งยา';
-$this->params['breadcrumbs'][] = ['label' => 'งานเภสัชกรรม', 'url' => ['/pharmacy/order-rx/index']];
+$this->params['breadcrumbs'][] = ['label' => 'งานเภสัชกรรม', 'url' => ['/pharmacy/order-rx/order-status']];
 $this->params['breadcrumbs'][] = ['label' => 'Chemo Order : ผู้ป่วยนอก', 'url' => ['/pharmacy/order-rx/update', 'id' => $modelCpoe->cpoe_id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

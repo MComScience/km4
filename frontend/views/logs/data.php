@@ -65,7 +65,7 @@ $(document).ready(function() {
         // Update state of "Select all" control
         //updateDataTableSelectAllCtrl(table);
        
-        console.log(JSON.stringify(rows_selected) === JSON.stringify(rows_selected2));
+        console.log('result compare : ' + JSON.stringify(rows_selected) === JSON.stringify(rows_selected2));
         console.log(rows_selected);
         console.log(rows_selected2);
         e.stopPropagation();
@@ -103,7 +103,7 @@ $(document).ready(function() {
                     ids.push($(this).val());
                 }
             });
-            if((rows_selected.length <= 1) && (rows_selected2.length <= 1) && (JSON.stringify(rows_selected) === JSON.stringify(rows_selected2)) && (ids.length !== 0)){
+            if((rows_selected.length <= 1) && (rows_selected2.length <= 1) /*&& (JSON.stringify(rows_selected) === JSON.stringify(rows_selected2))*/ && (ids.length !== 0)){
                 alert('Continue!');
             }else{
                 alert('OMG!');

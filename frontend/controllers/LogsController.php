@@ -7,6 +7,7 @@ use dektrium\user\models\log\LoginForm;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use chrmorandi\jasper\Jasper;
+use yii\helpers\ArrayHelper;
 
 class LogsController extends \yii\web\Controller {
 
@@ -78,12 +79,12 @@ class LogsController extends \yii\web\Controller {
             ],
             [
                 '<label><input name="select" value="2" type="checkbox"><span class="text"></span></label>',
-                "Tiger Nixon",
-                "System Architect",
-                "Edinburgh",
-                "5421",
-                "2011/04/25",
-                "$320,800"
+                'System Architect',
+                'System Architect',
+                'Edinburgh',
+                '61',
+                '2011/04/25',
+                '$320,800'
             ],
             [
                 '<label><input name="select" value="2" type="checkbox"><span class="text"></span></label>',
@@ -141,21 +142,21 @@ class LogsController extends \yii\web\Controller {
             ],
             [
                 '<label><input name="select" value="2" type="checkbox"><span class="text"></span></label>',
-                "Rhona Davidson",
-                "Integration Specialist",
-                "Tokyo",
-                "6200",
-                "2010/10/14",
-                "$327,900"
+                "Herrod Chandler",
+                "Sales Assistant",
+                "San Francisco",
+                "9608",
+                "2012/08/06",
+                "$137,500"
             ],
             [
                 '<label><input name="select" value="2" type="checkbox"><span class="text"></span></label>',
-                "Colleen Hurst",
-                "Javascript Developer",
+                "Herrod Chandler",
+                "Sales Assistant",
                 "San Francisco",
-                "2360",
-                "2009/09/15",
-                "$205,500"
+                "9608",
+                "2012/08/06",
+                "$137,500"
             ],
             [
                 '<label><input name="select" value="2" type="checkbox"><span class="text"></span></label>',
@@ -2752,5 +2753,36 @@ class LogsController extends \yii\web\Controller {
         ];
         return json_encode($data);
     }
+
+    public function actionFindArray() {
+        $array1['array1'] = \app\modules\pharmacy\models\TbCpoe::find()->asArray()->all();
+        $colnumns = \app\modules\pharmacy\models\TbCpoe::getTableSchema()->getColumnNames();
+        $array2 = [];
+        foreach ($colnumns as $filedname){
+            $array2['array2'][$filedname] = ArrayHelper::getColumn($array1['array1'], $filedname);
+        }
+        $merge = ArrayHelper::merge($array1, $array2);
+        echo json_encode($merge);
+        //echo json_encode($merge['array2']);
+//        echo json_encode($merge['array2']['cpoe_id']);
+//        echo json_encode($merge['array1']);
+        //echo json_encode($merge['array1'][0]);
+    }
+    /*
+    public static function getColumn($array, $name, $keepKeys = true)
+    {
+        $result = [];
+        if ($keepKeys) {
+            foreach ($array as $k => $element) {
+                $result[$k] = ArrayHelper::getValue($element, $name);
+            }
+        } else {
+            foreach ($array as $element) {
+                $result[] = ArrayHelper::getValue($element, $name);
+            }
+        }
+
+        return $result;
+    }*/
 
 }

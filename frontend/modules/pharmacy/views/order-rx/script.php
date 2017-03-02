@@ -761,7 +761,7 @@ $this->registerJs($script);
         });
     }
 
-    function DeleteDetails(ids) {
+    function DeleteDetails(ids,cpoeid) {
         swal({
             title: "ยืนยันการลบ?",
             text: "",
@@ -778,7 +778,7 @@ $this->registerJs($script);
                         $.post(
                                 'delete-details',
                                 {
-                                    id: ids
+                                    id: ids,cpoeid:cpoeid
                                 },
                                 function (data)
                                 {

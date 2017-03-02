@@ -14,6 +14,7 @@ use yii\jui\DatePicker;
 use kartik\widgets\TimePicker;
 use app\modules\pharmacy\models\TbDrugroute;
 use app\models\TbItem;
+use app\modules\pharmacy\models\VwCpoeDrugDefault;
 ?>
 <?php
 $form = ActiveForm::begin([
@@ -24,7 +25,7 @@ $form = ActiveForm::begin([
         ]);
 ?>
 <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="col-xs-12 col-sm-12 col-md-6">
         <h5 class="success">
             <b><?= Html::encode('ItemDetail :') ?></b>
         </h5>
@@ -34,17 +35,30 @@ $form = ActiveForm::begin([
                 <span class="text"><?php echo $Item['ItemDetail']; ?></span>
             </li>
         </ul>
-
     </div>
-    <?php if (($Itemtype == 42) || ($Itemtype == 52)) : ?>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <h5 class="success">
-                <b><?= Html::encode('ภาพสินค้า :') ?></b>
-            </h5>
-            <?php $path = TbItem::getImgname($Item['ItemID'], 1) ?>
-            <?= empty($path) ? 'ไม่มีภาพสินค้า' : Html::img('/km4/' . $path) ?>
+    <div class="col-xs-12 col-sm-12 col-md-6" style="text-align: center;">
+        <h5 class="success">
+            <b><?= Html::encode('ภาพสินค้า :') ?></b>
+        </h5>
+        <div class="panel-group accordion" id="accordions">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordions" href="#collapseOnes">
+                            <i class="fa-fw fa fa-image"></i> กดเพื่อซ่อนหรือแสดงภาพ
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOnes" class="panel-collapse collapse">
+                    <div class="panel-body border-red">
+                        <?php $path = TbItem::getImgname($Item['ItemID'], 1) ?>
+                        <?= empty($path) ? 'ไม่มีภาพสินค้า' : Html::img('/km4/' . $path, ['width' => '250px', 'height' => '200px']) ?>
+                    </div>
+                </div>
+            </div>
         </div>
-    <?php endif; ?>
+    </div>
+</div>
 </div>
 <?php if (($Itemtype != 41) && ($Itemtype != 42) && ($Itemtype != 51) && ($Itemtype != 52)) : ?>
     <div class="row">
@@ -78,7 +92,7 @@ $form = ActiveForm::begin([
                                 /* ->where(['TMTID_GPU' => $Item['TMTID_GPU']]) */
                                 'data' => ArrayHelper::map(TbDrugroute::find()->all(), 'DrugRouteID', 'DrugRouteName'),
                                 'language' => 'en',
-                                'options' => ['placeholder' => '----- Select Route -----'],
+                                'options' => ['placeholder' => '----- Select Route -----',],
                                 'pluginOptions' => [
                                     'allowClear' => true,
                                 ],
@@ -106,7 +120,7 @@ $form = ActiveForm::begin([
                                     'url' => Url::to(['child-route-advice', 'id' => '2']),
                                     'loadingText' => 'Loading...',
                                     'params' => ['input-tmtid-gpu']
-                                ]
+                                ],
                             ]);
                             ?>
                         </div>
@@ -553,20 +567,20 @@ $form = ActiveForm::begin([
                 <?php if (($Itemtype != 41) && ($Itemtype != 42) && ($Itemtype != 51) && ($Itemtype != 52)) : ?>
                     <div class="col-xs-12 col-sm-6 col-md-6">
                         <div class="form-group">
-                            <table style="width: 100%" border="0">
-                                <tbody>
-                                    <tr>
-                                        <td style="font-size: 12pt;width: 33.33%;text-align: center;"><b><?= Html::encode('เป็นเงิน'); ?></b></td>
-                                        <td style="font-size: 12pt;width: 33.33%;text-align: center;border-left: 1px solid black;"><b><?= Html::encode('เบิกได้'); ?></b></td>
-                                        <td style="font-size: 12pt;width: 33.33%;text-align: center;border-left: 1px solid black;"><b><?= Html::encode('เบิกไม่ได้'); ?></b></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-size: 12pt;width: 33.33%;text-align: center;"><span id="showItem_Total_Amt" class="showItem_Total_Amt"></span></td>
-                                        <td style="font-size: 12pt;width: 33.33%;text-align: center;border-left: 1px solid black;"><span id="showItem_Cr_Amt" class="showItem_Cr_Amt"></span></td>
-                                        <td style="font-size: 12pt;width: 33.33%;text-align: center;border-left: 1px solid black;"><span id="showItem_Pay_Amt" class="showItem_Pay_Amt"></span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <?php /* <table style="width: 100%" border="0">
+                              <tbody>
+                              <tr>
+                              <td style="font-size: 12pt;width: 33.33%;text-align: center;"><b><?= Html::encode('เป็นเงิน'); ?></b></td>
+                              <td style="font-size: 12pt;width: 33.33%;text-align: center;border-left: 1px solid black;"><b><?= Html::encode('เบิกได้'); ?></b></td>
+                              <td style="font-size: 12pt;width: 33.33%;text-align: center;border-left: 1px solid black;"><b><?= Html::encode('เบิกไม่ได้'); ?></b></td>
+                              </tr>
+                              <tr>
+                              <td style="font-size: 12pt;width: 33.33%;text-align: center;"><span id="showItem_Total_Amt" class="showItem_Total_Amt"></span></td>
+                              <td style="font-size: 12pt;width: 33.33%;text-align: center;border-left: 1px solid black;"><span id="showItem_Cr_Amt" class="showItem_Cr_Amt"></span></td>
+                              <td style="font-size: 12pt;width: 33.33%;text-align: center;border-left: 1px solid black;"><span id="showItem_Pay_Amt" class="showItem_Pay_Amt"></span></td>
+                              </tr>
+                              </tbody>
+                              </table> */ ?>
                         </div> 
                     </div>
                 <?php elseif (($Itemtype == 42) || ($Itemtype == 52)) : ?>
@@ -611,7 +625,7 @@ $form = ActiveForm::begin([
                             'id' => 'itemqty',
                             'class' => 'form-control itemqty',
                             'required' => true,
-                            'value' => empty($model['ItemQty']) ? null : number_format($model['ItemQty'], 2)
+                            'value' => empty($model['ItemQty']) ? '1' : number_format($model['ItemQty'], 2)
                         ])
                         ?>
 
@@ -903,11 +917,12 @@ $form = ActiveForm::begin([
     }
     //Event เมื่อเลือก SigCode
     $('select[id=tbcpoedetail-cpoe_sig_code]').on('change', function () {
-        var sigcodeid = $(this).find("option:selected").val();
+        var sigcodeid = $(this).find("option:selected").val() || null;
         var sig_code_des = $(this).find("option:selected").text();
         //LoadingOnSIG();
-        if (sigcodeid !== '') {
+        if (sigcodeid !== null) {
             DefaultSIG();//แสดงข้อความวงรอบการให้ยา
+            Converttmg();
             $.ajax({
                 url: "changestate-sigcode",
                 type: "post",
@@ -1022,11 +1037,19 @@ $form = ActiveForm::begin([
 
     function DefaultRoute() {
         var value = '<?= $Item['DrugRouteID']; ?>' || 0;
+        var drugid = $('#tbcpoedetail-cpoe_route_id :selected').val() || null;
+        var DrugPrandialAdviceID = '<?= $Item['DrugPrandialAdviceID']; ?>' || null;
         if (parseFloat(value) === parseFloat('2')) {
             $('input[id=tbcpoedetail-cpoe_iv_driprate]').attr('readonly', true);
         } else {
-            //$("#tbcpoedetail-cpoe_route_id").val().trigger("change");
+
         }
+        console.log('<?= $Item['DrugPrandialAdviceID']; ?>');
+        if (drugid === null) {
+            $("#tbcpoedetail-cpoe_route_id").val(value).trigger("change");
+            $("#tbcpoedetail-cpoe_drugprandialadviceid").val(DrugPrandialAdviceID).trigger("change");
+        }
+
     }
 
     function DefaultPeriodUnit() {
@@ -1060,12 +1083,13 @@ $form = ActiveForm::begin([
             CheckedPRN();
         }
         if ('<?= $model['cpoe_Itemtype']; ?>' === '53') {
-            CheckDoseqty();
+            //CheckDoseqty();
             $("#tbcpoedetail-cpoe_route_id").val('12').trigger("change");
         }
         if (('<?= $model['cpoe_Itemtype']; ?>' === '42') || ('<?= $model['cpoe_Itemtype']; ?>' === '52')) {
             CheckDoseqtyIV();
         }
+        CheckDoseqty();
         $('#tbcpoedetail-cpoe_id').val($('#tbcpoe-cpoe_id').val());
         $('#pt_visit_number').val($('#tbcpoe-pt_vn_number').val());
         $('#tbcpoedetail-itemqty').autoNumeric('init');
@@ -1076,7 +1100,7 @@ $form = ActiveForm::begin([
         var frm = $('#form_cpoedetail');
         var qty = $('#tbcpoedetail-itemqty').val();
         var l = $('#CalculateQty').ladda();
-        //l.ladda('start');
+        l.ladda('start');
         $.ajax({
             type: frm.attr('method'),
             url: 'calculate-qty',
@@ -1088,12 +1112,12 @@ $form = ActiveForm::begin([
                 $('.showItem_Cr_Amt').html(data.Item_Cr_Amt);//เบิกได้
                 $('.showItem_Pay_Amt').html(data.Item_Pay_Amt);//เบิกไม่ได้
                 var msg = '<div class="alert alert-success fade in"><i class="fa-fw fa fa-check"></i><strong>Calculated!</strong></div>';
-                //$('#msgqty').addClass('alert-success').removeClass('alert-error').html(msg).show();
+                $('#msgqty').addClass('alert-success').removeClass('alert-error').html(msg).show();
                 setTimeout(function () {
                     $('#msgqty').addClass('alert-error').removeClass('alert-success').html('').hide();
                 }, 1000);
                 //Notify('Calculated', 'bottom-left', '2000', 'success', 'fa-check', true);
-                //l.ladda('stop');
+                l.ladda('stop');
                 //document.getElementById("btn-savecpoe-details").disabled = false;
             },
             error: function (xhr, status, error) {
@@ -1265,7 +1289,7 @@ $form = ActiveForm::begin([
         $.ajax({
             type: 'POST',
             url: 'convertmg',
-            data: {ItemID: ItemID,doseqty:doseqty},
+            data: {ItemID: ItemID, doseqty: doseqty},
             success: function (result) {
                 $('#itemqty').val(result);
             },
@@ -1279,4 +1303,25 @@ $form = ActiveForm::begin([
             }
         });
     });
+
+    function Converttmg() {
+        var ItemID = '<?= $Item['ItemID']; ?>';
+        var cpoe_doseqty = '<?= $Item['cpoe_doseqty']; ?>';
+        $.ajax({
+            type: 'POST',
+            url: 'convertmg',
+            data: {ItemID: ItemID, doseqty: cpoe_doseqty},
+            success: function (result) {
+                $('#itemqty').val(result);
+            },
+            error: function (xhr, status, error) {
+                swal({
+                    title: error,
+                    text: "",
+                    type: "error",
+                    confirmButtonText: "OK"
+                });
+            }
+        });
+    }
 </script>

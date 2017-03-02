@@ -157,7 +157,7 @@ class OrderRxController extends Controller {
                 $searchModel = new VwCpoeRxDetail2Search();
                 $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $id);
                 $dataProvider->pagination->pageSize = false;
-                $dataProvider->sort->defaultOrder = ['cpoe_seq' => SORT_ASC];
+                $dataProvider->sort->defaultOrder = ['cpoe_seq' => SORT_ASC, 'cpoe_Itemtype' => SORT_ASC];
                 return $this->render('update', [
                             'modelCpoe' => $modelCpoe,
                             'ptar' => $ptar,
@@ -187,8 +187,12 @@ class OrderRxController extends Controller {
 
     public function actionDeleteDetails() {
         $id = Yii::$app->request->post('id');
+        $cpoeid = Yii::$app->request->post('cpoeid');
         TbCpoeDetail::findOne($id)->delete();
         TbFiInvDetail::deleteAll('cpoe_ids = :cpoe_ids', [':cpoe_ids' => $id]);
+        Yii::$app->db->createCommand('SELECT cmd_cpoe_seq_update(:cpoe_id);')
+                ->bindParam(':cpoe_id', $cpoeid)
+                ->execute();
         if (($model = TbCpoeDetail::find()->where(['cpoe_parentid' => $id])->all()) !== null) {
             TbCpoeDetail::deleteAll('cpoe_parentid = :cpoe_parentid', [':cpoe_parentid' => $id]);
         }
@@ -331,12 +335,13 @@ class OrderRxController extends Controller {
             $model = new TbCpoeDetail();
             $Item = VwCpoeDrugDefault::findOne($request->post('ItemID'));
             $ItemOP = VwCpoeDruglistOp::findOne($request->post('ItemID'));
+            $adviceid = ArrayHelper::map(TbDrugprandialadvice::find()->andWhere(['DrugRouteID' => $Item['DrugRouteID']])->all(), 'DrugPrandialAdviceID', 'DrugPrandialAdviceDesc');
             $from = $this->renderAjax('_details_from', [
                 'Item' => $Item,
                 'model' => $model,
                 'ItemOP' => $ItemOP,
                 'Itemtype' => $request->post('ItemType'),
-                'adviceid' => null,
+                'adviceid' => $adviceid,
             ]);
             return $from;
         }
@@ -512,6 +517,7 @@ class OrderRxController extends Controller {
             $cpoe_dayrepeat_sat = !empty($post['cpoe_dayrepeat_sat']) ? '1' : '0';
             $cpoe_dayrepeat_sun = !empty($post['cpoe_dayrepeat_sun']) ? '1' : '0';
             $command = Yii::$app->db->createCommand('select func_cal_drugdispenqty('
+                            . ':ItemID,'
                             . ':cpoe_once,'
                             . ':cpoe_repeat,'
                             . ':cpoe_doseqty,'
@@ -529,6 +535,7 @@ class OrderRxController extends Controller {
                             . ':cpoe_dayrepeat_fri,'
                             . ':cpoe_dayrepeat_sat,'
                             . ':cpoe_dayrepeat_sun) as Qty;')
+                    ->bindParam(":ItemID", $ItemID)
                     ->bindParam(":cpoe_once", $cpoe_once)
                     ->bindParam(":cpoe_repeat", $cpoe_repeat)
                     ->bindParam(":cpoe_doseqty", $cpoe_doseqty)
@@ -628,8 +635,8 @@ class OrderRxController extends Controller {
             $Acpoe_seq = !empty($post['TbCpoeDetail']['cpoe_seq']) ? $post['TbCpoeDetail']['cpoe_seq'] : null;
             $cpoe_level = !empty($post['TbCpoeDetail']['cpoe_level']) ? $post['TbCpoeDetail']['cpoe_level'] : null;
             $cpoe_seq = !empty($post['TbCpoeDetail']['cpoe_seq']) ? $post['TbCpoeDetail']['cpoe_seq'] : Yii::$app->db->createCommand('SELECT ifnull((SELECT tb_cpoe_detail.cpoe_seq FROM tb_cpoe_detail WHERE tb_cpoe_detail.cpoe_id = :cpoe_id ORDER BY tb_cpoe_detail.cpoe_seq DESC LIMIT 1),0)+1')
-                    ->bindParam(':cpoe_id', $cpoe_id)
-                    ->queryScalar();
+                            ->bindParam(':cpoe_id', $cpoe_id)
+                            ->queryScalar();
             $cpoe_drugset_id = null;
             if ($cpoe_Itemtype == 21) {
                 Yii::$app->db->createCommand('CALL cmd_cpoe_rxitemsave_kvosolution('
@@ -1444,9 +1451,6 @@ class OrderRxController extends Controller {
                     
                     <th class="text-center">รายการ</th>
                     <th class="text-center">ปริมาณ</th>
-                    <th class="text-center">ราคา/หน่วย</th>
-                    <th class="text-center">เบิกได้</th>
-                    <th class="text-center">เบิกไม่ได้</th>
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
@@ -1456,10 +1460,10 @@ class OrderRxController extends Controller {
                 $table .= '<td class="text-center">' . $result->ItemID . '</td>';
                 $table .= '<td class="text-left">' . $result->ItemDetail . '</td>';
                 $table .= '<td class="text-center">' . $result->ItemQty1 . '</td>';
-                $table .= '<td class="text-right">' . $result->ItemPrice . '</td>';
-                $table .= '<td class="text-right">' . $result->Item_Cr_Amt_Sum . '</td>';
-                $table .= '<td class="text-right">' . $result->Item_Pay_Amt_Sum . '</td>';
-                $table .= '<td class="text-center" width="10%">' . Html::a('Edit', false, ['class' => 'btn btn-xs btn-success', 'onclick' => 'EditByType(this);', 'ids' => $result['cpoe_ids'], 'item-type' => 41, 'title-modal' => 'Base Solution']) . ' ' . Html::a('Delete', 'javascript:void(0);', ['class' => 'btn btn-xs btn-danger', 'onclick' => 'DeleteSubparent(' . $result->cpoe_ids . ');']) . '</td>';
+                /* $table .= '<td class="text-right">' . $result->ItemPrice . '</td>';
+                  $table .= '<td class="text-right">' . $result->Item_Cr_Amt_Sum . '</td>';
+                  $table .= '<td class="text-right">' . $result->Item_Pay_Amt_Sum . '</td>'; */
+                $table .= '<td class="text-center" width="10%" style="white-space: nowrap;">' . Html::a('Edit', false, ['class' => 'btn btn-xs btn-success', 'onclick' => 'EditByType(this);', 'ids' => $result['cpoe_ids'], 'item-type' => 41, 'title-modal' => 'Base Solution']) . ' ' . Html::a('Delete', 'javascript:void(0);', ['class' => 'btn btn-xs btn-danger', 'onclick' => 'DeleteSubparent(' . $result->cpoe_ids . ');']) . '</td>';
                 $table .= '</tr>';
             }
             $table .= '</tbody>';
@@ -1483,9 +1487,6 @@ class OrderRxController extends Controller {
                     <th class="text-center">รหัสสินค้า</th>
                     <th class="text-center">รายการ</th>
                     <th class="text-center">ปริมาณ</th>
-                    <th class="text-center">ราคา/หน่วย</th>
-                    <th class="text-center">เบิกได้</th>
-                    <th class="text-center">เบิกไม่ได้</th>
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
@@ -1496,10 +1497,10 @@ class OrderRxController extends Controller {
                 //$table .= '<td class="text-center">' . $result->cpoe_itemtype_decs . '</td>';
                 $table .= '<td class="text-left">' . $result->ItemDetail . '</td>';
                 $table .= '<td class="text-center">' . $result->ItemQty1 . '</td>';
-                $table .= '<td class="text-right">' . $result->ItemPrice . '</td>';
-                $table .= '<td class="text-right">' . $result->Item_Cr_Amt_Sum . '</td>';
-                $table .= '<td class="text-right">' . $result->Item_Pay_Amt_Sum . '</td>';
-                $table .= '<td class="text-center" width="10%">' . Html::a('Edit', false, ['class' => 'btn btn-xs btn-success', 'onclick' => 'EditByType(this);', 'ids' => $result['cpoe_ids'], 'item-type' => 42, 'title-modal' => 'Additive']) . ' ' . Html::a('Delete', 'javascript:void(0);', ['class' => 'btn btn-xs btn-danger', 'onclick' => 'DeleteSubparent(' . $result->cpoe_ids . ');']) . '</td>';
+                /* $table .= '<td class="text-right">' . $result->ItemPrice . '</td>';
+                  $table .= '<td class="text-right">' . $result->Item_Cr_Amt_Sum . '</td>';
+                  $table .= '<td class="text-right">' . $result->Item_Pay_Amt_Sum . '</td>'; */
+                $table .= '<td class="text-center" width="10%" style="white-space: nowrap;">' . Html::a('Edit', false, ['class' => 'btn btn-xs btn-success', 'onclick' => 'EditByType(this);', 'ids' => $result['cpoe_ids'], 'item-type' => 42, 'title-modal' => 'Additive']) . ' ' . Html::a('Delete', 'javascript:void(0);', ['class' => 'btn btn-xs btn-danger', 'onclick' => 'DeleteSubparent(' . $result->cpoe_ids . ');']) . '</td>';
                 $table .= '</tr>';
             }
             $table .= '</tbody>';

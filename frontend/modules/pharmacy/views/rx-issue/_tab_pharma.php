@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 $action = Yii::$app->controller->action->id;
 ?>
+<?php /*
 <ul class="nav nav-tabs tabs-flat  nav-justified" id="myTab11">
     <li>
         <a style="text-align: left">
@@ -31,7 +32,7 @@ $action = Yii::$app->controller->action->id;
         </a>
 
     </li>
-</ul>
+</ul>*/?>
 <ul class="nav nav-tabs tabs-flat  nav-justified bg-white" id="myTab11">
     <li class="tab-success history <?php echo $action == 'order-history' ? 'active' : ''?>">
         <a data-toggle="tab" id="Patient" href="#Patient">

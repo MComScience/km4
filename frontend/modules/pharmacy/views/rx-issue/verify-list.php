@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 //DataTableAsset::register($this);
 
 $this->title = 'ใบสั่งยารอจัดยา';
-$this->params['breadcrumbs'][] = ['label' => 'งานเภสัชกรรม', 'url' => ['/pharmacy/rx-issue/index']];
+$this->params['breadcrumbs'][] = ['label' => 'งานเภสัชกรรม', 'url' => ['/pharmacy/rx-issue/verify-list']];
 $this->params['breadcrumbs'][] = $this->title;
 $style = 'border-top: 1px solid #ddd;';
 ?>

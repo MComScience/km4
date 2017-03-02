@@ -23,8 +23,8 @@ $form = ActiveForm::begin([
         ]);
 ?>
 <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="panel panel-primary">
+    <div class="col-xs-12 col-sm-12 col-md-6">
+        <div class="panel panel-success">
             <div class="panel-heading">
                 <h3 class="panel-title">Base Solution</h3>
             </div>
@@ -42,6 +42,7 @@ $form = ActiveForm::begin([
                                 <th style="text-align: center;">
                                     ปริมาณ
                                 </th>
+                                <?php /*
                                 <th style="text-align: center;">
                                     ราคา/หน่วย
                                 </th>
@@ -50,7 +51,7 @@ $form = ActiveForm::begin([
                                 </th>
                                 <th style="text-align: center;">
                                     เบิกไม่ได้
-                                </th>
+                                </th>*/?>
                                 <th style="text-align: center;">
                                     Actions
                                 </th>
@@ -68,6 +69,7 @@ $form = ActiveForm::begin([
                                     <td style="text-align: center;">
                                         <?php echo $v['ItemQty1']; ?>
                                     </td>
+                                    <?php /*
                                     <td style="text-align: right;">
                                         <?php echo $v['ItemPrice']; ?>
                                     </td>
@@ -76,8 +78,8 @@ $form = ActiveForm::begin([
                                     </td>
                                     <td style="text-align: right;">
                                         <?php echo $v['Item_Pay_Amt_Sum']; ?>
-                                    </td>
-                                    <td style="text-align: center;">
+                                    </td>*/?>
+                                    <td style="text-align: center;white-space: nowrap;">
                                         <?= Html::a('Edit', false, ['class' => 'btn btn-primary btn-xs','onclick' => 'EditByType(this);','ids' => $v['cpoe_ids'],'item-type' => 41,'title-modal' => 'Base Solution']) ?>
                                         <?= Html::a('Delete', false, ['class' => 'btn btn-danger btn-xs', 'onclick' => 'DeleteSubparent(' . $v['cpoe_ids'] . ');']) ?>
                                     </td>
@@ -88,7 +90,9 @@ $form = ActiveForm::begin([
                 </div>
             </div>
         </div>
-        <div class="panel panel-primary">
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-6">
+        <div class="panel panel-success">
             <div class="panel-heading">
                 <h3 class="panel-title">Drug Additive</h3>
             </div>
@@ -106,6 +110,7 @@ $form = ActiveForm::begin([
                                 <th style="text-align: center;">
                                     ปริมาณ
                                 </th>
+                                <?php /*
                                 <th style="text-align: center;">
                                     ราคา/หน่วย
                                 </th>
@@ -114,7 +119,7 @@ $form = ActiveForm::begin([
                                 </th>
                                 <th style="text-align: center;">
                                     เบิกไม่ได้
-                                </th>
+                                </th>*/?>
                                 <th style="text-align: center;">
                                     Actions
                                 </th>
@@ -132,6 +137,7 @@ $form = ActiveForm::begin([
                                     <td style="text-align: center;">
                                         <?php echo $v['ItemQty1']; ?>
                                     </td>
+                                    <?php /*
                                     <td style="text-align: right;">
                                         <?php echo $v['ItemPrice']; ?>
                                     </td>
@@ -140,8 +146,8 @@ $form = ActiveForm::begin([
                                     </td>
                                     <td style="text-align: right;">
                                         <?php echo $v['Item_Pay_Amt_Sum']; ?>
-                                    </td>
-                                    <td style="text-align: center;">
+                                    </td>*/?>
+                                    <td style="text-align: center;white-space: nowrap;">
                                         <?= Html::a('Edit', false, ['class' => 'btn btn-primary btn-xs','onclick' => 'EditByType(this);','ids' => $v['cpoe_ids'],'item-type' => 42,'title-modal' => 'Additive']) ?>
                                         <?= Html::a('Delete', false, ['class' => 'btn btn-danger btn-xs', 'onclick' => 'DeleteSubparent(' . $v['cpoe_ids'] . ');']) ?>
                                     </td>
@@ -658,6 +664,7 @@ $form = ActiveForm::begin([
             <div class="row">
                 <div class="col-xs-12 col-sm-6 col-md-6">
                     <div class="form-group">
+                        <?php /*
                         <table style="width: 100%" border="0">
                             <tbody>
                                 <tr>
@@ -671,7 +678,7 @@ $form = ActiveForm::begin([
                                     <td style="font-size: 12pt;width: 33.33%;text-align: center;border-left: 1px solid black;"><span id="showItem_Pay_Amt" class="showItem_Pay_Amt"></span></td>
                                 </tr>
                             </tbody>
-                        </table>
+                        </table>*/?>
                     </div> 
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-5">

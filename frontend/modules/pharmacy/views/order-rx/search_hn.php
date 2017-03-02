@@ -84,12 +84,15 @@ $form = ActiveForm::begin([
                 บันทึกใบสั่งยา <i class="fa fa-angle-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-success">
+                <?php if($schedule_type == 1) : ?>
                 <li>
                     <?= Html::a('Rx Order', 'javascript:void(0);', ['onclick' => 'CreateRxOrder(1011,'.$schedule_type.');']) ?>
                 </li>
                 <li>
                     <?= Html::a('Chemo Order', 'javascript:void(0);', ['onclick' => 'CreateRxOrder(1012,'.$schedule_type.');']) ?>
                 </li>
+                <?php endif; ?>
+                <?php if($schedule_type == 4) : ?>
                 <li>
                     <?= Html::a('Pre-Rx Order', 'javascript:void(0);', []) ?>
                 </li>
@@ -97,8 +100,9 @@ $form = ActiveForm::begin([
                     <?= Html::a('Pre-Chemo Order', 'javascript:void(0);', []) ?>
                 </li>
                 <li>
-                    <?= Html::a('รับรองชื่อยานอกบัญชี รพ.', 'javascript:void(0);', []) ?>
+                    <?= Html::a('รับรองขอชื้อยานอกบัญชี รพ.', 'javascript:void(0);', []) ?>
                 </li>
+                <?php endif; ?>
             </ul>
         </div>
 

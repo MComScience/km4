@@ -12,8 +12,8 @@ CrudAsset::register($this);
 WaitMeAsset::register($this);
 
 $this->title = 'สถานะใบสั่งยา';
-$this->params['breadcrumbs'][] = ['label' => 'งานเภสัชกรรม', 'url' => ['/pharmacy/order-rx/index']];
-$this->params['breadcrumbs'][] = ['label' => 'สั่งจ่ายยาผู้ป่วยนอก', 'url' => ['/pharmacy/order-rx/index']];
+$this->params['breadcrumbs'][] = ['label' => 'งานเภสัชกรรม', 'url' => ['/pharmacy/order-rx/order-status']];
+$this->params['breadcrumbs'][] = ['label' => 'สั่งจ่ายยาผู้ป่วยนอก', 'url' => ['/pharmacy/order-rx/order-status']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $script = <<< JS
@@ -59,6 +59,9 @@ $('#cpoeindex-pjax').on('pjax:success', function () {
 });        
 JS;
 $this->registerJs($script1);
+
+$count = $dataProvider->getCount();
+$count2 = $dataProvider2->getCount();
 ?>
 <style type="text/css">
     table#datatables_w0 thead tr th{
@@ -78,6 +81,11 @@ $this->registerJs($script1);
                     <?php Pjax::begin(['id' => 'cpoeindex-pjax']); ?>  
                     <div class="row">
                         <div class="col-lg-12 col-sm-6 col-xs-12">
+                            <?php
+                            if ($count == 0) {
+                                echo Html::a('บันทึกใบสั่งยา Active Order', ['search-hn', 'schedule_type' => 1], ['class' => 'btn btn-success', 'role' => 'modal-remote']);
+                            }
+                            ?>
                             <?=
                             DataTables::widget([
                                 'dataProvider' => $dataProvider,
@@ -97,7 +105,7 @@ $this->registerJs($script1);
                                         'info' => 'แสดง _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ',
                                         'lengthMenu' => '_MENU_',
                                         //'sSearchPlaceholder' => 'ค้นหาข้อมูล...',
-                                        'search' => 'Active Order _INPUT_' . ' ' . Html::a('บันทึกใบสั่งยา', ['search-hn', 'schedule_type' => 1], ['class' => 'btn btn-success', 'role' => 'modal-remote'])
+                                        'search' => 'Active Order _INPUT_' . ' ' . Html::a('บันทึกใบสั่งยา Active Order', ['search-hn', 'schedule_type' => 1], ['class' => 'btn btn-success', 'role' => 'modal-remote'])
                                     ],
                                     "lengthMenu" => [[10, -1], [10, "All"]],
                                     "responsive" => true,
@@ -156,7 +164,7 @@ $this->registerJs($script1);
                                     ],
                                     [
                                         'attribute' => 'pt_right',
-                                        'header' => 'สิทธิการรักษา',
+                                        'header' => 'สิทธิ',
                                         'contentOptions' => ['class' => 'text-left'],
                                         'headerOptions' => ['style' => 'text-align:center;color:black;'],
                                         'value' => function ($model) {
@@ -219,7 +227,7 @@ $this->registerJs($script1);
                                     ],
                                     [
                                         'attribute' => 'cpoe_status',
-                                        'header' => 'สถานะใบสั่งยา',
+                                        'header' => 'สถานะ',
                                         'contentOptions' => ['class' => 'text-center', 'noWrap' => true,],
                                         'headerOptions' => ['style' => 'text-align:center;color:black;'],
                                         'value' => function ($model) {
@@ -264,6 +272,11 @@ $this->registerJs($script1);
                     <hr>
                     <div class="row">
                         <div class="col-lg-12 col-sm-6 col-xs-12">
+                            <?php
+                            if ($count2 == 0) {
+                                echo Html::a('บันทึกใบสั่งยา Pre Order', ['search-hn', 'schedule_type' => 4], ['class' => 'btn btn-success', 'role' => 'modal-remote']);
+                            }
+                            ?>
                             <?=
                             DataTables::widget([
                                 'dataProvider' => $dataProvider2,
@@ -283,7 +296,7 @@ $this->registerJs($script1);
                                         'info' => 'แสดง _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ',
                                         'lengthMenu' => '_MENU_',
                                         //'sSearchPlaceholder' => 'ค้นหาข้อมูล...',
-                                        'search' => 'Pre Order _INPUT_' . ' ' . Html::a('บันทึกใบสั่งยา', ['search-hn', 'schedule_type' => 4], ['class' => 'btn btn-success', 'role' => 'modal-remote'])
+                                        'search' => 'Pre Order _INPUT_' . ' ' . Html::a('บันทึกใบสั่งยา Pre Order', ['search-hn', 'schedule_type' => 4], ['class' => 'btn btn-success', 'role' => 'modal-remote'])
                                     ],
                                     "lengthMenu" => [[10, -1], [10, "All"]],
                                     "responsive" => true,

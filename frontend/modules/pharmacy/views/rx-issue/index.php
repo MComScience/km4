@@ -7,7 +7,14 @@ use frontend\assets\DataTableAsset;
 DataTableAsset::register($this);
 
 $this->title = $title;
-$this->params['breadcrumbs'][] = ['label' => 'งานเภสัชกรรม', 'url' => ['/pharmacy/rx-issue/index']];
+if ($title == 'ใบสั่งยารอจัดยา') {
+    $this->params['breadcrumbs'][] = ['label' => 'งานเภสัชกรรม', 'url' => ['/pharmacy/rx-issue/verify-list']];
+} elseif ($title == 'ใบสั่งยารอตรวจสอบ') {
+    $this->params['breadcrumbs'][] = ['label' => 'งานเภสัชกรรม', 'url' => ['/pharmacy/rx-issue/check-list']];
+} else {
+    $this->params['breadcrumbs'][] = ['label' => 'งานเภสัชกรรม', 'url' => ['/pharmacy/rx-issue/issue-list']];
+}
+
 $this->params['breadcrumbs'][] = $this->title;
 $style = 'border-top: 1px solid #ddd;';
 ?>

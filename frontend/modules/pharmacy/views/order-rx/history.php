@@ -13,8 +13,8 @@ CrudAsset::register($this);
 WaitMeAsset::register($this);
 
 $this->title = 'ประวัติใบสั่งยา';
-$this->params['breadcrumbs'][] = ['label' => 'งานเภสัชกรรม', 'url' => ['/pharmacy/order-rx/index']];
-$this->params['breadcrumbs'][] = ['label' => 'สั่งจ่ายยาผู้ป่วยนอก', 'url' => ['/pharmacy/order-rx/index']];
+$this->params['breadcrumbs'][] = ['label' => 'งานเภสัชกรรม', 'url' => ['/pharmacy/order-rx/history']];
+$this->params['breadcrumbs'][] = ['label' => 'สั่งจ่ายยาผู้ป่วยนอก', 'url' => ['/pharmacy/order-rx/history']];
 $this->params['breadcrumbs'][] = $this->title;
 
 
@@ -58,6 +58,7 @@ $this->registerJs($script1);
 <style type="text/css">
     table#datatables_w0 thead tr th{
         background-color: white;
+        border-top: 1px solid #ddd;
     }
     .modal-fullscreen .modal-dialog {
         margin: 0;
@@ -101,7 +102,7 @@ $this->registerJs($script1);
                             DataTables::widget([
                                 'dataProvider' => $dataProvider,
                                 'tableOptions' => [
-                                    'class' => 'default kv-grid-table table table-hover table-bordered table-striped table-condensed',
+                                    'class' => 'default responsive kv-grid-table table table-hover table-striped table-condensed kv-table-wrap dataTable no-footer dtr-inline',
                                 ],
                                 'options' => [
                                     'retrieve' => true
@@ -182,7 +183,7 @@ $this->registerJs($script1);
                                     ],
                                     [
                                         'attribute' => 'pt_right',
-                                        'header' => 'สิทธิการรักษา',
+                                        'header' => 'สิทธิ',
                                         'contentOptions' => ['class' => 'text-left'],
                                         'headerOptions' => ['style' => 'text-align:center;color:black;'],
                                         'value' => function ($model) {
@@ -245,7 +246,7 @@ $this->registerJs($script1);
                                     ],
                                     [
                                         'attribute' => 'cpoe_status',
-                                        'header' => 'สถานะใบสั่งยา',
+                                        'header' => 'สถานะ',
                                         'contentOptions' => ['class' => 'text-center', 'noWrap' => true,],
                                         'headerOptions' => ['style' => 'text-align:center;color:black;'],
                                         'value' => function ($model) {
