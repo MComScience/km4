@@ -1,0 +1,21 @@
+{
+    "name": "appxq/yii2-sidebar",
+    "description": "Sidebar",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "SDII",
+            "email": "iencoded@gmail.com"
+        }
+    ],
+    "require": {
+        
+    },
+    "autoload": {
+        "psr-4": {
+            "appxq\\sidebar\\": ""
+        }
+    }
+}

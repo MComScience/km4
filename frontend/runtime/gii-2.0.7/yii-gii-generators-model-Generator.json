@@ -1,0 +1,1 @@
+{"template":"default","enableI18N":"1","messageCategory":"app","ns":"app\\modules\\Purchasing\\models","db":"db","baseClass":"yii\\db\\ActiveRecord","generateRelations":"all","generateLabelsFromComments":"1","queryNs":"app\\modules\\Purchasing\\models","queryBaseClass":"yii\\db\\ActiveQuery"}

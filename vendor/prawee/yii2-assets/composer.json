@@ -1,0 +1,21 @@
+{
+    "name": "prawee/yii2-assets",
+    "description": "Management Asset for Yii 2.0 Application",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension","assets","bootboxjs"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Prawee Wongsa",
+            "email": "konkeanweb@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "prawee\\assets\\": ""
+        }
+    }
+}

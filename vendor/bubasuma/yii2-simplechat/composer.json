@@ -1,0 +1,22 @@
+{
+    "name": "bubasuma/yii2-simplechat",
+    "description": "A simple chat for your yii2 application",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension", "message", "chat", "conversation"],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Buba Suma",
+            "email": "bubasuma@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*",
+        "yiisoft/yii2-bootstrap": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "bubasuma\\simplechat\\": ""
+        }
+    }
+}
