@@ -362,7 +362,7 @@ use kartik\icons\Icon;
     $('#tbpritemdetail2temp-pcplannum').on('change', function () {
         var TMTID_TPU = $("#tbpritemdetail2temp-tmtid_tpu").val();
         var PCPlanNum = $(this).find("option:selected").text() || null;
-        if (PCPlanNum !== null) {
+        if ((PCPlanNum !== null) && (PCPlanNum !== 'เลือกแผน')) {
             $.ajax({
                 url: '<?= Url::to(['get-datapcplan']); ?>',
                 type: 'POST',

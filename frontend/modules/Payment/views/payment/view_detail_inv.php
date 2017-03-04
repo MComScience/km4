@@ -14,7 +14,7 @@ use kartik\widgets\ActiveForm;
                     <div class="profile-container">
                         <div class="profile-header row">
                             <div class="col-sm-2 text-center" style="margin-top: 10px;">
-                                <img src="assets/img/avatars/admin.png" alt="" class="header-avatar" />
+                                <img src="/km4/assets/img/avatars/admin.png" alt="" class="header-avatar" />
                             </div>
                             <div class="col-sm-10" style="margin-top: 30px;">
                                <label style="color:#53a93f;">สิทธิการรักษา</label>

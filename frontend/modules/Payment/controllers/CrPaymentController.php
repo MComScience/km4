@@ -63,17 +63,17 @@ class CrPaymentController extends Controller {
             'modelSummary'=>$modelSummary,
         ]);
     }
-    public function actionInPatient() {
-        $SectionID = '2014';
-        $_SESSION['section_view'] = $SectionID;
-        return $this->redirect(['index', 'SectionID' => $SectionID]);
-    }
+    // public function actionInPatient() {
+    //     $SectionID = '2014';
+    //     $_SESSION['section_view'] = $SectionID;
+    //     return $this->redirect(['index', 'SectionID' => $SectionID]);
+    // }
 
-    public function actionOutPatient() {
-        $SectionID = '2013';
-        $_SESSION['section_view'] = $SectionID;
-        return $this->redirect(['index', 'SectionID' => $SectionID]);
-    }
+    // public function actionOutPatient() {
+    //     $SectionID = '2013';
+    //     $_SESSION['section_view'] = $SectionID;
+    //     return $this->redirect(['index', 'SectionID' => $SectionID]);
+    // }
 
     public function actionCrSummary() {
         $userid = Yii::$app->user->identity->profile->user_id;

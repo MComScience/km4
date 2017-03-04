@@ -351,24 +351,16 @@ class ImportExcelOrfController extends Controller {
                 }
             }
             Yii::$app->getSession()->setFlash('alert1', [
-                'type' => 'success',
-                'duration' => 5000,
-                'icon' => 'fa fa-check-square-o ',
-                'title' => Yii::t('app', \yii\helpers\Html::encode('Upload...')),
-                'message' => Yii::t('app', \yii\helpers\Html::encode('อัพโหลดไฟล์เรียบร้อยแล้ว!')),
-                'positonY' => 'top',
-                'positonX' => 'right'
-            ]);
+                    'type' => 'success',
+                    'title' => 'Success!',
+                    'message' => 'อัพโหลดไฟล์เรียบร้อยแล้ว',
+           	]);
             }else{
 	        	Yii::$app->getSession()->setFlash('alert1', [
-	                'type' => 'warning',
-	                'duration' => 5000,
-	                'icon' => 'fa fa-exclamation-triangle ',
-	                'title' => Yii::t('app', \yii\helpers\Html::encode('Duplicate...')),
-	                'message' => Yii::t('app', \yii\helpers\Html::encode('มีข้อมูลนำเข้าแล้ว!')),
-	                'positonY' => 'top',
-	                'positonX' => 'right'
-	            ]);
+                    'type' => 'warning',
+                    'title' => 'Duplicate!',
+                    'message' => 'ไฟล์นี้ถูกนำเข้าแล้ว',
+                ]);
             }
         }
         
@@ -388,7 +380,7 @@ class ImportExcelOrfController extends Controller {
             $searchModel = new \app\modules\Payment\models\VwRepUcOpreferSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $key);
             $dataProvider->pagination->pageSize = 999;
-            return $this->renderPartial('_detail', ['dataProvider' => $dataProvider]);
+            return $this->renderAjax('_expand_detail', ['dataProvider' => $dataProvider]);
         } else {
             return '<div class="alert alert-danger">No data found</div>';
         }
@@ -401,15 +393,11 @@ class ImportExcelOrfController extends Controller {
 				->bindParam(':create_by', $create_by)
  				->execute();
  		Yii::$app->getSession()->setFlash('alert1', [
-                'type' => 'success',
-                'duration' => 5000,
-                'icon' => 'fa fa-check-square-o ',
-                'title' => Yii::t('app', \yii\helpers\Html::encode('Upload...')),
-                'message' => Yii::t('app', \yii\helpers\Html::encode('บันทึกลูกหนี้เรียบร้อยแล้ว!')),
-                'positonY' => 'top',
-                'positonX' => 'right'
+                    'type' => 'success',
+                    'title' => 'Success!',
+                    'message' => 'บันทึกลูกหนี้เรียบร้อยแล้ว',
         ]);	
-        $this->redirect('index.php?r=Payment/import-excel-orf/index');	
+        $this->redirect('index');	
     }
     private function type_file($type_name) {
         $array_file = explode(".", $type_name);

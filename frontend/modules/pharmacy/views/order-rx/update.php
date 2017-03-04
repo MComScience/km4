@@ -14,11 +14,17 @@ LaddaAsset::register($this);
 AutoNumericAsset::register($this);
 
 $this->title = 'ใบสั่งยา';
-$this->params['breadcrumbs'][] = ['label' => 'งานเภสัชกรรม', 'url' => ['/pharmacy/order-rx/index']];
+$this->params['breadcrumbs'][] = ['label' => 'งานเภสัชกรรม', 'url' => ['/pharmacy/order-rx/order-status']];
 $this->params['breadcrumbs'][] = ['label' => 'Chemo Order : ผู้ป่วยนอก', 'url' => ['/pharmacy/order-rx/update', 'id' => $modelCpoe->cpoe_id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php $this->registerCssFile(Yii::getAlias('@web') . '/css/bootstrap-dropdownhover.min.css', ['depends' => [yii\bootstrap\BootstrapAsset::className()]]); ?>
+<style type="text/css">
+    div#solution-modal .modal-body{
+        overflow-y: auto;
+        height: 600px;
+    }
+</style>
 <div class="row">
     <div class="col-lg-12 col-sm-12 col-xs-12">
         <div class="col-lg-12 col-sm-12 col-xs-12">
@@ -26,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <ul class="nav nav-tabs" id="myTab">
                     <li class="active">
                         <a data-toggle="tab" href="#home">
-                            <?= Html::encode('Chemo Order : ผู้ป่วยนอก') ?>
+                            <?php echo $modelCpoe->cpoetype->cpoe_type_decs == null ? 'ใบสั่งยาผู้ป่วยนอก' : $modelCpoe->cpoetype->cpoe_type_decs; ?>
                         </a>
                     </li>
                 </ul>
@@ -36,22 +42,22 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div class="profile-container">
 
-            <?= $this->render('_profile', ['ptar' => $ptar, 'profile' => $profile,]) ?>
+            <?= $this->render('_profile', ['ptar' => $ptar, 'profile' => $profile,'model' => $modelCpoe]) ?>
 
             <div class="profile-body">
                 <div class="col-lg-12 col-sm-12 col-xs-12">
                     <div class="tabbable">
-                        <?php echo $this->render('_tab_pharma', ['profile' => $profile]) ?>
+                        <?php echo $this->render('_tab_pharma', ['profile' => $profile,'model' => $modelCpoe]) ?>
                         <div class="tab-content tabs-flat bg-white">
 
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="tb-cpoe-create">
 
-                                        <?=
+                                        <?php /*
                                         $this->render('_form', [
                                             'model' => $modelCpoe,
-                                        ])
+                                        ])*/
                                         ?>
 
                                     </div>
@@ -60,13 +66,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
-                                    <?=
-                                    $this->render('_grid_details', [
-                                        'model' => $modelCpoe,
-                                        'searchModel' => $searchModel,
-                                        'dataProvider' => $dataProvider,
-                                    ])
-                                    ?>
+                                    <div id="content-tabledetails">
+                                        <?=
+                                        $this->render('_grid_details', [
+                                            'model' => $modelCpoe,
+                                            'searchModel' => $searchModel,
+                                            'dataProvider' => $dataProvider,
+                                        ])
+                                        ?>
+                                    </div>
                                 </div>
                             </div>
 
@@ -85,9 +93,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12" style="text-align: right;">
-                                    <?= Html::a('Close', ['/pharmacy/rx/index'], ['class' => 'btn btn-default']); ?>
-                                    <?= Html::button('SaveDraft', ['class' => 'btn btn-success ladda-button', 'id' => 'btn-savedraft-cpoe', 'data-style' => 'expand-left', 'disabled' => $modelCpoe['cpoe_status'] == 2 ? true : false]); ?>
-                                    <?= Html::button('Save', ['class' => 'btn btn-success ladda-button', 'id' => 'btn-save-cpoe', 'data-style' => 'expand-left', 'disabled' => empty($modelCpoe['cpoe_status']) || $modelCpoe['cpoe_status'] == 1 ? true : false]); ?>
+                                    <?= Html::a('Close', ['/pharmacy/order-rx/order-status'], ['class' => 'btn btn-default']); ?>
+                                    <?= Html::button('SaveDraft', ['class' => 'btn btn-success ladda-button', 'id' => 'btn-savedraft-cpoe', 'data-style' => 'expand-left', 'disabled' => $modelCpoe['cpoe_status'] == 2 ? true : false,'onclick' => 'SaveDraftCpoe(this);']); ?>
+                                    <?= Html::button('Save', ['class' => 'btn btn-success ladda-button', 'id' => 'btn-save-cpoe', 'data-style' => 'expand-left', 'disabled' => empty($modelCpoe['cpoe_status']) || $modelCpoe['cpoe_status'] == 1 ? true : false,'onclick' => 'SaveCpoe(this);']); ?>
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <?= Html::encode('ใบสรุปราคายา') ?> <span class="caret"></span>

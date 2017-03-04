@@ -36,19 +36,12 @@
                     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" style="margin-top:5px;margin-left: 25px;">
                         <li style="text-align: -webkit-left;">วันที่</li>
                             <?=
-                            $form->field($modelHD, 'repdate', ['showLabels' => false])->widget(yii\jui\DatePicker::classname(), [
-                                'language' => 'th',
-                                'dateFormat' => 'dd/MM/yyyy',
-                                'clientOptions' => [
-                                    'changeMonth' => true,
-                                    'changeYear' => true,
-                                ],
-                                'options' => [
-                                    'class' => 'form-control',
-                                    'style' => 'background-color:white',
-                                ],
-                                
-                            ])
+                            $form->field($modelHD, 'repdate',['showLabels' => false])->textInput([
+                                'maxlength' => true,
+                                'readonly' => true,
+                                'style' => 'background-color:white',
+                                'value' => Yii::$app->formatter->asDate($modelHD->repdate,'php:d/m/Y'),
+                            ]) 
                             ?>
                     </div>
                     <?php }?>

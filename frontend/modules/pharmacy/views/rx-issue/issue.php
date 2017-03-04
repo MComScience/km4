@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div class="profile-container">
 
-            <?= $this->render('_header', ['header' => $header, 'ptar' => $ptar,]) ?>
+            <?= $this->render('_header', ['ptar' => $ptar, 'profile' => $profile,'model' => $modelCpoe]) ?>
 
             <div class="profile-body">
                 <div class="col-lg-12 col-sm-12 col-xs-12">
@@ -42,10 +42,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="tb-cpoe-create">
 
-                                        <?=
+                                        <?php /*
                                         $this->render('_form', [
                                             'model' => $modelCpoe,
-                                        ])
+                                        ])*/
                                         ?>
 
                                     </div>

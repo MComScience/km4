@@ -36,8 +36,7 @@ class PaymentController extends Controller
      * Lists all VwInvForRepList models.
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex(){
         $userid = Yii::$app->user->identity->profile->user_id;
         $find   = \app\modules\Payment\models\TbFiRep::find()->where(['rep_num' => null])->all();
         if ($find != null) {
@@ -56,20 +55,17 @@ class PaymentController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-    public function actionInPatient()
-    {
-        $SectionID = '2014';
+    public function actionInPatient(){
+        $SectionID = 'S012';
         $_SESSION['section_view'] = $SectionID;
         return $this->redirect(['index']);
     }
-    public function actionOutPatient()
-    {
-        $SectionID = '2013';
+    public function actionOutPatient(){
+        $SectionID = 'S011';
         $_SESSION['section_view'] = $SectionID;
         return $this->redirect(['index']);
     }
-    public function actionHistory()
-    {
+    public function actionHistory(){
         $searchModel  = new \app\modules\Payment\models\VwFiRepHeaderSearch();
         $dataProvider = $searchModel->SearchHistory(Yii::$app->request->queryParams);
         return $this->render('_history_payment', [
@@ -77,12 +73,10 @@ class PaymentController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-    public function actionHistoryDetail($rep_id)
-    {
+    public function actionHistoryDetail($rep_id){
         return $this->redirect(['create', 'rep_id' => $rep_id, 'view' => 'history']);
     }
-    public function actionRepCreate()
-    {
+    public function actionRepCreate(){
         $userid = Yii::$app->user->identity->profile->user_id;
         $searchModel  = new \app\modules\Payment\models\VwFiRepHeaderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -104,25 +98,21 @@ class PaymentController extends Controller
     }
 
     /**
-     * Creates a new VwInvForRepList model.
+     * Creates a new VwInvForRepList model
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreatePayment($inv_id)
-    {
+    public function actionCreatePayment($inv_id){
         $userid  = Yii::$app->user->identity->profile->user_id;
         $findRep = \app\modules\Payment\models\TbFiRep::findOne(['inv_id' => $inv_id, 'rep_status' => '1']);
         if (!empty($findRep)) {
-            return $findRep['rep_id'];
+            return $this->redirect(['create', 'rep_id' => $findRep['rep_id'], 'view' => 'create']);
         } else {
-            // //$inv_id_new = null;
             Yii::$app->db->createCommand('CALL cmd_rep_create_header_detail(:userid,:inv_id);')
                 ->bindParam(':userid', $userid)
                 ->bindParam(':inv_id', $inv_id)
                 ->execute();
-            $maxRep = \app\modules\Payment\models\TbFiRep::find()
-                ->select('max(rep_id)')
-                ->scalar();
+            $maxRep = \app\modules\Payment\models\TbFiRep::find()->max('rep_id');
             $rep_create_section = $_SESSION['section_view'];
             $sql = "update tb_fi_rep set rep_create_section= '$rep_create_section' WHERE tb_fi_rep.rep_id = $maxRep;";
             $query = Yii::$app->db->createCommand($sql)->execute();
@@ -134,8 +124,7 @@ class PaymentController extends Controller
         return $this->redirect(['create', 'rep_id' => $rep_id, 'view' => 'create']);
     }
 
-    public function actionCreate($rep_id, $view)
-    {
+    public function actionCreate($rep_id, $view){
         $model = new VwInvForRepList();
         if (Yii::$app->request->post()) {
             $rep_id  = $_POST['VwItemPaid']['rep_id'];
@@ -179,7 +168,7 @@ class PaymentController extends Controller
 	                'view'           => $view,
 	            ]);
             }else{
-            	throw new NotFoundHttpException('ไม่พบข้อมูลใน (vw_fi_rep_hearder) rep_id='.$rep_id);
+            	throw new NotFoundHttpException('ไม่พบข้อมูลใน (vw_fi_rep_header) rep_id='.$rep_id);
             }
             
         }
@@ -365,7 +354,7 @@ class PaymentController extends Controller
                 //                        ->scalar();
                 $payment_id = $key;
                 $modelPay   = \app\modules\Payment\models\TbFiReppaymentDetail::findOne(['payment_id' => $payment_id]);
-            } else {
+            }else{
                 $payment_id = $key;
                 $modelPay   = new \app\modules\Payment\models\TbFiReppaymentDetail();
             }
@@ -384,32 +373,32 @@ class PaymentController extends Controller
     {
         $userid = Yii::$app->user->identity->profile->user_id;
         if (Yii::$app->request->post()) {
-            $payment_id        = $_POST['payment_id'];
-            $paid_cash         = '';
-            $paid_creditcard   = str_replace(',', '', $_POST['TbFiReppaymentDetail']['paid_creditcard']);
+            $payment_id = $_POST['payment_id'];
+            $paid_cash = '';
+            $paid_creditcard = str_replace(',', '', $_POST['TbFiReppaymentDetail']['paid_creditcard']);
             $creditcard_number = $_POST['TbFiReppaymentDetail']['creditcard_number'];
-            $creditcard_type   = $_POST['TbFiReppaymentDetail']['creditcard_type'];
-            $checkother        = $_POST['other_bank'];
+            $creditcard_type = $_POST['TbFiReppaymentDetail']['creditcard_type'];
+            $checkother = $_POST['other_bank'];
             if (empty($checkother)) {
                 $creditcard_issueby = $_POST['TbFiReppaymentDetail']['creditcard_issueby'];
             } else {
                 $creditcard_issueby = $_POST['other_bank'];
             }
             if(isset($_POST['month']) && isset($_POST['year'])){
-            	$month  = $_POST['month'];
-            	$year  = $_POST['year'];
+            	$month = $_POST['month'];
+            	$year = $_POST['year'];
             }else{
-            	$month  = '';
-            	$year  = '';
+            	$month = '';
+            	$year = '';
             }
-            $creditcard_expdate   = '0000/00/00'; //$year . '/' . $month . '/' . '00';
-            $creditcard_approvedcode  = $_POST['TbFiReppaymentDetail']['creditcard_approvedcode'];
-            $piad_banktransfer  = '';
+            $creditcard_expdate  = '0000/00/00'; //$year . '/' . $month . '/' . '00';
+            $creditcard_approvedcode = $_POST['TbFiReppaymentDetail']['creditcard_approvedcode'];
+            $piad_banktransfer = '';
             $paid_banktransfer_date = '';
             $bankaccount_number = '';
-            $piad_Cheque   = '';
-            $cheque_number  = '';
-            $cheque_date  = '';
+            $piad_Cheque = '';
+            $cheque_number = '';
+            $cheque_date = '';
             $cheque_bankname = '';
             $payment_comment = '';
             $payment_status = '';
@@ -468,23 +457,23 @@ class PaymentController extends Controller
     {
         $userid = Yii::$app->user->identity->profile->user_id;
         if (Yii::$app->request->post()) {
-            $payment_id                 = $_POST['payment_id'];
-            $paid_cash                  = '';
-            $paid_creditcard            = '';
-            $creditcard_number          = '';
-            $creditcard_type            = '';
-            $creditcard_issueby         = '';
-            $creditcard_expdate         = '';
-            $creditcard_approvedcode    = '';
-            $piad_banktransfer          = str_replace(',', '', $_POST['TbFiReppaymentDetail']['piad_banktransfer']);
+            $payment_id = $_POST['payment_id'];
+            $paid_cash = '';
+            $paid_creditcard = '';
+            $creditcard_number = '';
+            $creditcard_type = '';
+            $creditcard_issueby = '';
+            $creditcard_expdate = '';
+            $creditcard_approvedcode = '';
+            $piad_banktransfer = str_replace(',', '', $_POST['TbFiReppaymentDetail']['piad_banktransfer']);
             $paid_banktransfer_date     = Yii::$app->componentdate->convertThaiToMysqlDate2($_POST['TbFiReppaymentDetail']['paid_banktransfer_date']);
             $bankaccount_number         = $_POST['TbFiReppaymentDetail']['bankaccount_number'];
-            $piad_Cheque                = '';
-            $cheque_number              = '';
-            $cheque_date                = '';
-            $cheque_bankname            = '';
-            $payment_comment            = '';
-            $payment_status             = '';
+            $piad_Cheque = '';
+            $cheque_number = '';
+            $cheque_date = '';
+            $cheque_bankname = '';
+            $payment_comment = '';
+            $payment_status = '';
             $piad_banktransfer_bankname = $_POST['TbFiReppaymentDetail']['piad_banktransfer_bankname'];
             Yii::$app->db->createCommand('CALL cmd_item_payment_save (:payment_id,:rep_id,:paid_cash,:paid_creditcard,:creditcard_number,:creditcard_type,:creditcard_issueby,:creditcard_expdate,:creditcard_approvedcode,:piad_banktransfer,:paid_banktransfer_date,:bankaccount_number,:piad_Cheque,:cheque_number,:cheque_date,:cheque_bankname,:payment_comment,:payment_status,:userid,:piad_banktransfer_bankname);')
                 ->bindParam(':payment_id', $payment_id)
@@ -658,7 +647,7 @@ class PaymentController extends Controller
             //     'positonY' => 'top',
             //     'positonX' => 'right'
             //  ]);
-            //  return $this->redirect('index.php?r=Payment/payment/index');
+            //  return $this->redirect('index');
             echo 'true';
 
         } else {
@@ -678,7 +667,7 @@ class PaymentController extends Controller
             //     'positonY' => 'top',
             //     'positonX' => 'right'
             //  ]);
-            // return $this->redirect('index.php?r=Payment/payment/index');
+            // return $this->redirect('index');
             echo 'false';
         }
     }
@@ -693,7 +682,7 @@ class PaymentController extends Controller
             'positonY' => 'top',
             'positonX' => 'right',
         ]);
-        return $this->redirect('index.php?r=Payment/payment/index');
+        return $this->redirect('index');
     }
     // public function actionSave() {
     //     $rep_id= $_POST['rep_id'];
@@ -718,7 +707,7 @@ class PaymentController extends Controller
     //             'positonY' => 'top',
     //             'positonX' => 'right'
     //          ]);
-    //         return $this->redirect('index.php?r=Payment/payment/index');
+    //         return $this->redirect('index');
     //     }else{
     //         echo 'false';
     //     }
@@ -758,15 +747,15 @@ class PaymentController extends Controller
 
         $header  = \app\modules\Payment\models\VwFiRepHeader::findOne(['rep_id' => $id]);
         $content = \app\modules\Payment\models\VwFiRepDetail::find()->where(['rep_id' => $id])->all();
-        $footer  = \app\modules\Payment\models\vwitempaid::findOne(['rep_id' => $id]);
+        $footer  = \app\modules\Payment\models\VwItemPaid::findOne(['rep_id' => $id]);
         $payment = \app\modules\Payment\models\vwfireppaymentdetail::find()->where(['rep_id' => $id])->all();
-        $ar_name = \app\modules\Payment\models\vwptar::find()->where(['pt_visit_number' => $header->pt_visit_number])->all();
+        $ar_name = \app\modules\Payment\models\VwPtAr::find()->where(['pt_visit_number' => $header['pt_visit_number']])->all();
         $ed      = $this->SumEd($id);
         $ned     = $this->SumNEd($id);
         $pdf     = new Pdf([
             'mode'         => Pdf::MODE_UTF8,
             'orientation'  => Pdf::ORIENT_PORTRAIT,
-            'destination'  => Pdf::DEST_DOWNLOAD,
+            'destination'  => Pdf::DEST_BROWSER,
             'format'       => Pdf::FORMAT_A4,
             'content'      => $this->renderPartial('newbill1', [
                 'content'    => $content,

@@ -8,8 +8,8 @@ use frontend\assets\DataTableAsset;
 DataTableAsset::register($this);
 
 $this->title = 'รายชื่อผู้ป่วยนอก';
-$this->params['breadcrumbs'][] = ['label' => 'งานเภสัชกรรม', 'url' => ['/pharmacy/order-rx/index']];
-$this->params['breadcrumbs'][] = ['label' => 'สั่งจ่ายยาผู้ป่วยนอก', 'url' => ['/pharmacy/order-rx/index']];
+$this->params['breadcrumbs'][] = ['label' => 'งานเภสัชกรรม', 'url' => ['/pharmacy/order-rx/check-list']];
+$this->params['breadcrumbs'][] = ['label' => 'สั่งจ่ายยาผู้ป่วยนอก', 'url' => ['/pharmacy/order-rx/check-list']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $style = 'border-top: 1px solid #ddd;';
@@ -57,12 +57,12 @@ $style = 'border-top: 1px solid #ddd;';
                                         <?= Html::tag('td', empty($v['pt_right']) ? '-' : $v['pt_right'], []) ?>
 
                                         <?php
-                                        $Button = Html::a('<span class="btn btn-success btn-xs"> Rx Order </span>', Url::to(['/pharmacy/order-rx/create', 'data' => $v['pt_visit_number'], 'type' => 'homemed']), [
+                                        $Button = Html::a('<span class="btn btn-success btn-xs"> Rx Order </span>', Url::to(['/pharmacy/order-rx/create', 'data' => $v['pt_visit_number'], 'type' => '1011']), [
                                                     'title' => 'Rx Order',
                                                     'data-pjax' => 0,
                                                 ])
                                                 . ' ' .
-                                                Html::a('<span class="btn btn-purple btn-xs">Chemo Rx Order </span>', Url::to(['/pharmacy/order-rx/create', 'data' => $v['pt_visit_number'], 'type' => 'chemo']), [
+                                                Html::a('<span class="btn btn-purple btn-xs">Chemo Rx Order </span>', Url::to(['/pharmacy/order-rx/create', 'data' => $v['pt_visit_number'], 'type' => '1012']), [
                                                     'title' => 'Chemo Rx Order',
                                                     'data-pjax' => 0,
                                         ]);

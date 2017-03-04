@@ -6,21 +6,16 @@ use yii\widgets\Pjax;
 use yii\helpers\Url;
 use kartik\widgets\ActiveForm;
 use kartik\widgets\Select2;
-
+$header_style = ['style' => 'text-align:center;color:#000000;'];
+echo $this->render('/config/Asset_Js.php');
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\Payment\models\VwFiRepListSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = "นำส่งใบแจ้งค่าใช้จ่าย";
 $this->params['breadcrumbs'][] = $this->title;
-$script = <<< JS
-$(document).ready(function () {
-        $('#tab_A').addClass("active");
-    });
-JS;
-$this->registerJs($script);
 ?>
-<!-- <span style="font-size:20px;color:#d73d32;text-align:center;"># <i class="glyphicon glyphicon-wrench" style="color:#d73d32;font-size:25px;"></i>ขออภัย หน้าเว็บไซต์นี้อยู่ระหว่างทดสอบระบบ #<br></span> -->
+<span style="font-size:20px;color:#d73d32;text-align:center;"># <i class="glyphicon glyphicon-wrench" style="color:#d73d32;font-size:25px;"></i>ขออภัย หน้าเว็บไซต์นี้อยู่ระหว่างทดสอบระบบ #<br></span>
 <div class="tabbable">
 <div class="tabbable" id="wait">
 <?php echo $this->render('_tab_menu'); ?>
@@ -52,91 +47,87 @@ $this->registerJs($script);
                             'headerOptions' => ['class' => 'kartik-sheet-style', 'style' => 'color:#000000;']
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'ใบแจ้งค่าใช้จ่าย',
                             'hAlign' => GridView::ALIGN_CENTER,
                             'value' => function ($model) {
-                        if ($model->inv_id == null) {
-                            return '-';
-                        } else {
-                            return $model->inv_id;
-                        }
-                    }
+                                if ($model->inv_id == null) {
+                                    return '-';
+                                } else {
+                                    return $model->inv_id;
+                                }
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'วันที่',
                             'format' => ['date', 'php:d/m/Y'],
                             'hAlign' => GridView::ALIGN_CENTER,
                             'value' => function ($model) {
-                        if ($model->invdate == null) {
-                            return '-';
-                        } else {
-                            return $model->invdate;
-                        }
-                    }
+                                return $model->invdate;
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'HN',
                             'hAlign' => GridView::ALIGN_CENTER,
                             'value' => function ($model) {
-                        if ($model->pt_hospital_number == null) {
-                            return '-';
-                        } else {
-                            return $model->pt_hospital_number;
-                        }
-                    }
+                                if ($model->pt_hospital_number == null) {
+                                    return '-';
+                                } else {
+                                    return $model->pt_hospital_number;
+                                }
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'VN : AN',
                             'hAlign' => GridView::ALIGN_CENTER,
                             'value' => function ($model) {
-                        if ($model->VN_AN == null) {
-                            return '-';
-                        } else {
-                            return $model->VN_AN;
-                        }
-                    }
+                                if ($model->VN_AN == null) {
+                                    return '-';
+                                } else {
+                                    return $model->VN_AN;
+                                }
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'ชื่อ-นามสกุลผู้ป่วย',
                             'hAlign' => GridView::ALIGN_LEFT,
                             'value' => function ($model) {
-                        if ($model->pt_name == null) {
-                            return '-';
-                        } else {
-                            return $model->pt_name;
-                        }
-                    }
+                                if ($model->pt_name == null) {
+                                    return '-';
+                                } else {
+                                    return $model->pt_name;
+                                }
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'สิทธิการรักษา',
                             //'format' => '[decimal,2]',
                             'hAlign' => GridView::ALIGN_LEFT,
                             'value' => function ($model) {
-                        if ($model->medical_right_desc == null) {
-                            return '-';
-                        } else {
-                            return $model->medical_right_desc;
-                        }
-                    }
+                                if ($model->medical_right_desc == null) {
+                                    return '-';
+                                } else {
+                                    return $model->medical_right_desc;
+                                }
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'เป็นเงิน',
                             'format' => ['decimal',2],
                             'hAlign' => GridView::ALIGN_RIGHT,
                             'value' => function ($model) {
-                        if ($model->inv_Amt_total == null) {
-                            return '0.00';
-                        } else {
-                            return $model->inv_Amt_total;
-                        }
-                    }
+                                if ($model->inv_Amt_total == null) {
+                                    return '0';
+                                } else {
+                                    return $model->inv_Amt_total;
+                                }
+                            }
                         ],
                     ]
                 ]);
@@ -148,8 +139,7 @@ $this->registerJs($script);
                 </div>
                 <div class="form-group" style="text-align: right;margin-right: 10px">
                     <?= Html::a('Close', ['index'], ['class' => 'btn btn-default']) ?>
-                    <?= Html::button('Clear', ['class' => 'btn btn-danger', 'id' => 'Clear']) ?>
-                    <a class="btn btn-success" id="CrSummary">สรุปนำส่งใบแจ้งค่าใช้จ่าย</a>
+                    <?= Html::a('สรุปนำส่งใบแจ้งค่าใช้จ่าย',false, ['class' => 'btn btn-success','id'=>'CrSummary']) ?>
                     <?= Html::button('พิมพ์ใบนำส่งเรียกเก็บ', ['class' => 'btn btn-info', 'id' => 'Print']) ?>
                 </div> 
             </div>
@@ -172,11 +162,11 @@ $script = <<< JS
       var cr_summary_remark = $('#cr_summary_remark').val();
       var pt_visit_status =  $('#pt_visit_status').val();
       if(pt_visit_status == ''){
-            swal("","Checkbox Dischage","warning");
+            swal("Checkbox Dischage","","warning");
       }else{
         wait();
           $.get(
-                    'index.php?r=Payment/cr-payment/cr-summary',
+                    'cr-summary',
                     {
                        cr_summary_id,cr_summary_pt_visit_type,cr_summary_remark,pt_visit_status
                     },
@@ -184,7 +174,7 @@ $script = <<< JS
                     {   
                         if(data == 'false'){
                                 $('#wait').waitMe('hide');
-                                swal("","ไม่มีข้อมูลที่จะนำส่ง","warning");
+                                swal("ไม่มีข้อมูลที่จะนำส่ง!","","warning");
                             }else{
                                 $('#wait').waitMe('hide');
                                 $.pjax.reload({container:'#cr_pjax'});

@@ -8,14 +8,14 @@ use kartik\widgets\ActiveForm;
 use kartik\widgets\Select2;
 use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
-
+$header_style = ['style' => 'text-align:center;color:#000000;'];
+echo $this->render('/config/Asset_Js.php');
 //$_SESSION['section_view'] = $SectionID;
 /* @var $this yii\web-\View */
 /* @var $searchModel ----app\modules\Payment\models\VwFiRepListSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 $this->title = "ประวัติรายการนำส่งการชำระเงิน";
 $this->params['breadcrumbs'][] = $this->title;
-$this->registerJs('$("#tab_B").addClass("active");');
 
 $layout = <<< HTML
 <div class="pull-right">{toggleData}{export}</div>
@@ -144,7 +144,6 @@ $pdfFooter = [
                             
                             'header' => '<font color="black">วันที่</font>',
                             'attribute' => 'rep_summary_date',
-                            'options' => ['style' => 'width:240px;'],
                             'format' => ['date', 'php:d/m/Y'],
                             'hAlign' => GridView::ALIGN_CENTER,
                             'value' => function ($model) {
@@ -169,18 +168,19 @@ $pdfFooter = [
                                 return (!empty($model->SectionDecs)? $model->SectionDecs:'0');
                             },
                             'filterType' => GridView::FILTER_SELECT2,
-                            'filter' => ArrayHelper::map(\app\modules\Payment\models\TbSection::find()->where(['SectionID'=>[2013,2014]])->all(), 'SectionID', 'SectionDecs'),
+                            'filter' => ArrayHelper::map(\app\modules\Payment\models\TbSection::find()->where(['SectionID'=>['S011','S012']])->all(), 'SectionID', 'SectionDecs'),
                             'filterWidgetOptions' => [
                                 'pluginOptions' => ['allowClear' => true],
                             ],
                             'filterInputOptions' => ['placeholder' => 'ประเภท'],
                         ],
                         [   
-                            'headerOptions' => ['style' => 'text-align:center;'],
+                            'headerOptions' => ['class'=>'kv-align-middle','style' => 'text-align:center;color:#000000;','rowspan'=>'2'],
                             'header' => '<font color="black">เป็นเงิน</font>',
                             'format' => ['decimal', 2],
                             'hAlign' => kartik\grid\GridView::ALIGN_RIGHT,
                             'filter' => false,
+                            'filterOptions' => ['style'=>'display:none;'],
                             'value' => function ($model) {
                                 return (!empty($model->rep_summary_sum)? $model->rep_summary_sum:'0');
                             }
@@ -202,28 +202,28 @@ $pdfFooter = [
                         ],
                         [
                             'class' => 'kartik\grid\ActionColumn',
-                            'options' => ['style' => 'width:160px;'],
                             'header' => 'Actions',
+                            'noWrap' => true,
                             'hAlign' => GridView::ALIGN_CENTER,
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'template' => '{select} {edit} {delete}',
                             'buttons' => [
                                 'select' => function ($url, $model) {
-                                    return Html::a('<span class="btn btn-success btn-xs">Select</span>','#', [
+                                    return Html::a('<span class="btn btn-success btn-xs">Select</span>',false, [
                                                     'title' => Yii::t('app', 'Select'),
                                                     'class' => 'activity-select-link',
                                                     'data-id' => $model->rep_summary_id,
                                             ]);
                                 },
                                        'edit' => function ($url, $model) {
-                                    return Html::a('<span class="btn btn-info btn-xs">Edit</span>','#', [
+                                    return Html::a('<span class="btn btn-info btn-xs">Edit</span>',false, [
                                                     'title' => Yii::t('app', 'Edit'),
                                                     'class' => 'activity-edit-link',
                                                     'data-id' => $model->rep_summary_id,
                                             ]);
                                 },
                                     'delete' => function ($url, $model) {
-                                        return Html::a('<span class="btn btn-danger btn-xs">Delete</span>','#', [
+                                        return Html::a('<span class="btn btn-danger btn-xs">Delete</span>',false, [
                                                         'title' => Yii::t('app', 'Delete'),
                                                         'class' => 'activity-delete-link',
                                                         'data-id' => $model->rep_summary_id,
@@ -242,7 +242,7 @@ $pdfFooter = [
                                 'showPageSummary' => true,
                                 'showFooter' => true,
                                 'showCaption' => true,
-                                'filename' => 'Report_summary_cash.pdf',
+                                'filename' => 'report_summary_cash.pdf',
                                 'alertMsg' => false,
                                 'options' => ['title' => 'Portable Document Format'],
                                 'title' => 'test',
@@ -278,7 +278,7 @@ $pdfFooter = [
                                 'showPageSummary' => true,
                                 'showFooter' => true,
                                 'showCaption' => true,
-                                'filename' => 'Report_summary_cash',
+                                'filename' => 'summary_cash',
                                 'alertMsg' => 'The EXCEL export file will be generated for download.',
                                 'options' => ['title' => 'Microsoft Excel 95+'],
                                 'mime' => 'application/vnd.ms-excel',
@@ -324,7 +324,7 @@ $script = <<< JS
     $('.activity-select-link').click(function (e) {
         var rep_summary_id = $(this).attr("data-id");
         $.get(
-                    'index.php?r=Payment/send-cash/detail-summary',
+                    'detail-summary',
                     {
                        rep_summary_id
                     },

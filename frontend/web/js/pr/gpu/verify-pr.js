@@ -212,7 +212,21 @@ $('.auto-approve').click(function (e) {
                                                                 PRID: PRID
                                                             },
                                                             function (result) {
-
+                                                                if (result === 'ต้องมีอย่างน้อย 1 รายการ ที่ ok') {
+                                                                    swal(result, "", "error");
+                                                                } else {
+                                                                    $.post(
+                                                                            'auto-approve',
+                                                                            {
+                                                                                PRID: PRID
+                                                                            },
+                                                                            function (result) {
+                                                                                //$.pjax.reload({container: '#verify_pjax_id'});
+                                                                            }
+                                                                    ).fail(function (xhr, status, error) {
+                                                                        //swal("Oops...", error, "error");
+                                                                    });
+                                                                }
                                                                 //$.pjax.reload({container: '#verify_pjax_id'});
                                                             }
                                                     ).fail(function (xhr, status, error) {

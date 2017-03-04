@@ -6,6 +6,8 @@ use yii\widgets\Pjax;
 use yii\helpers\Url;
 use kartik\widgets\ActiveForm;
 use kartik\widgets\Select2;
+$header_style = ['style' => 'text-align:center;color:#000000;'];
+echo $this->render('/config/Asset_Js.php');
 //$_SESSION['section_view'] = $SectionID;
 /* @var $this yii\web-\View */
 /* @var $searchModel ----app\modules\Payment\models\VwFiRepListSearch */
@@ -47,136 +49,132 @@ $this->registerJs('$("#tab_A").addClass("active");');
                             'headerOptions' => ['class' => 'kartik-sheet-style', 'style' => 'color:#000000;']
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'ใบเสร็จรับเงิน',
                             'hAlign' => GridView::ALIGN_CENTER,
                             'value' => function ($model) {
-                        if ($model->rep_num == null) {
-                            return '-';
-                        } else {
-                            return $model->rep_num;
-                        }
-                    }
+                                if ($model->rep_num == null) {
+                                    return '-';
+                                } else {
+                                    return $model->rep_num;
+                                }
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'วันที่',
                             'format' => ['date', 'php:d/m/Y'],
                             'hAlign' => GridView::ALIGN_CENTER,
                             'value' => function ($model) {
-                        if ($model->repdate == null) {
-                            return '-';
-                        } else {
-                            return $model->repdate;
-                        }
-                    }
+                                   return $model->repdate;
+                                }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'HN',
                             'hAlign' => GridView::ALIGN_CENTER,
                             'value' => function ($model) {
-                        if ($model->pt_hospital_number == null) {
-                            return '-';
-                        } else {
-                            return $model->pt_hospital_number;
-                        }
-                    }
+                                if ($model->pt_hospital_number == null) {
+                                    return '-';
+                                } else {
+                                    return $model->pt_hospital_number;
+                                }
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'VN : AN',
                             'hAlign' => GridView::ALIGN_CENTER,
                             'value' => function ($model) {
-                        if ($model->pt_admission_number == null) {
-                            return '-';
-                        } else {
-                            return $model->pt_admission_number;
-                        }
-                    }
+                                if ($model->pt_admission_number == null) {
+                                    return '-';
+                                } else {
+                                    return $model->pt_admission_number;
+                                }
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'ชื่อ-นามสกุลผู้ป่วย',
                             'pageSummary' => 'รวม',
                             'hAlign' => GridView::ALIGN_LEFT,
                             'value' => function ($model) {
-                        if ($model->pt_name == null) {
-                            return '-';
-                        } else {
-                            return $model->pt_name;
-                        }
-                    }
+                                    if ($model->pt_name == null) {
+                                        return '-';
+                                    } else {
+                                        return $model->pt_name;
+                                    }
+                                }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'เงินสด',
                             'format' => ['decimal',2],
                             'pageSummary' => true,
                             'hAlign' => GridView::ALIGN_RIGHT,
                             'value' => function ($model) {
-                        if ($model->sum_cash == null) {
-                            return '0.00';
-                        } else {
-                            return $model->sum_cash;
-                        }
-                    }
+                                if ($model->sum_cash == null) {
+                                    return '0';
+                                } else {
+                                    return $model->sum_cash;
+                                }
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'บัตรเครดิต',
                             'format' => ['decimal',2],
                             'pageSummary' => true,
                             'hAlign' => GridView::ALIGN_RIGHT,
                             'value' => function ($model) {
-                        if ($model->sum_creditcard == null) {
-                            return '0.00';
-                        } else {
-                            return $model->sum_creditcard;
-                        }
-                    }
+                                if ($model->sum_creditcard == null) {
+                                    return '0';
+                                } else {
+                                    return $model->sum_creditcard;
+                                }
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'โอนเงิน',
                             'format' => ['decimal',2],
                             'pageSummary' => true,
                             'hAlign' => GridView::ALIGN_RIGHT,
                             'value' => function ($model) {
-                        if ($model->sum_banktransfer == null) {
-                            return '0.00';
-                        } else {
-                            return $model->sum_banktransfer;
-                        }
-                    }
+                                if ($model->sum_banktransfer == null) {
+                                    return '0';
+                                } else {
+                                    return $model->sum_banktransfer;
+                                }
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'เช็คเงินสด',
                             'format' => ['decimal',2],
                             'pageSummary' => true,
                             'hAlign' => GridView::ALIGN_RIGHT,
                             'value' => function ($model) {
-                        if ($model->sum_cheque == null) {
-                            return '0.00';
-                        } else {
-                            return $model->sum_cheque;
-                        }
-                    }
+                                if ($model->sum_cheque == null) {
+                                    return '0';
+                                } else {
+                                    return $model->sum_cheque;
+                                }
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'รวมเป็นเงิน',
                             'format' => ['decimal',2],
                             'pageSummary' => true,
                             'hAlign' => GridView::ALIGN_RIGHT,
                             'value' => function ($model) {
-                        if ($model->rep_Amt_net == null) {
-                            return '0.00';
-                        } else {
-                            return $model->rep_Amt_net;
-                        }
-                    }
+                                if ($model->rep_Amt_net == null) {
+                                    return '0';
+                                } else {
+                                    return $model->rep_Amt_net;
+                                }
+                            }
                         ],
                     ]
                 ]);
@@ -208,7 +206,7 @@ $this->registerJs('$("#tab_A").addClass("active");');
     </div>
 </div>
 
-<?php //kepalung/ace/teo/naja/rudy/----------libo/ace/teo/naja/rudy/--------------------karin/ace/teo/jave/rudy
+<?php 
 \yii\bootstrap\Modal::begin([
     'id' => 'form_send',
     'header' => '<h4 class="modal-title">รายละเอียดเงินสด</h4>',
@@ -216,11 +214,6 @@ $this->registerJs('$("#tab_A").addClass("active");');
 ]);
 ?>
 <div id="data_send">
-    <h1><p> </p></h1><br>
-    <h1><p> </p></h1><br>
-    <h1><p> </p></h1><br>
-    <h1><p> </p></h1><br>
-    <h1><p> </p></h1><br>
 </div>
 <?php \yii\bootstrap\Modal::end(); ?>
 <?php
@@ -235,8 +228,8 @@ $script = <<< JS
          swal("","กรุณากรอกวันที่นำส่งเงินสด","warning");
       }else{
           swal({   
-                title: "",   
-                text: "ยืนยันคำสั่ง?",   
+                title: "ยืนยันคำสั่ง?",   
+                text: "",   
                 type: "warning",   
                 showCancelButton: true,   
                 confirmButtonColor: "#53a93f",   
@@ -245,7 +238,7 @@ $script = <<< JS
          },function(){  
           wait();
           $.get(
-                    'index.php?r=Payment/send-cash/send',
+                    'send',
                     {
                        rep_summary_id,rep_summary_date,rep_summary_section,rep_summary_remark
                     },
@@ -253,7 +246,7 @@ $script = <<< JS
                     {   
                         if(data == 'false'){
                             $('#wait').waitMe('hide');
-                            swal("","ไม่มีข้อมูลที่จะนำส่ง","warning");
+                            swal("ไม่มีข้อมูลที่จะนำส่ง!","","warning");
                         }else{
                             $('#wait').waitMe('hide');
                             $('#wait').waitMe('hide');
@@ -270,7 +263,7 @@ $script = <<< JS
     });
     $('#Print').click(function (e) { 
     	//alert('รอลิงค์รายงาน');     
-        window.open("http://www.udcancer.org/km4d/frontend/web/index.php?r=Payment/send-cash/summary&id="+$('#rep_summary_id').val(),'_blank');      
+        window.open("/km4/Payment/send-cash/summary?id="+$('#rep_summary_id').val(),'_blank');      
  	});
     function wait(){
             var current_effect = 'ios';

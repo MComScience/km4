@@ -91,7 +91,7 @@ class TbCpoeDetail extends \yii\db\ActiveRecord
         return [
             [['cpoe_detail_date', 'cpoe_detail_time', 'cpoe_begindate', 'cpeo_begintime', 'cpoe_enddate', 'cpoe_endtime', 'cpoe_verifydate', 'cpoe_checkdate', 'cpoe_issuedate'], 'safe'],
             [['cpoe_seq', 'cpoe_id', 'cpoe_parentid', 'cpoe_level', 'cpoe_drugset_id', 'cpoe_Itemtype', 'cpoe_rxordertype', 'ItemID', 'cpoe_narcotics_confirmed', 'cpoe_ItemStatus', 'cpoe_route_id', 'cpoe_prn_with_stat', 'cpoe_stat', 'cpoe_period', 'cpoe_period_value', 'cpoe_period_unit', 'cpoe_frequency', 'cpoe_frequency_unit', 'cpoe_dayrepeat', 'cpoe_dayrepeat_mon', 'cpoe_dayrepeat_tue', 'cpoe_dayrepeat_wed', 'cpoe_dayrepeat_thu', 'cpoe_dayrepeat_fri', 'cpoe_dayrepeat_sat', 'cpoe_dayrepeat_sun', 'cpoe_once', 'cpoe_repeat', 'cpoe_drugrouteid', 'cpoe_drugprandialadviceid', 'cpoe_verifyby', 'cpoe_checkby', 'cpoe_issueby', 'cpoe_seq_mindelay', 'chemo_regimen_ids'], 'safe'],
-            [['ItemQty', 'ItemPrice', 'Item_Amt', 'cpoe_iv_driprate', 'cpoe_frequency_value', 'cpoe_doseqty'], 'number'],
+            [['ItemPrice', 'Item_Amt', 'cpoe_iv_driprate', 'cpoe_frequency_value'], 'number'],
             [['ised', 'ised_reason', 'cpoe_ocpa', 'cpoe_cpr', 'cpoe_sig_code'], 'string', 'max' => 50],
             [['Item_comment1', 'Item_comment2', 'Item_comment3', 'Item_comment4', 'cpoe_prn_reason', 'cpoe_adj_note'], 'string', 'max' => 255],
             [['cpoe_adj_request'], 'string', 'max' => 10],

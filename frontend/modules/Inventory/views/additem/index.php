@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 //'bFilter' => false,
                                 'language' => [
                                     'info' => 'แสดง _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ',
-                                    'lengthMenu' => '',//_MENU_
+                                    'lengthMenu' => '', //_MENU_
                                     'sSearchPlaceholder' => 'ค้นหาข้อมูล...',
                                     'search' => '_INPUT_ <a class="btn btn-success" href="create?gpu=&itemid=&edit=yes" data-pjax="0"><i class="glyphicon glyphicon-plus"></i> เพิ่มรายการสินค้า</a>'
                                 ],
@@ -105,16 +105,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'attribute' => 'ItemName',
                                     'headerOptions' => ['style' => 'text-align:center;color:black;background-color: #DFF0D8'],
                                     'value' => function($model) {
-                                return $model['ItemName'];
-                            }
+                                        return $model['ItemName'];
+                                    }
                                 ],
                                 [
                                     'header' => 'ชื่อยาการค้า',
                                     'attribute' => 'ItemName',
                                     'headerOptions' => ['style' => 'text-align:center;color:black;background-color: #DFF0D8'],
                                     'value' => function($model) {
-                                return $model['TradeName_TMT'];
-                            }
+                                        return $model['TradeName_TMT'];
+                                    }
                                 ],
                                 //columns
                                 [
@@ -124,6 +124,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'contentOptions' => ['class' => 'text-center'],
                                     'template' => '{detail} {edit} {discontinus} {delete}',
                                     'buttons' => [
+//                                        'status' => function ($url, $model) {
+//                                            if ($model['ItemStatusID'] == 2) {
+//                                                return Html::a('A', $url, [
+//                                                            'title' => Yii::t('app', 'Detail'),
+//                                                            'class' => 'btn btn-default'
+//                                                ]);
+//                                            } else {
+//                                                return '';
+//                                            }
+//                                        },
                                         /* Edit */
                                         'detail' => function ($url, $model) {
                                             return Html::a('<span class="btn btn-success btn-xs btn-group tooltip-lg"> Detail </span>', $url, [
@@ -134,14 +144,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         'data-pjax' => 0,
                                             ]);
                                         },
-                                                /* Edit */
-                                                'edit' => function ($url, $model) {
+                                        /* Edit */
+                                        'edit' => function ($url, $model) {
                                             return Html::a('<span class="btn btn-info btn-xs btn-group"> Edit </span>', $url, [
                                                         'title' => Yii::t('app', 'Edit'),
                                                         'data-pjax' => 0,
                                             ]);
                                         },
-                                                'discontinus' => function ($url, $model, $key) {
+                                        'discontinus' => function ($url, $model, $key) {
                                             if ($model['ItemStatusID'] == 2) {
                                                 return Html::a('<span class="btn btn-warning btn-xs btn-group tooltip-lg"> Discontinus </span>', '#', [
                                                             'title' => Yii::t('app', 'Discontinus'),
@@ -160,8 +170,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 ]);
                                             }
                                         },
-                                                //view button
-                                                'delete' => function ($url, $model, $key) {
+                                        //view button
+                                        'delete' => function ($url, $model, $key) {
                                             return Html::a('<span class="btn btn-danger btn-xs btn-group"> Delete </span>', $url, [
                                                         'title' => Yii::t('app', 'Delete'),
                                                         'class' => 'activity-view-delete',
@@ -170,8 +180,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         'data-pjax' => '0',
                                             ]);
                                         },
-                                            ],
-                                            'urlCreator' => function ($action, $model, $key, $index) {
+                                    ],
+                                    'urlCreator' => function ($action, $model, $key, $index) {
                                         if ($action === 'detail') {
                                             return Url::to(['createitem', 'itemid' => $key, 'true' => 'view']);
                                         }
@@ -179,42 +189,42 @@ $this->params['breadcrumbs'][] = $this->title;
                                             return Url::to(['createitem', 'itemid' => $key, 'true' => 'edit']);
                                         }
                                     }
-                                        ],
-                                    ],
-                                ]);
-                                ?>
-                                <?php Pjax::end(); ?>
-                            </div>
-                            <br/>
-                            <br/>
-                        </div>
+                                ],
+                            ],
+                        ]);
+                        ?>
+                        <?php Pjax::end(); ?>
                     </div>
+                    <br/>
+                    <br/>
                 </div>
-                <div class="horizontal-space"></div>
-
             </div>
         </div>
-        <?php foreach (Yii::$app->session->getAllFlashes() as $message):; ?>
-            <?php
-            echo \kartik\widgets\Growl::widget([
-                'type' => (!empty($message['type'])) ? $message['type'] : 'danger',
-                'title' => (!empty($message['title'])) ? Html::encode($message['title']) : 'Title Not Set!',
-                'icon' => (!empty($message['icon'])) ? $message['icon'] : 'fa fa-info',
-                'body' => (!empty($message['message'])) ? Html::encode($message['message']) : 'Message Not Set!',
-                'showSeparator' => true,
-                'delay' => 0, //This delay is how long before the message shows
-                'pluginOptions' => [
-                    'delay' => (!empty($message['duration'])) ? $message['duration'] : 1000, //This delay is how long the message shows for
-                    'placement' => [
-                        'from' => (!empty($message['positonY'])) ? $message['positonY'] : 'top',
-                        'align' => (!empty($message['positonX'])) ? $message['positonX'] : 'right',
-                    ]
-                ]
-            ]);
-            ?>
-        <?php endforeach; ?>
-        <?php
-        $script = <<< JS
+        <div class="horizontal-space"></div>
+
+    </div>
+</div>
+<?php foreach (Yii::$app->session->getAllFlashes() as $message):; ?>
+    <?php
+    echo \kartik\widgets\Growl::widget([
+        'type' => (!empty($message['type'])) ? $message['type'] : 'danger',
+        'title' => (!empty($message['title'])) ? Html::encode($message['title']) : 'Title Not Set!',
+        'icon' => (!empty($message['icon'])) ? $message['icon'] : 'fa fa-info',
+        'body' => (!empty($message['message'])) ? Html::encode($message['message']) : 'Message Not Set!',
+        'showSeparator' => true,
+        'delay' => 0, //This delay is how long before the message shows
+        'pluginOptions' => [
+            'delay' => (!empty($message['duration'])) ? $message['duration'] : 1000, //This delay is how long the message shows for
+            'placement' => [
+                'from' => (!empty($message['positonY'])) ? $message['positonY'] : 'top',
+                'align' => (!empty($message['positonX'])) ? $message['positonX'] : 'right',
+            ]
+        ]
+    ]);
+    ?>
+<?php endforeach; ?>
+<?php
+$script = <<< JS
 function init_click_handlers() {
     $(".activity-view-delete").click(function (e) {
         var fID = $(this).closest("tr").data("key");
@@ -274,5 +284,5 @@ $("#tb_item_pjax").on("pjax:success", function () {
     init_click_handlers(); //reactivate links in grid after pjax update
 });
 JS;
-        $this->registerJs($script, \yii\web\View::POS_END, 'additem');
-        ?>
+$this->registerJs($script, \yii\web\View::POS_END, 'additem');
+?>

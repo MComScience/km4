@@ -1,7 +1,8 @@
 <?php
-
 use kartik\grid\GridView;
 use yii\helpers\Html;
+echo $this->render('/config/Asset_Js.php');
+$header_style = ['style' => 'text-align:center;background-color: #ddd;color:#000000;'];
 ?>
 <div class="tabbable">
     <div class="tab-content tabs-flat">
@@ -32,7 +33,6 @@ use yii\helpers\Html;
                             <?=
                             kartik\grid\GridView::widget([
                                 'dataProvider' => $dataProviderFT,
-                                //'filterModel' => $searchModelFT,
                                 'bootstrap' => true,
                                 'responsiveWrap' => FALSE,
                                 'responsive' => true,
@@ -44,9 +44,7 @@ use yii\helpers\Html;
                                 'toggleData' => false,
                                 'pageSummaryRowOptions' => ['class' => 'default', 'id' => 'setting_summary_row'],
                                 'layout' => Yii::$app->componentdate->layoutgridview(),
-                                //'layout' => "{summary}\n{items}\n{pager}",
                                 'headerRowOptions' => ['class' => GridView::TYPE_SUCCESS],
-                                //'headerRowOptions' => ['class' => kartik\grid\GridView::TYPE_DEFAULT],
                                 'columns' => [
                                     [
                                         'class' => 'kartik\grid\SerialColumn',
@@ -56,34 +54,34 @@ use yii\helpers\Html;
                                         'headerOptions' => ['class' => 'kartik-sheet-style', 'style' => 'background-color: #ddd;color:#000000;'],
                                     ],
                                     [
-                                        'headerOptions' => ['style' => 'text-align:center;background-color: #ddd;color:#000000;'],
+                                        'headerOptions' => $header_style,
                                         'header' => 'รายละเอียดการชำระ',
                                         'pageSummary' => '<div  style="text-align: right;margin-right: 15px;">รวม</div>',
                                         'hAlign' => kartik\grid\GridView::ALIGN_LEFT,
                                         'value' => function ($model) {
-                                    if ($model->piad_type == NULL) {
-                                        return '-';
-                                    } else {
-                                        return $model->piad_type;
-                                    }
-                                }
+                                            if ($model->piad_type == NULL) {
+                                                return '-';
+                                            } else {
+                                                return $model->piad_type;
+                                            }
+                                        }
                                     ],
                                     [
-                                        'headerOptions' => ['style' => 'text-align:center;background-color: #ddd;color:#000000;'],
+                                        'headerOptions' => $header_style,
                                         'header' => 'เป็นเงิน',
                                         'format' => ['decimal', 2],
                                         'pageSummary' => true,
                                         'hAlign' => kartik\grid\GridView::ALIGN_RIGHT,
                                         'value' => function ($model) {
-                                    if ($model->paid_amt == NULL) {
-                                        return '0';
-                                    } else {
-                                        return $model->paid_amt;
-                                    }
-                                }
+                                            if ($model->paid_amt == NULL) {
+                                                return '0';
+                                            } else {
+                                                return $model->paid_amt;
+                                            }
+                                        }
                                     ],
 //                                    [
-//                                        'headerOptions' => ['style' => 'text-align:center;background-color: #ddd;color:#000000;'],
+//                                        'headerOptions' => $header_style,
 //                                        'header' => 'Type',
 //                                        //'format' => ['decimal', 2],
 //                                        //'pageSummary' => true,
@@ -101,24 +99,21 @@ use yii\helpers\Html;
                                         'header' => 'Actions',
                                         'noWrap' => true,
                                         'pageSummary' => '<div style="margin-right: 60px;">บาท</div>',
-                                        'options' => ['style' => 'width:120px;'],
                                         'hAlign' => \kartik\grid\GridView::ALIGN_CENTER,
-                                        'headerOptions' => ['style' => 'text-align:center;background-color: #ddd;color:#000000;'],
+                                        'headerOptions' => $header_style,
                                         'template' => '{update} {delete}',
                                         'buttonOptions' => ['class' => 'btn btn-default'],
                                         'buttons' => [
                                             'update' => function ($url, $model, $key) {
-                                                return Html::a('<span class="btn btn-info btn-xs">Edit</span>', '#', [
+                                                return Html::a('<span class="btn btn-info btn-xs">Edit</span>', false, [
                                                             'class' => 'activity-editdetail-link',
                                                             'title' => 'app', 'Edit',
-                                                            //'data-toggle' => 'modal',
                                                             'data-id' => $key,
                                                 ]);
                                             },
                                                     'delete' => function ($url, $model, $key) {
-                                                return Html::a('<span class="btn btn-danger btn-xs"> Delete </span> ', '#', [
+                                                return Html::a('<span class="btn btn-danger btn-xs"> Delete </span> ',false, [
                                                             'title' => 'Delete',
-                                                            //'data-toggle' => 'modal',
                                                             'class' => 'activity-deletedetail-link',
                                                             'data-id' => $key,
                                                 ]);
@@ -129,13 +124,12 @@ use yii\helpers\Html;
                                     ]);
                                     ?>
                                 </div>
-                                <?php }?>
-                                <?php if ($view == 'history') { ?>
-                        <div class="form-group">
+                        <?php }?>
+                        <?php if ($view == 'history') { ?>
+                            <div class="form-group">
                             <?=
                             kartik\grid\GridView::widget([
                                 'dataProvider' => $dataProviderFT,
-                                //'filterModel' => $searchModelFT,
                                 'bootstrap' => true,
                                 'responsiveWrap' => FALSE,
                                 'responsive' => true,
@@ -147,9 +141,7 @@ use yii\helpers\Html;
                                 'toggleData' => false,
                                 'pageSummaryRowOptions' => ['class' => 'default', 'id' => 'setting_summary_row'],
                                 'layout' => Yii::$app->componentdate->layoutgridview(),
-                                //'layout' => "{summary}\n{items}\n{pager}",
                                 'headerRowOptions' => ['class' => GridView::TYPE_SUCCESS],
-                                //'headerRowOptions' => ['class' => kartik\grid\GridView::TYPE_DEFAULT],
                                 'columns' => [
                                     [
                                         'class' => 'kartik\grid\SerialColumn',
@@ -159,31 +151,31 @@ use yii\helpers\Html;
                                         'headerOptions' => ['class' => 'kartik-sheet-style', 'style' => 'background-color: #ddd;color:#000000;'],
                                     ],
                                     [
-                                        'headerOptions' => ['style' => 'text-align:center;background-color: #ddd;color:#000000;'],
+                                        'headerOptions' => $header_style,
                                         'header' => 'รายละเอียดการชำระ',
                                         'pageSummary' => '<div  style="text-align: right;margin-right: 15px;">รวม</div>',
                                         'hAlign' => kartik\grid\GridView::ALIGN_LEFT,
                                         'value' => function ($model) {
-                                    if ($model->piad_type == NULL) {
-                                        return '-';
-                                    } else {
-                                        return $model->piad_type;
-                                    }
-                                }
+                                            if ($model->piad_type == NULL) {
+                                                return '-';
+                                            } else {
+                                                return $model->piad_type;
+                                            }
+                                        }
                                     ],
                                     [
-                                        'headerOptions' => ['style' => 'text-align:center;background-color: #ddd;color:#000000;'],
+                                        'headerOptions' => $header_style,
                                         'header' => 'เป็นเงิน',
                                         'format' => ['decimal', 2],
                                         'pageSummary' => true,
                                         'hAlign' => kartik\grid\GridView::ALIGN_RIGHT,
                                         'value' => function ($model) {
-                                    if ($model->paid_amt == NULL) {
-                                        return '0';
-                                    } else {
-                                        return $model->paid_amt;
-                                    }
-                                }
+                                            if ($model->paid_amt == NULL) {
+                                                return '0';
+                                            } else {
+                                                return $model->paid_amt;
+                                            }
+                                        }
                                     ],
                                 
                                         ],
@@ -320,7 +312,7 @@ use yii\helpers\Html;
                                 <a class="btn btn-info" id="Save" onclick="Save();">Save</a>
                                 <?php } ?>
                                 <?php if ($view == 'history') { ?> 
-                                 <?= Html::button('พิมพ์ใบเสร็จ', ['class' => 'btn btn-info', 'id' => 'Print']) ?>
+                                 <?= Html::a('พิมพ์ใบเสร็จ',['/Payment/payment/newbill1','id'=>$modelHD->rep_id],['class'=>'btn btn-info','target'=>"_blank",'data-pjax'=>0]) ?>
                                 <?php } ?>
                             </div>    
                         </div>
@@ -336,13 +328,7 @@ use yii\helpers\Html;
             'size' => 'modal-md modal-primary',
         ]);
         ?>
-        <div id="data_Cash">
-            <h1><p> </p></h1><br>
-            <h1><p> </p></h1><br>
-            <h1><p> </p></h1><br>
-            <h1><p> </p></h1><br>
-            <h1><p> </p></h1><br>
-        </div>
+        <div id="data_Cash"></div>
         <?php \yii\bootstrap\Modal::end(); ?>
         <?php
         \yii\bootstrap\Modal::begin([
@@ -351,13 +337,7 @@ use yii\helpers\Html;
             'size' => 'modal-md modal-primary',
         ]);
         ?>
-        <div id="data_Creditcard">
-            <h1><p> </p></h1><br>
-            <h1><p> </p></h1><br>
-            <h1><p> </p></h1><br>
-            <h1><p> </p></h1><br>
-            <h1><p> </p></h1><br>
-        </div>
+        <div id="data_Creditcard"></div>
         <?php \yii\bootstrap\Modal::end(); ?>
         <?php
         \yii\bootstrap\Modal::begin([
@@ -366,13 +346,7 @@ use yii\helpers\Html;
             'size' => 'modal-md modal-primary',
         ]);
         ?>
-        <div id="data_Banktrans">
-            <h1><p> </p></h1><br>
-            <h1><p> </p></h1><br>
-            <h1><p> </p></h1><br>
-            <h1><p> </p></h1><br>
-            <h1><p> </p></h1><br>
-        </div>
+        <div id="data_Banktrans"> </div>
         <?php \yii\bootstrap\Modal::end(); ?>
         <?php
         \yii\bootstrap\Modal::begin([
@@ -381,13 +355,7 @@ use yii\helpers\Html;
             'size' => 'modal-md modal-primary',
         ]);
         ?>
-        <div id="data_Cheque">
-            <h1><p> </p></h1><br>
-            <h1><p> </p></h1><br>
-            <h1><p> </p></h1><br>
-            <h1><p> </p></h1><br>
-            <h1><p> </p></h1><br>
-        </div>
+        <div id="data_Cheque"></div>
         <?php \yii\bootstrap\Modal::end(); ?>
         <?php
         $script = <<< JS
@@ -413,9 +381,9 @@ function LocationFast() {
 }     
 function init_click_handlers() {
     ready_pjax();
-    $('#Print').click(function (e) { 
-    	window.open("http://www.udcancer.org/km4/frontend/web/index.php?r=Payment/payment/newbill1&id="+$('#vwitempaid-rep_id').val(),'_blank');      
- 	});
+  //   $('#Print').click(function (e) { 
+  //   	window.open("http://www.udcancer.org/km4/Payment/payment/newbill1?id="+$('#vwitempaid-rep_id').val(),'_blank');      
+ 	// });
  	$('#Clear').click(function (e) { 
     	alert('Wait_Sql_Query');     
      //window.open("www.waitreport.com"+$('#vwitempaid-rep_id').val(),'_blank');     
@@ -426,8 +394,8 @@ function init_click_handlers() {
         wait();
         LocationFast();
         swal({   
-                title: "",   
-                text: "ยืนยันคำสั่ง?",   
+                title: "ยืนยันคำสั่ง?",   
+                text: "",   
                 type: "error",   
                 showCancelButton: true,   
                 confirmButtonColor: "#53a93f",   
@@ -435,7 +403,7 @@ function init_click_handlers() {
                 closeOnConfirm: false
         },function(){        
         $.get(
-                'index.php?r=Payment/payment/delete-payment',
+                'delete-payment',
                 {
                     payment_id
                 },
@@ -459,7 +427,7 @@ function init_click_handlers() {
     var check_edit = 'edit';
     LocationFast();            
     $.get(
-            'index.php?r=Payment/payment/edit-payment',
+            'edit-payment',
     {
     payment_id
     },
@@ -467,7 +435,7 @@ function init_click_handlers() {
             {       console.log(data);
             if (data === '1'){
             $.get(
-                    'index.php?r=Payment/payment/cash',
+                    'cash',
             {
             rep_id, check_edit, key
             },
@@ -481,7 +449,7 @@ function init_click_handlers() {
             );
             } else if (data === '2'){
             $.get(
-                    'index.php?r=Payment/payment/creditcard',
+                    'creditcard',
             {
             rep_id, check_edit, key
             },
@@ -495,7 +463,7 @@ function init_click_handlers() {
             );
             } else if (data === '3'){
             $.get(
-                    'index.php?r=Payment/payment/banktrans',
+                    'banktrans',
             {
             rep_id, check_edit, key
             },
@@ -509,7 +477,7 @@ function init_click_handlers() {
             );
             } else if (data === '4'){
             $.get(
-                    'index.php?r=Payment/payment/cheque',
+                    'cheque',
             {
             rep_id, check_edit, key
             },
@@ -544,7 +512,7 @@ function init_click_handlers() {
         var key = '';        
         wait();
         $.get(
-                'index.php?r=Payment/payment/cash',
+                'cash',
                 {
                     rep_id,check_edit,key
                 },
@@ -571,7 +539,7 @@ function init_click_handlers() {
         console.log(rep_id);
         var key = '';
         $.get(
-                'index.php?r=Payment/payment/creditcard',
+                'creditcard',
                 {
                     rep_id,check_edit,key
                 },
@@ -598,7 +566,7 @@ $('#Banktrans').click(function (e) {
         console.log(rep_id);
         var key = '';        
         $.get(
-                'index.php?r=Payment/payment/banktrans',
+                'banktrans',
                 {
                    rep_id,check_edit,key
                 },
@@ -625,7 +593,7 @@ $('#Cheque').click(function (e) {
         console.log(rep_id);
         var key = '';
         $.get(
-                'index.php?r=Payment/payment/cheque',
+                'cheque',
                 {
                     rep_id,check_edit,key
                 },
@@ -661,15 +629,17 @@ $('#Cheque').click(function (e) {
     } 
     $('#form_payment').on('beforeSubmit', function(e){ 
             var \$form = $(this);
-             $.post(
+            wait();
+            $.post(
                     \$form.attr('action'), // serialize Yii2 form
                     \$form.serialize()
                     )
             .done(function(result){
-            if(result != ''){
+            if(result){
+                $('#_form_payment').waitMe('hide');
                 $('#vwfirepheader-rep_num').val(result);
                 console.log(result);
-                swal("","Draft","success");
+                swal("บันทึกข้อมูล","","success");
                 $("#Save").removeAttr('disabled');
             }else{
                 console.log('else');
@@ -705,7 +675,6 @@ JS;
             }
     } 
     function Save(){
-        wait();
         var rep_id = $('#vwitempaid-rep_id').val();
         var repdate = $("#vwfirepheader-repdate").val();
         var rep_comment = $('#vwfirepheader-rep_comment').val();
@@ -716,26 +685,28 @@ JS;
             var showText = "ต้องการที่จะบันทึกข้อมูลใช่หรือไม่";
         }
         swal({   
-        title: "ยืนยันคำสั่ง?",   
-        text: showText,   
-        type: "warning",   
-        showCancelButton: true,   
-        confirmButtonColor: "#53a93f",   
-        confirmButtonText: "Confirm",   
-        closeOnConfirm: false
-       },function(){
+            title: "ยืนยันคำสั่ง?",   
+            text: showText,   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#53a93f",   
+            confirmButtonText: "Confirm",   
+            closeOnConfirm: false
+        },function(){
+        wait();
         $.post(
-            'index.php?r=Payment/payment/save',
+            'save',
             {
               rep_id,repdate,rep_comment
             },
                 function (data)
                 {   
                     after_save();
+                    $('#_form_payment').waitMe('hide');
                 }
-                );
-       });
-       $('#_form_payment').waitMe('hide');      
+        );
+        });
+        $('#_form_payment').waitMe('hide');      
     };
     function after_save(){
                  swal({   
@@ -750,15 +721,15 @@ JS;
                    },function(isConfirm){   
                     if (isConfirm) {
                         $.post(
-                            'index.php?r=Payment/payment/page-index',
+                            'page-index',
                             { },
                         function (data)
                             { }
                         );     
-                        window.open("http://www.udcancer.org/km4/frontend/web/index.php?r=Payment/payment/newbill1&id="+$('#vwitempaid-rep_id').val(),'_blank'); 
+                        window.open("http://www.udcancer.org/km4/Payment/payment/newbill1?id="+$('#vwitempaid-rep_id').val(),'_blank'); 
                     } else {     
                         $.post(
-                            'index.php?r=Payment/payment/page-index',
+                            'page-index',
                             { },
                         function (data)
                             { }

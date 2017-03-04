@@ -29,7 +29,7 @@ class ImportExcelOpcsController extends Controller {
      * @return mixed
      */
     public function actionIndex() {
-        $searchModel = new \app\modules\Payment\models\TbFiNhsoRepSearch();
+        $searchModel = new \app\modules\Payment\models\VwRepUcSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$type="OPCS-IPCS");
         $dataProvider->pagination->pageSize = 10;
         $primary_key = [];
@@ -250,23 +250,15 @@ class ImportExcelOpcsController extends Controller {
                 }
             }
             Yii::$app->getSession()->setFlash('alert1', [
-                'type' => 'success',
-                'duration' => 5000,
-                'icon' => 'fa fa-check-square-o ',
-                'title' => Yii::t('app', \yii\helpers\Html::encode('Upload...')),
-                'message' => Yii::t('app', \yii\helpers\Html::encode('อัพโหลดไฟล์เรียบร้อยแล้ว!')),
-                'positonY' => 'top',
-                'positonX' => 'right'
+                    'type' => 'success',
+                    'title' => 'Success!',
+                    'message' => 'อัพโหลดไฟล์เรียบร้อยแล้ว',
             ]);
             }else{
                 Yii::$app->getSession()->setFlash('alert1', [
                     'type' => 'warning',
-                    'duration' => 5000,
-                    'icon' => 'fa fa-exclamation-triangle ',
-                    'title' => Yii::t('app', \yii\helpers\Html::encode('Duplicate...')),
-                    'message' => Yii::t('app', \yii\helpers\Html::encode('มีข้อมูลนำเข้าแล้ว!')),
-                    'positonY' => 'top',
-                    'positonX' => 'right'
+                    'title' => 'Duplicate!',
+                    'message' => 'ไฟล์นี้ถูกนำเข้าแล้ว',
                 ]);
             }
         }
@@ -280,23 +272,31 @@ class ImportExcelOpcsController extends Controller {
                     'insert' => $insert,
         ]);
     }
+    public function actionDetail() {
+        if (isset($_POST['expandRowKey'])) {
+            //$model = \app\modules\Inventory\models\VwSt2DetailSub::findOne(['ids' => $_POST['expandRowKey']]);
+            $key = $_POST['expandRowKey'];
+            $searchModel = new \app\modules\Payment\models\VwRepUcOpcsSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $key);
+            $dataProvider->pagination->pageSize = false;
+            return $this->renderAjax('_expand_detail', ['dataProvider' => $dataProvider]);
+        } else {
+            return '<div class="alert alert-danger">No data found</div>';
+        }
+    }
     public function actionSaveAr(){
         $id_rep = $_GET['key'];
         $create_by =  Yii::$app->user->identity->profile->user_id;
-        Yii::$app->db->createCommand('CALL cmd_nhso_ar_orf_save(:id_rep,:create_by);')
+        Yii::$app->db->createCommand('CALL cmd_nhso_ar_opcs_save(:id_rep,:create_by);')
                 ->bindParam(':id_rep', $id_rep)
                 ->bindParam(':create_by', $create_by)
                 ->execute();
         Yii::$app->getSession()->setFlash('alert1', [
-                'type' => 'success',
-                'duration' => 5000,
-                'icon' => 'fa fa-check-square-o ',
-                'title' => Yii::t('app', \yii\helpers\Html::encode('Upload...')),
-                'message' => Yii::t('app', \yii\helpers\Html::encode('บันทึกลูกหนี้เรียบร้อยแล้ว!')),
-                'positonY' => 'top',
-                'positonX' => 'right'
+                    'type' => 'success',
+                    'title' => 'Success!',
+                    'message' => 'บันทึกลูกหนี้เรียบร้อยแล้ว',
         ]); 
-        $this->redirect('index.php?r=Payment/import-excel-opcs/index');  
+        $this->redirect('index');   
     }
     private function type_file($type_name) {
         $array_file = explode(".", $type_name);

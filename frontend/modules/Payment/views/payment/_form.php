@@ -16,13 +16,6 @@ if($view == 'create'){
 
 $this->params['breadcrumbs'][] = ['label' => 'รายการใบแจ้งค่าใช้จ่าย', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-
-$script = <<< JS
-$(document).ready(function () {
-        $('#tab_A').addClass("active");
-    });
-JS;
-$this->registerJs($script);
 ?>
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

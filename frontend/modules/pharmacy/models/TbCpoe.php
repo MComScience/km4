@@ -84,4 +84,9 @@ class TbCpoe extends \yii\db\ActiveRecord
     {
         return $this->hasMany(TbCpoeDetail::className(), ['cpoe_id' => 'cpoe_id']);
     }
+    
+    public function getCpoetype()
+    {
+        return $this->hasOne(\frontend\modules\pharmacy\models\TbCpoeType::className(), ['cpoe_type_id' => 'cpoe_type']);
+    }
 }

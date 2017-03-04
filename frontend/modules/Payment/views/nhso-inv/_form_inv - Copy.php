@@ -142,6 +142,8 @@ use kartik\grid\GridView;
                 <div class="form-group" style="text-align: right">
                     <?= Html::a('Close','#',['class'=>'btn btn-default','data-dismiss'=>'modal']) ?>
                     <?= Html::a('Save','#',['class'=>'btn btn-success','onclick'=>"chk_empty(chk_bank,fn_save);"]) ?>
+                    <?= Html::a('พิมพ์หนังสือเรียกเก็บ','#',['class'=>'btn btn-info','onclick'=>"fn_print_inv($nhso_inv_id);"]) ?>
+                    <?= Html::a('พิมพ์เอกสารแนบ REP','#',['class'=>'btn btn-info','onclick'=>"fn_print_inv_rep($nhso_inv_id);"]) ?>
                 </div>
             </div>
             <?php ActiveForm::end(); ?>

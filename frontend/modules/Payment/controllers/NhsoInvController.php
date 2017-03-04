@@ -49,7 +49,7 @@ class NhsoInvController extends Controller
             $searchModel = new \app\modules\Payment\models\VwFiNhsoInvDetailSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$nhso_inv_id);
             $dataProvider->pagination->pageSize = FALSE;
-            return $this->renderAjax('_inv_detail', ['dataProvider' => $dataProvider,'nhso_inv_id'=>$nhso_inv_id]);
+            return $this->renderAjax('_expand_inv_detail', ['dataProvider' => $dataProvider,'nhso_inv_id'=>$nhso_inv_id]);
         } else {
             return '<div class="alert alert-warning">ไม่พบข้อมูล</div>';
         }
@@ -60,7 +60,7 @@ class NhsoInvController extends Controller
 	    	$nhso_inv_id = $_POST['keys']; 
 	    	$model = \app\modules\Payment\models\TbFiNhsoInv::findOne(['nhso_inv_id'=> $nhso_inv_id]);
 	    	if(!empty($model)){
-	    		return $nhso_inv_id;
+                return $this->redirect(['editform', 'nhso_inv_id' => $nhso_inv_id]);
 	    	}else{
 		       return false;
 		    }
@@ -98,8 +98,33 @@ class NhsoInvController extends Controller
 			return '<div class="alert alert-warning">ไม่พบข้อมูล</div>';
 		}
     }
+    public function actionDraftInv(){
+        // print_r($_POST['TbFiNhsoInv']['doc_type']);
+        // print_r($_POST['TbFiNhsoInv']['hmain']);
+        // print_r($_POST['TbFiNhsoInv']['nhso_inv_cramt']);
+        $nhso_inv_id = $_POST['TbFiNhsoInv']['nhso_inv_id'];
+        $nhso_inv_num = $_POST['TbFiNhsoInv']['nhso_inv_num'];
+        $nhso_inv_hdoc = $_POST['TbFiNhsoInv']['nhso_inv_hdoc'];
+        $nhso_inv_date = Yii::$app->componentdate->convertThaiToMysqlDate2($_POST['TbFiNhsoInv']['nhso_inv_date']);
+        $nhso_inv_attnname = $_POST['TbFiNhsoInv']['nhso_inv_attnname'];
+        $nhso_inv_crdays = $_POST['TbFiNhsoInv']['nhso_inv_crdays'];
+        $nhso_inv_cheqe = isset($_POST['cash']) ? 'Y':'';
+        $nhso_inv_bank_id = isset($_POST['tranfer']) ? $_POST['TbFiNhsoInv']['nhso_inv_bank_id']:'';
+        Yii::$app->db->createCommand('CALL cmd_fi_nhso_inv_draft(:nhso_inv_id,:nhso_inv_num,:nhso_inv_hdoc,:nhso_inv_date,:nhso_inv_attnname,:nhso_inv_crdays,:nhso_inv_cheqe,:nhso_inv_bank_id);')
+                       ->bindParam(':nhso_inv_id', $nhso_inv_id)
+                       ->bindParam(':nhso_inv_num', $nhso_inv_num)
+                       ->bindParam(':nhso_inv_hdoc', $nhso_inv_hdoc)
+                       ->bindParam(':nhso_inv_date', $nhso_inv_date)
+                       ->bindParam(':nhso_inv_attnname', $nhso_inv_attnname)
+                       ->bindParam(':nhso_inv_crdays', $nhso_inv_crdays)
+                       ->bindParam(':nhso_inv_cheqe', $nhso_inv_cheqe)
+                        ->bindParam(':nhso_inv_bank_id', $nhso_inv_bank_id)
+                       ->execute();
+        $model = \app\modules\Payment\models\TbFiNhsoInv::findOne(['nhso_inv_id'=>$nhso_inv_id ]);
+        return $model['nhso_inv_num'];
+    }
+    
     public function actionSaveInv(){
-        
         // print_r($_POST['TbFiNhsoInv']['doc_type']);
         // print_r($_POST['TbFiNhsoInv']['hmain']);
         // print_r($_POST['TbFiNhsoInv']['nhso_inv_cramt']);
@@ -121,15 +146,7 @@ class NhsoInvController extends Controller
                        ->bindParam(':nhso_inv_cheqe', $nhso_inv_cheqe)
                         ->bindParam(':nhso_inv_bank_id', $nhso_inv_bank_id)
                        ->execute();
-        Yii::$app->getSession()->setFlash('alert1', [
-                    'type' => 'success',
-                    'duration' => 5000,
-                    'icon' => 'fa fa-check-square-o',
-                    'title' => Yii::t('app', \yii\helpers\Html::encode('แก้ไขหนังสือเรียกเก็บ')),
-                    'message' => Yii::t('app', \yii\helpers\Html::encode('แก้ไขหนังสือเรียกเก็บเรียบร้อยแล้ว')),
-                    'positonY' => 'top',
-                    'positonX' => 'right'
-                ]);             
+
     }
     /**
      * Displays a single VwFiNhsoInv model.

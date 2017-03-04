@@ -162,10 +162,10 @@ $script = <<< JS
             \$form.serialize()
             )
             .done(function(result){
-            if (result != ''){
+            if (result){
             $('#payment_Cash').modal('hide');
             //sweetalert(pay,change_pay);
-            swal("", "Saved", "success");
+            swal("", "บันทึกข้อมูล", "success");
             $.pjax.reload({container:'#pjax_footer'});
             console.log(result);
             } else{

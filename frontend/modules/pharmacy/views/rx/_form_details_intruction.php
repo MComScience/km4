@@ -400,7 +400,7 @@ $form = ActiveForm::begin([
                     ?>
 
                     <?= $form->field($model, 'cpoe_id', ['showLabels' => false])->hiddenInput(['value' => $cpoeid]) ?>
-                    <?= $form->field($model, 'cpoe_Itemtype', ['showLabels' => false])->hiddenInput(['value' => '50']) ?>
+                    <?= $form->field($model, 'cpoe_Itemtype', ['showLabels' => false])->hiddenInput() ?>
                     <?= $form->field($model, 'ised', ['showLabels' => false])->hiddenInput() ?>
                     <?= $form->field($model, 'cpoe_once', ['showLabels' => false])->hiddenInput() ?>
                     <?= $form->field($model, 'cpoe_repeat', ['showLabels' => false])->hiddenInput() ?>

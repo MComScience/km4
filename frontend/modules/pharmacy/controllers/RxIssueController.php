@@ -88,7 +88,7 @@ class RxIssueController extends Controller {
 
     public function actionVerify($id) {
         $modelCpoe = $this->findModel($id);
-        if (($header = VwCpoeRxHeader::findOne($id)) !== null) {
+        if (($profile = VwPtServiceListOp::findOne($modelCpoe['pt_vn_number'])) !== null) {
             $ptar = VwPtAr::find()->where(['pt_visit_number' => $modelCpoe['pt_vn_number']])->one();
             $searchModel = new VwCpoeRxDetail2Search();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $id);
@@ -98,8 +98,8 @@ class RxIssueController extends Controller {
                         'modelCpoe' => $modelCpoe,
                         'searchModel' => $searchModel,
                         'dataProvider' => $dataProvider,
-                        'header' => $header,
                         'count' => $count,
+                        'profile' => $profile
             ]);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -108,7 +108,7 @@ class RxIssueController extends Controller {
 
     public function actionCheck($id) {
         $modelCpoe = $this->findModel($id);
-        if (($header = VwCpoeRxHeader::findOne($id)) !== null) {
+        if (($profile = VwPtServiceListOp::findOne($modelCpoe['pt_vn_number'])) !== null) {
             $ptar = VwPtAr::find()->where(['pt_visit_number' => $modelCpoe['pt_vn_number']])->one();
             $searchModel = new VwCpoeRxDetail2Search();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $id);
@@ -118,7 +118,7 @@ class RxIssueController extends Controller {
                         'modelCpoe' => $modelCpoe,
                         'searchModel' => $searchModel,
                         'dataProvider' => $dataProvider,
-                        'header' => $header,
+                        'profile' => $profile,
                         'count' => $count,
             ]);
         } else {
@@ -128,7 +128,7 @@ class RxIssueController extends Controller {
 
     public function actionIssue($id) {
         $modelCpoe = $this->findModel($id);
-        if (($header = VwCpoeRxHeader::findOne($id)) !== null) {
+        if (($profile = VwPtServiceListOp::findOne($modelCpoe['pt_vn_number'])) !== null) {
             $ptar = VwPtAr::find()->where(['pt_visit_number' => $modelCpoe['pt_vn_number']])->one();
             $searchModel = new VwCpoeRxDetail2Search();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $id);
@@ -138,7 +138,7 @@ class RxIssueController extends Controller {
                         'modelCpoe' => $modelCpoe,
                         'searchModel' => $searchModel,
                         'dataProvider' => $dataProvider,
-                        'header' => $header,
+                        'profile' => $profile,
                         'count' => $count,
             ]);
         } else {

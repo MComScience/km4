@@ -39,6 +39,7 @@ use app\modules\pharmacy\models\TbPtAr;
 use app\modules\pharmacy\models\TbFiInvDetail;
 use app\modules\pharmacy\models\TbPrintDruglabel;
 use app\modules\pharmacy\models\VwCpoeRxDetail2;
+use app\modules\pharmacy\models\VwPtInfo;
 
 class RxController extends Controller {
 
@@ -53,19 +54,20 @@ class RxController extends Controller {
         ];
     }
 
-    public function actionCreateOrderChemo($data, $type) {
+    public function actionCreateOrderChemo($data, $type, $schd) {
         $userid = Yii::$app->user->identity->id;
         $maxid = TbCpoe::find()->max('cpoe_id') + 1;
-        if ($type == 'chemo') {
-            $cpoetype = '1012';
-        } elseif ($type == 'homemed') {
-            $cpoetype = '1011';
-        }
-        Yii::$app->db->createCommand('CALL cmd_pt_rxorder_create(:pt_vn_number,:userid,:cpoe_id,:cpoe_type);')
+        /* if ($type == 'chemo') {
+          $cpoetype = '1012';
+          } elseif ($type == 'homemed') {
+          $cpoetype = '1011';
+          } */
+        Yii::$app->db->createCommand('CALL cmd_pt_rxorder_create(:pt_vn_number,:userid,:cpoe_id,:cpoe_type,:cpoe_schedule_type);')
                 ->bindParam(':pt_vn_number', $data)
                 ->bindParam(':userid', $userid)
                 ->bindParam(':cpoe_id', $maxid)
-                ->bindParam(':cpoe_type', $cpoetype)
+                ->bindParam(':cpoe_type', $type)
+                ->bindParam(':cpoe_schedule_type', $schd)
                 ->execute();
         return $this->redirect(['order-chemo', 'id' => $maxid, 'type' => $type]);
     }
@@ -75,7 +77,7 @@ class RxController extends Controller {
         if (empty($type)) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-        if ($type == 'chemo' || $type == 'homemed') {
+        if ($type == '1012' || $type == '1011') {
             if (($header = VwPtServiceListOp::findOne($modelCpoe['pt_vn_number'])) !== null) {
                 $ptar = VwPtAr::find()->where(['pt_visit_number' => $modelCpoe['pt_vn_number']])->one();
                 $headermodal = $header->getHeadermodalOP($modelCpoe['pt_vn_number']);
@@ -112,6 +114,26 @@ class RxController extends Controller {
         $dataProvider->pagination->pageSize = 10;
 
         return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionOrderStatus() {
+        $searchModel = new VwCpoeRxHeaderSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('order_status', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionHistory() {
+        $searchModel = new VwCpoeRxHeaderSearch();
+        $dataProvider = $searchModel->search_history(Yii::$app->request->queryParams);
+
+        return $this->render('history', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
         ]);
@@ -1712,16 +1734,6 @@ class RxController extends Controller {
         }
     }
 
-    public function actionOrderStatus() {
-        $searchModel = new VwCpoeRxHeaderSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('order_status', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
-        ]);
-    }
-
     public function actionSelectProtocol() {
         $request = Yii::$app->request;
         if ($request->isAjax) {
@@ -1752,14 +1764,14 @@ class RxController extends Controller {
                             'id' => 'table_protocol'
                         ],
                         'columns' => [
-                                [
+                            [
                                 'class' => 'kartik\grid\SerialColumn',
                                 'contentOptions' => ['class' => 'kartik-sheet-style'],
                                 'width' => '36px',
                                 'header' => '',
                                 'headerOptions' => ['class' => 'kartik-sheet-style']
                             ],
-                                [
+                            [
                                 'header' => 'CA DX',
                                 'headerOptions' => ['style' => 'color:black;text-align:center;'],
                                 'attribute' => 'Dx10CA',
@@ -1768,7 +1780,7 @@ class RxController extends Controller {
                                     return empty($model['Dx10CA']) ? '-' : $model['Dx10CA'];
                                 }
                             ],
-                                [
+                            [
                                 'header' => 'CA State',
                                 'headerOptions' => ['style' => 'color:black;text-align:center;'],
                                 'attribute' => 'chemo_state_desc',
@@ -1777,7 +1789,7 @@ class RxController extends Controller {
                                     return empty($model['chemo_state_desc']) ? '-' : $model['chemo_state_desc'];
                                 }
                             ],
-                                [
+                            [
                                 'header' => 'Protocol',
                                 'headerOptions' => ['style' => 'color:black;text-align:center;'],
                                 'attribute' => 'protocol_name',
@@ -1786,7 +1798,7 @@ class RxController extends Controller {
                                     return empty($model['protocol_name']) ? '-' : $model['protocol_name'];
                                 }
                             ],
-                                [
+                            [
                                 'header' => 'รหัสเบิกจ่าย',
                                 'headerOptions' => ['style' => 'color:black; text-align:center;'],
                                 'attribute' => 'regimen_paycode',
@@ -1795,7 +1807,7 @@ class RxController extends Controller {
                                     return empty($model['regimen_paycode']) ? '' : $model['regimen_paycode'];
                                 }
                             ],
-                                [
+                            [
                                 'class' => '\kartik\grid\ActionColumn',
                                 'contentOptions' => ['class' => 'text-center',],
                                 'template' => '{select}',
@@ -1832,7 +1844,7 @@ class RxController extends Controller {
         $dataProvider = $searchModel->search_order(Yii::$app->request->queryParams, $id);
         $header = VwPtServiceListOp::findOne($model['pt_vn_number']);
         $ptar = VwPtAr::find()->where(['pt_visit_number' => $model['pt_vn_number']])->all();
-        $query11 = VwCpoeRxDetail2::find()->where(['cpoe_id' => $id,'cpoe_Itemtype' => [10,20,21,22,40,50,53,54]])->asArray('cpoe_Itemtype')->groupBy('cpoe_Itemtype')->orderBy('cpoe_seq')->all();
+        $query11 = VwCpoeRxDetail2::find()->where(['cpoe_id' => $id, 'cpoe_Itemtype' => [10, 20, 21, 22, 40, 50, 53, 54]])->asArray('cpoe_Itemtype')->groupBy('cpoe_Itemtype')->orderBy('cpoe_seq')->all();
         if ($type == 'A4') {
             $content = $this->renderPartial('_form_print', [
                 'dataProvider' => $dataProvider,
@@ -1993,7 +2005,7 @@ class RxController extends Controller {
                     ->all();
             foreach ($query as $v) {
                 $items[$v->cpoe_ids] = [
-                    'content' => empty($v->itemType->cpoe_itemtype_decs) ? '' : '<i class="glyphicon glyphicon-hand-up"></i> '.$v->itemType->cpoe_itemtype_decs . ' ' . $v->ItemID,
+                    'content' => empty($v->itemType->cpoe_itemtype_decs) ? '' : '<i class="glyphicon glyphicon-hand-up"></i> ' . $v->itemType->cpoe_itemtype_decs . ' ' . $v->ItemID,
                         //'options' => ['data' => ['id' => $p->id]],
                 ];
             }
@@ -2005,7 +2017,7 @@ class RxController extends Controller {
                         'model' => $model,
                         'items' => $items,
                     ]),
-                    //'footer' => Html::button('Close', ['class' => 'btn btn-default pull-right', 'data-dismiss' => "modal"]),
+                        //'footer' => Html::button('Close', ['class' => 'btn btn-default pull-right', 'data-dismiss' => "modal"]),
                 ];
             }
         }
@@ -2022,7 +2034,7 @@ class RxController extends Controller {
                 if ($model['cpoe_Itemtype'] == 40 || $model['cpoe_Itemtype'] == 50) {
                     $model->cpoe_seq = $i;
                     $model->save();
-                    $j = $this->saveParentSort($key, ($i+1));
+                    $j = $this->saveParentSort($key, ($i + 1));
                     $i = $j++;
                 } else {
                     $model->cpoe_seq = $i;
@@ -2043,6 +2055,64 @@ class RxController extends Controller {
             $i++;
         }
         return $i;
+    }
+
+    public function actionSearchHn() {
+        $request = Yii::$app->request;
+        if ($request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                'title' => '<i class="glyphicon glyphicon-search"></i> ค้นหาผู้ป่วย',
+                'content' => $this->renderAjax('search_hn', [
+                ]),
+                    //'footer' => Html::button('Close', ['class' => 'btn btn-default pull-right', 'data-dismiss' => "modal"]),
+            ];
+        }
+    }
+
+    public function actionQueryArdetail() {
+        $request = Yii::$app->request;
+        if ($request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if (VwPtInfo::findAll(['pt_hospital_number' => $request->get('HN')]) == null) {
+                return 'No data';
+            } else {
+                $Profile = VwPtServiceListOp::findOne(['pt_hospital_number' => $request->get('HN')]);
+                $data = VwPtAr::find()->where(['pt_hospital_number' => $request->get('HN')])->all();
+                $table = '<table id="details" class="table table-hover table-bordered table-striped table-condensed kv-table-wrap">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>สิทธิการรักษา</th>
+                                    <th>เลขที่ใบส่งตัว</th>
+                                    <th>วันเริ่มใบส่งตัว</th>
+                                    <th>วันสิ้นสุดใบส่งตัว</th>
+                                    <th>ใช้สิทธิ</th>
+                                </tr>
+                            </thead>
+                            <tbody>';
+                $no = 1;
+                foreach ($data as $v) {
+                    $table .= '<tr>';
+                    $table .= '<td style="text-align:center;">' . $no . '</td>';
+                    $table .= '<td>' . $v['ar_name'] . '</td>';
+                    $table .= '<td style="text-align:center;">' . $v['refer_hsender_doc_id'] . '</td>';
+                    $table .= '<td style="text-align:center;">' . Yii::$app->formatter->asDate($v['refer_hsender_doc_start'], 'dd/MM/yyyy') . '</td>';
+                    $table .= '<td style="text-align:center;">' . Yii::$app->formatter->asDate($v['refer_hsender_doc_expdate'], 'dd/MM/yyyy') . '</td>';
+                    $table .= '<td>' . $v['pt_ar_usage'] . '</td>';
+                    $table .= '</tr>';
+                    $no++;
+                }
+                $table .= '</tbody></table>';
+                $name = $Profile['pt_name'] . ' ' . 'อายุ ' . $Profile['pt_age_registry_date'] . ' ' . 'ปี HN ' . $Profile['pt_hospital_number'] . ' ' . ' VN ' . $Profile['pt_visit_number'];
+                $arr = [
+                    'name' => $name,
+                    'table' => $table,
+                    'vn' => $Profile['pt_visit_number'],
+                ];
+                return $arr;
+            }
+        }
     }
 
 }

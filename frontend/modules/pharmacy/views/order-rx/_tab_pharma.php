@@ -1,8 +1,10 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 $action = Yii::$app->controller->action->id;
 ?>
+<?php /*
 <ul class="nav nav-tabs tabs-flat  nav-justified" id="myTab11">
     <li>
         <a style="text-align: left">
@@ -32,14 +34,16 @@ $action = Yii::$app->controller->action->id;
 
     </li>
 </ul>
+ * 
+ */?>
 <ul class="nav nav-tabs tabs-flat  nav-justified bg-white" id="myTab11">
-    <li class="tab-success history <?php echo $action == 'order-history' ? 'active' : ''?>">
-        <a data-toggle="tab" id="Patient" href="#Patient">
+    <li class="tab-success history <?php echo $action == 'update-history' ? 'active' : ''?>">
+        <a href="<?= Url::to(['update-history','id' => $model['cpoe_id']]); ?>">
             <?= Html::encode('ประวัติการสั่งยา'); ?>
         </a>
     </li>
-    <li class="tab-success orderchemo <?php echo $action == 'order-chemo' ? 'active' : ''?>">
-        <a data-toggle="tab" href="#settings" id="orderset">
+    <li class="tab-success orderchemo <?php echo $action == 'update' ? 'active' : ''?>">
+        <a  href="<?= Url::to(['update','id' => $model['cpoe_id']]); ?>">
             <?= Html::encode('ใบสั่งยา'); ?>
         </a>
     </li>

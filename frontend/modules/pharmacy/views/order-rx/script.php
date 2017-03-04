@@ -17,6 +17,9 @@ $search = Html::tag('span', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', [])
 ?>
 <?php
 $script = <<< JS
+    $('#cpoe_comment').keyup(function (e) {
+        $('#tbcpoe-cpoe_comment').val($(this).val());
+    });
     $(document).ready(function () {
         GetDefaultTable();
         GetFromIsed();
@@ -30,6 +33,8 @@ $script = <<< JS
     });
     $('#solution-modal').on('hidden.bs.modal', function (e) {
        $('#solution-modal .modal-body').html('<p>Content 2</p>');
+       $.pjax({container: '#cpoedetails-pjax'});
+       //QueryTabledetails();
     });
     $('#ajaxCrudModal').on('show.bs.modal', function (e) {
         $.fn.dataTable.ext.search.pop();
@@ -65,7 +70,7 @@ $script = <<< JS
                         {
                             setTimeout(function () {
                                 swal("Deleted!", "", "success");
-                                $.pjax.reload({container: '#cpoedetail-pjax'});
+                                $.pjax.reload({container: '#cpoedetails-pjax'});
                             }, 0);
                         }
                         );
@@ -96,11 +101,32 @@ $script = <<< JS
 init_click_handlers(); //first run
 $('#cpoedetail-pjax').on('pjax:success', function () {
     init_click_handlers(); //reactivate links in grid after pjax update
-});      
+});
+        
+$('.autosave').click(function (e) {
+        var frm = $('#form-header-cpoe');
+        $.ajax({
+            type: frm.attr('method'),
+            url: 'savecpoe-headerauto',
+            data: frm.serialize(),
+            success: function (data) {
+
+            },
+            error: function (xhr, status, error) {
+                swal({
+                title: error,
+                        text: "",
+                        type: "error",
+                        confirmButtonText: "OK"
+                });
+            }
+        });
+});
 JS;
 $this->registerJs($script);
 ?>
 <script type="text/javascript">
+
     function GetDefaultTable() {
         var vn = $('#tbcpoe-pt_vn_number').val();
         $.ajax({
@@ -137,7 +163,6 @@ $this->registerJs($script);
                             $(this).addClass('warning');
                         }
                     });
-
                     $('#min, #max').keyup(function () {
                         table.draw();
                     });
@@ -223,9 +248,11 @@ $this->registerJs($script);
 
     /* Premed */
     function CreateByType(e) {
+        console.log(e.getAttribute("title-modal"));
         $('#modal-default-table').modal('show');
         var TitleModal = (e.getAttribute("title-modal"));
-        $('#titlemodal').html(TitleModal);
+        $('input[id=seq]').val(e.getAttribute("seq"));
+        $('.default-title').html(TitleModal);
         $('#Itemtype').val(e.getAttribute("item-type"));
         if (e.getAttribute("item-type") === '21') {
             $('text[id=numbersteb1]').html('เลือก KVO Solution');
@@ -237,8 +264,20 @@ $this->registerJs($script);
             $('input[id=cpoetype10]').prop('checked', true);
             $('text[id=numbersteb1]').html('เลือกยา');
             $(".homemed").css("display", "block");
-        }else if (e.getAttribute("item-type") === '51') {
+        } else if (e.getAttribute("item-type") === '40') {
             $('text[id=numbersteb1]').html('เลือก Base Solution');
+            $('#textstep3').html('Dispense Qty');
+        } else if (e.getAttribute("item-type") === '41') {
+            $('text[id=numbersteb1]').html('เลือก Base Solution');
+            $('#textstep3').html('Dispense Qty');
+        } else if (e.getAttribute("item-type") === '42') {
+            $('text[id=numbersteb1]').html('เลือกตัวยา');
+            $('#textstep3').html('Dispense Qty');
+        } else if (e.getAttribute("item-type") === '51') {
+            $('text[id=numbersteb1]').html('เลือก Base Solution');
+            $('#textstep3').html('Dispense Qty');
+        } else if (e.getAttribute("item-type") === '52') {
+            $('text[id=numbersteb1]').html('เลือกตัวยา');
             $('#textstep3').html('Dispense Qty');
         }
     }
@@ -260,7 +299,7 @@ $this->registerJs($script);
     function EditByType(e) {
         LoadingEdit();
         var ids = e.getAttribute("ids");
-        $('#titlemodal').html(e.getAttribute("title-modal"));
+        $('.default-title').html(e.getAttribute("title-modal"));
         if (e.getAttribute("item-type") === '21') {
             $('text[id=numbersteb1]').html('เลือก KVO Solution');
         } else if (e.getAttribute("item-type") === '22') {
@@ -271,10 +310,12 @@ $this->registerJs($script);
             $('input[id=cpoetype10]').prop('checked', true);
             $('text[id=numbersteb1]').html('เลือกยา');
             $(".homemed").css("display", "block");
-        }else if (e.getAttribute("item-type") === '51') {
+        } else if (e.getAttribute("item-type") === '41') {
             $('text[id=numbersteb1]').html('เลือก Base Solution');
             $('#textstep3').html('Dispense Qty');
-            $('#titlemodal').html('Base Solution');
+        } else if (e.getAttribute("item-type") === '42') {
+            $('text[id=numbersteb1]').html('เลือกตัวยา');
+            $('#textstep3').html('Dispense Qty');
         }
         $.ajax({
             url: 'edit-by-type',
@@ -282,13 +323,15 @@ $this->registerJs($script);
             data: {ids: ids},
             dataType: 'json',
             success: function (result) {
-                $('#from-input').html(result.from);//Query From
+                $('#from-input').html(result.from); //Query From
                 ShowContentEdit(result);
                 $('#modal-default-table').modal('show');
                 $('.page-content').waitMe('hide');
-                if(e.getAttribute("item-type") !== '51'){
+                if ((e.getAttribute("item-type") !== "41") && (e.getAttribute("item-type") !== "42")) {
                     CalculateQty();
+                    console.log(e.getAttribute("item-type"));
                 }
+
             },
             error: function (xhr, status, error) {
                 swal({
@@ -297,7 +340,7 @@ $this->registerJs($script);
                     type: "error",
                     confirmButtonText: "OK"
                 });
-                $('.modal-body').waitMe('hide');
+                $('.page-content').waitMe('hide');
             }
         });
     }
@@ -308,7 +351,7 @@ $this->registerJs($script);
         var reason = $('#tbcpoedetail-ised_reason').val();
         if ((result.ised_reason !== null) && (parseFloat(result.confirmed) === parseFloat('1'))) {
             $('#simplewizardstep2').addClass('active'); //AddClass Steb
-            $("li[id=simplewizardstep2]").css("display", "block");//Show Steb 2
+            $("li[id=simplewizardstep2]").css("display", "block"); //Show Steb 2
             $('div[id=numbersteb2]').html('2');
             $("div.isedreason1").css("display", "block");
             $("div.isedreason2").css("display", "block");
@@ -318,11 +361,11 @@ $this->registerJs($script);
             //Show Content 3
             $('div[id=numbersteb3]').html('3');
             $('#simplewizardstep3').addClass('active'); //AddClass Steb
-            $("li[id=simplewizardstep3]").css("display", "block");//Show Steb 3
+            $("li[id=simplewizardstep3]").css("display", "block"); //Show Steb 3
             $('#content3').addClass('active');
         } else if (parseFloat(result.confirmed) === parseFloat('1')) {
             $('#simplewizardstep2').addClass('active'); //AddClass Steb
-            $("li[id=simplewizardstep2]").css("display", "block");//Show Steb 2
+            $("li[id=simplewizardstep2]").css("display", "block"); //Show Steb 2
             $('div[id=numbersteb2]').html('2');
             $("div.isedreason2").css("display", "block");
             $('#cpoe_narcotics_confirmed').prop('checked', true);
@@ -330,11 +373,11 @@ $this->registerJs($script);
             //Show Content 3
             $('div[id=numbersteb3]').html('3');
             $('#simplewizardstep3').addClass('active'); //AddClass Steb
-            $("li[id=simplewizardstep3]").css("display", "block");//Show Steb 3
+            $("li[id=simplewizardstep3]").css("display", "block"); //Show Steb 3
             $('#content3').addClass('active');
         } else if (result.ised_reason !== null) {
             $('#simplewizardstep2').addClass('active'); //AddClass Steb
-            $("li[id=simplewizardstep2]").css("display", "block");//Show Steb 2
+            $("li[id=simplewizardstep2]").css("display", "block"); //Show Steb 2
             $('div[id=numbersteb2]').html('2');
             $("div.isedreason1").css("display", "block");
             $('#ised' + reason).prop('checked', true);
@@ -342,12 +385,12 @@ $this->registerJs($script);
             //Show Content 3
             $('div[id=numbersteb3]').html('3');
             $('#simplewizardstep3').addClass('active'); //AddClass Steb
-            $("li[id=simplewizardstep3]").css("display", "block");//Show Steb 3
+            $("li[id=simplewizardstep3]").css("display", "block"); //Show Steb 3
             $('#content3').addClass('active');
         } else {
             $('div[id=numbersteb3]').html('2');
             $('#simplewizardstep3').addClass('active'); //AddClass Steb
-            $("li[id=simplewizardstep3]").css("display", "block");//Show Steb 3
+            $("li[id=simplewizardstep3]").css("display", "block"); //Show Steb 3
             $('#content3').addClass('active');
         }
     }
@@ -358,6 +401,7 @@ $this->registerJs($script);
         var NED = (e.getAttribute("ned"));
         var GP = (e.getAttribute("gp"));
         var ItemType = $('#Itemtype').val();
+        var seq = $('input[id=seq]').val();
         LoadingClass();
         $.ajax({
             url: 'details-from',
@@ -365,10 +409,11 @@ $this->registerJs($script);
             data: {ItemID: ItemID, ItemType: ItemType},
             dataType: 'json',
             success: function (data) {
-                $('#from-input').html(data);//Query From
+                $('#from-input').html(data); //Query From
                 $('.ItemName').html(ItemName);
                 CheckNED(NED, GP);
                 $('.modal-body').waitMe('hide');
+                $('#tbcpoedetail-cpoe_seq2').val(seq);
             },
             error: function (xhr, status, error) {
                 swal({
@@ -383,35 +428,37 @@ $this->registerJs($script);
     }
     function CheckNED(NED, GP) {
         $('#content1').removeClass('active');
-        if ((NED === '2') && (GP === '2')) {//กรณีที่เป็นทั้งยา NED และยา จ2 หรือ จ1
+        var ItemType = $('#Itemtype').val();
+        console.log(ItemType);
+        if ((NED === '2') && (GP === '2') && (ItemType !== "41") && (ItemType !== "42") && (ItemType !== "51") && (ItemType !== "52")) {//กรณีที่เป็นทั้งยา NED และยา จ2 หรือ จ1
             $("div.isedreason1").css("display", "block"); //แสดงเหตุผลยานอกบัญชีหลักแห่งชาติ
             $("div.isedreason2").css("display", "block"); //แสดงการยืนยันการใช้ยาเสพติด
             $('#simplewizardstep2').addClass('active'); //AddClass Steb
-            $("li[id=simplewizardstep2]").css("display", "block");//Show Steb 2
+            $("li[id=simplewizardstep2]").css("display", "block"); //Show Steb 2
             $('div[id=numbersteb2]').html('2'); //AddClass Steb
             $('#content2').addClass('active');
-        } else if ((NED !== '2') && (GP === '2')) {//กรณที่ไม่เป็นยา NED แต่เป็นยา จ1 หรือ เป็นยา จ2
+        } else if ((NED !== '2') && (GP === '2') && (ItemType !== "41") && (ItemType !== "42") && (ItemType !== "51") && (ItemType !== "52")) {//กรณที่ไม่เป็นยา NED แต่เป็นยา จ1 หรือ เป็นยา จ2
             $("div.isedreason1").css("display", "none"); //ไม่แสดงเหตุผลการใช้ยานอกบัญชี
             $("div.isedreason2").css("display", "block"); //แสดงการยืนยันการใช้ยาเสพติด
             $('#content2').addClass('active');
             $('#simplewizardstep2').addClass('active'); //AddClass Steb
             //Steb
-            $("li[id=simplewizardstep2]").css("display", "block");//Show Steb 2
+            $("li[id=simplewizardstep2]").css("display", "block"); //Show Steb 2
             $('div[id=numbersteb2]').html('2'); //AddClass Steb
-        } else if ((NED === '2') && (GP !== '2')) {//กรณีที่เป็นยา NED แต่ไม่เป็นยา จ1 หรือ จ2
+        } else if ((NED === '2') && (GP !== '2') && (ItemType !== "41") && (ItemType !== "42") && (ItemType !== "51") && (ItemType !== "52")) {//กรณีที่เป็นยา NED แต่ไม่เป็นยา จ1 หรือ จ2
             $("div.isedreason1").css("display", "block"); //แสดงเหตุผลการใช้ยานอกบัญชี
             $("div.isedreason2").css("display", "none"); //ไม่แสดงการยืนยันการใช้ยาเสพติด
             $('#content2').addClass('active');
             $('#simplewizardstep2').addClass('active'); //AddClass Steb
             //Steb
-            $("li[id=simplewizardstep2]").css("display", "block");//Show Steb 2
+            $("li[id=simplewizardstep2]").css("display", "block"); //Show Steb 2
             $('div[id=numbersteb2]').html('2'); //AddClass Steb
         } else {//กรณีที่ไม่เป็นยา NED และไม่เป็นยา จ1 หรือ จ2
             $('#form_ised').trigger("reset"); //Reset Form id = form_ised
             $('#content2').removeClass('active');
             $('div[id=numbersteb3]').html('2');
             $('#simplewizardstep3').addClass('active'); //AddClass Steb
-            $("li[id=simplewizardstep3]").css("display", "block");//Show Steb 3
+            $("li[id=simplewizardstep3]").css("display", "block"); //Show Steb 3
             $("div.isedreason1").css("display", "none");
             $("div.isedreason2").css("display", "none");
             $('#content3').addClass('active');
@@ -439,6 +486,35 @@ $this->registerJs($script);
         $('#content3').removeClass('active');
     }
 
+    function CreateIVSolution(e) {
+        var type = (e.getAttribute("item-type"));
+        var cpoe_id = (e.getAttribute("cpoe_id"));
+        $('.modal-title').html(e.getAttribute("title-modal"));
+        LoadingClassIV();
+        $.ajax({
+            url: 'create-iv',
+            type: 'GET',
+            data: {type: type, cpoe_id: cpoe_id},
+            dataType: 'json',
+            success: function (result) {
+                $('#solution-modal').find('.modal-body').html(result);
+                $('#from-iv').html(result);
+                $('#solution-modal').modal('show');
+                $('.page-content').waitMe('hide');
+                SetDatatablesFromIV();
+            },
+            error: function (xhr, status, error) {
+                swal({
+                    title: error,
+                    text: "",
+                    type: "error",
+                    confirmButtonText: "OK"
+                });
+                $('.page-content').waitMe('hide');
+            }
+        });
+    }
+
     function EditIVSolution(id) {
         LoadingClassIV();
         $.ajax({
@@ -451,7 +527,7 @@ $this->registerJs($script);
                 $('#from-iv').html(result);
                 $('#solution-modal').modal('show');
                 $('.page-content').waitMe('hide');
-                SetDatatablesFromIV();
+                //SetDatatablesFromIV();
             },
             error: function (xhr, status, error) {
                 swal({
@@ -480,7 +556,7 @@ $this->registerJs($script);
                 "lengthMenu": "",
                 "infoEmpty": "",
                 "info": "แสดง _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
-                "search": "ค้นหา : _INPUT_ " + '<a class="btn btn-success" title-modal="Base Solution" item-type="51" onclick="CreateByType(this);"><i class="glyphicon glyphicon-plus"></i>Add</a>'
+                "search": "ค้นหา : _INPUT_ " + '<a class="btn btn-success" title-modal="Base Solution" item-type="41" onclick="CreateByType(this);"><i class="glyphicon glyphicon-plus"></i>Add</a>'
             },
             "aLengthMenu": [
                 [5, 10, 15, 20, 100, -1],
@@ -501,12 +577,218 @@ $this->registerJs($script);
                 "lengthMenu": "",
                 "infoEmpty": "",
                 "info": "แสดง _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
-                "search": "ค้นหา : _INPUT_ " + '<a class="btn btn-success"><i class="glyphicon glyphicon-plus"></i>Add</a>'
+                "search": "ค้นหา : _INPUT_ " + '<a class="btn btn-success" title-modal="Additive" item-type="42" onclick="CreateByType(this);"><i class="glyphicon glyphicon-plus"></i>Add</a>'
             },
             "aLengthMenu": [
                 [5, 10, 15, 20, 100, -1],
                 [5, 10, 15, 20, 100, "All"]
             ],
         });
+    }
+
+    function QueryTabledetails() {
+        var cpoe_id = $('#tbcpoe-cpoe_id').val();
+        $.ajax({
+            type: 'POST',
+            url: 'query-tabledetails',
+            data: {cpoe_id: cpoe_id},
+            success: function (result) {
+                $('#content-tabledetails').html(result);
+            },
+            error: function (xhr, status, error) {
+                swal({
+                    title: error,
+                    text: "",
+                    type: "error",
+                    confirmButtonText: "OK"
+                });
+            }
+        });
+    }
+
+    function PrintdetailLabel(ids) {
+        swal({
+            title: "Print?",
+            text: "",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#53a93f",
+            closeOnConfirm: false,
+            closeOnCancel: true,
+            confirmButtonText: "Confirm",
+            showLoaderOnConfirm: true,
+        },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        CheckPrint(ids);
+                    }
+                });
+    }
+
+    function CheckPrint(ids) {
+        $.post(
+                'check-print-label',
+                {
+                    ids: ids
+                },
+                function (result)
+                {
+                    if (result === 'duplicate') {
+                        swal({
+                            title: "ต้องการสั่งพิมพ์ซ้ำ ?",
+                            text: "",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#53a93f",
+                            closeOnConfirm: false,
+                            closeOnCancel: true,
+                            confirmButtonText: "Confirm",
+                            showLoaderOnConfirm: true,
+                        },
+                                function (isConfirm) {
+                                    if (isConfirm) {
+                                        PrintSingle(ids);
+                                    }
+                                });
+                    } else {
+                        PrintSingle(ids);
+                    }
+                }
+        ).fail(function (xhr, status, error) {
+            swal("Oops...", error, "error");
+        });
+    }
+
+    function PrintSingle(ids) {
+        $.post(
+                'print-single-label',
+                {
+                    ids: ids
+                },
+                function (result)
+                {
+                    swal(result, "", "success");
+                }
+        ).fail(function (xhr, status, error) {
+            swal("Oops...", error, "error");
+        });
+    }
+
+    function DeleteCpoeDetails(ids) {
+        swal({
+            title: "ยืนยันการลบ?",
+            text: "",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#53a93f",
+            closeOnConfirm: false,
+            closeOnCancel: true,
+            confirmButtonText: "Confirm",
+            showLoaderOnConfirm: true,
+        },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $.post(
+                                'delete-details',
+                                {
+                                    id: ids
+                                },
+                                function (data)
+                                {
+                                    setTimeout(function () {
+                                        swal("Deleted!", "", "success");
+                                        //QueryTabledetails();
+                                    }, 0);
+                                }
+                        );
+                    }
+                });
+    }
+
+    function SaveDraftCpoe() {
+        var frm = $('#form-header-cpoe');
+        var l = $('#btn-savedraft-cpoe').ladda();
+        l.ladda('start');
+        $.ajax({
+            type: 'POST',
+            url: 'savedraft-cpoe',
+            data: frm.serialize(),
+            success: function (data) {
+                $('#tbcpoe-cpoe_num').val(data);
+                swal({
+                    title: "",
+                    text: "SaveDraft Completed!",
+                    type: "success",
+                    showCancelButton: false,
+                    closeOnConfirm: true,
+                    closeOnCancel: true,
+                },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                l.ladda('stop');
+                                document.getElementById("btn-save-cpoe").disabled = false;
+                            }
+                        });
+            }
+        });
+    }
+
+    function SaveCpoe() {
+        var frm = $('#form-header-cpoe');
+        var l = $('#btn-save-cpoe').ladda();
+        l.ladda('start');
+        $.ajax({
+            type: 'POST',
+            url: 'save-cpoe',
+            data: frm.serialize(),
+            success: function (data) {
+                swal({
+                    title: "",
+                    text: "Save Completed!",
+                    type: "success",
+                    showCancelButton: false,
+                    closeOnConfirm: true,
+                    closeOnCancel: true,
+                },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                l.ladda('stop');
+                                document.getElementById("btn-print").disabled = false;
+                                //location.reload();
+                            }
+                        });
+            }
+        });
+    }
+
+    function DeleteDetails(ids,cpoeid) {
+        swal({
+            title: "ยืนยันการลบ?",
+            text: "",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#53a93f",
+            closeOnConfirm: false,
+            closeOnCancel: true,
+            confirmButtonText: "Confirm",
+            showLoaderOnConfirm: true,
+        },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $.post(
+                                'delete-details',
+                                {
+                                    id: ids,cpoeid:cpoeid
+                                },
+                                function (data)
+                                {
+                                    setTimeout(function () {
+                                        swal("Deleted!", "", "success");
+                                        $.pjax.reload({container: '#cpoedetails-pjax'});
+                                    }, 0);
+                                }
+                        );
+                    }
+                });
     }
 </script>

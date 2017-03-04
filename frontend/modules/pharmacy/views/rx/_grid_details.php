@@ -15,7 +15,7 @@ $layout = <<< HTML
 <div class="clearfix"></div>
 HTML;
 #Button Actions
-if ($type == 'chemo') {
+if ($type == '1012') {
     $action = Html::a(Icon::show('plus', [], Icon::BSG) . 'เปิดเส้น', ['create-by-type', 'vn' => $header['pt_visit_number'], 'cpoeid' => $model['cpoe_id'], 'type' => '21', 'modalhd' => $modalhd], ['class' => 'btn btn-success btn-sm autosave', 'role' => 'modal-remote',]) . ' ' .
             Html::a(Icon::show('plus', [], Icon::BSG) . 'Premed', ['create-by-type', 'vn' => $header['pt_visit_number'], 'cpoeid' => $model['cpoe_id'], 'type' => '22', 'modalhd' => $modalhd], ['class' => 'btn btn-success btn-sm autosave', 'role' => 'modal-remote',]) . ' ' .
             Html::a(Icon::show('plus', [], Icon::BSG) . 'Premed IV', 'javascript:void(0);', ['class' => 'btn btn-success btn-sm autosave', 'onclick' => 'GetmodalIVSolutionPremed(this);']) . ' ' .
@@ -23,7 +23,7 @@ if ($type == 'chemo') {
             Html::a(Icon::show('plus', [], Icon::BSG) . 'Injection', ['create-by-type', 'vn' => $header['pt_visit_number'], 'cpoeid' => $model['cpoe_id'], 'type' => '53', 'modalhd' => $modalhd], ['class' => 'btn btn-success btn-sm autosave', 'role' => 'modal-remote',]) . ' ' .
             Html::a(Icon::show('plus', [], Icon::BSG) . 'Homemed', ['create-by-type', 'vn' => $header['pt_visit_number'], 'cpoeid' => $model['cpoe_id'], 'type' => 'homemed', 'modalhd' => $modalhd], ['class' => 'btn btn-success btn-sm autosave', 'role' => 'modal-remote',]) . ' ' .
             Html::a(Icon::show('plus', [], Icon::BSG) . 'Hormones', ['create-by-type', 'vn' => $header['pt_visit_number'], 'cpoeid' => $model['cpoe_id'], 'type' => '54', 'modalhd' => $modalhd], ['class' => 'btn btn-purple btn-sm autosave', 'role' => 'modal-remote']);
-} elseif ($type == 'homemed') {
+} elseif ($type == '1011') {
     $action = Html::a('<i class="glyphicon glyphicon-plus"></i>Drug', ['create-by-type', 'vn' => $header['pt_visit_number'], 'cpoeid' => $model['cpoe_id'], 'type' => 'homemed', 'modalhd' => $modalhd], ['class' => 'btn btn-success btn-sm autosave', 'role' => 'modal-remote',]) . ' ' .
             Html::a('<i class="glyphicon glyphicon-plus"></i>Hormones', ['create-by-type', 'vn' => $header['pt_visit_number'], 'cpoeid' => $model['cpoe_id'], 'type' => '54', 'modalhd' => $modalhd], ['class' => 'btn btn-purple btn-sm autosave', 'role' => 'modal-remote',]);
 }
@@ -113,7 +113,7 @@ GridView::widget([
     'toggleData' => false,
     'pageSummaryRowOptions' => ['class' => 'kv-page-summary default'],
     'panel' => [
-        'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-list"></i> Details ',
+        'heading' => '<h3 class="panel-title"></h3>',
         //. Html::a(Icon::show('move', [], Icon::BSG) . 'Sort', ['sort', 'data' => $model['cpoe_id']], ['class' => 'btn btn-warning btn-sm', 'style' => 'color:white;', 'role' => 'modal-remote']) . '</h3>',
         'type' => GridView::TYPE_DEFAULT,
         'before' =>

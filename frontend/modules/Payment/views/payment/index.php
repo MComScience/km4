@@ -3,18 +3,14 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
 use yii\helpers\Url;
+echo $this->render('/config/Asset_Js.php');
+$header_style = ['style' => 'text-align:center;color:#000000;'];
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\Payment\models\VwInvForRepListSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = "รายการใบแจ้งค่าใช้จ่าย";
 $this->params['breadcrumbs'][] = $this->title;
-$script = <<< JS
-$(document).ready(function () {
-        $('#tab_A').addClass("active");
-    });
-JS;
-$this->registerJs($script);
 ?>
 <!-- <span style="font-size:20px;color:#d73d32;text-align:center;"># <i class="glyphicon glyphicon-wrench" style="color:#d73d32;font-size:25px;"></i>ขออภัย หน้าเว็บไซต์นี้อยู่ระหว่างการทดสอบระบบ #<br></span> -->
     <?php echo $this->render('_tab_menu_payment'); ?>
@@ -22,21 +18,20 @@ $this->registerJs($script);
         <div id="tab" class="tab-pane in active ">
             <div class="vw-inv-for-rep-list-index">
                 <?php Pjax::begin(['id' => 'inv_pjax', 'timeout' => 5000]) ?>
-                <?php echo $this->render('_search_payment', ['model' => $searchModel]); ?>
                 <?=
                 GridView::widget([
                     'dataProvider' => $dataProvider,
-                    'bootstrap' => true,
-                    'responsiveWrap' => FALSE,
-                    'responsive' => true,
                     'hover' => true,
                     'pjax' => true,
-                    'striped' => false,
+                    'striped' => true,
                     'condensed' => true,
-                    'toggleData' => true,
-                    'layout' => Yii::$app->componentdate->layoutgridview(),
+                    'bordered' => true,
+                    'layout' => "{items}",
+                    'responsive' => false,
+                    'showOnEmpty' => false,
+                    'export' => false,
                     'headerRowOptions' => ['class' => \kartik\grid\GridView::TYPE_SUCCESS],
-                    'pageSummaryRowOptions' => ['class' => 'kv-page-summary default'],
+                    'tableOptions' => ['class' => GridView::TYPE_DEFAULT,'style' => 'width:100%','id'=>'grid_index'],
                     'columns' => [
                         [
                             'class' => 'kartik\grid\SerialColumn',
@@ -52,91 +47,88 @@ $this->registerJs($script);
                             },
                             'headerOptions' => ['class' => 'kartik-sheet-style', 'style' => 'color:#000000;'],
                             'expandOneOnly' => true,
-                            //'header' => '<a>Detail</a>',
-                            //'expandIcon' => '<a class="btn btn-success btn-xs">Detail</a>',
-                            //'collapseIcon' => '<a class="btn btn-success btn-xs">Detail</a>',
                             'detailAnimationDuration' => 'slow', //fast
                             'detailRowCssClass' => kartik\grid\GridView::TYPE_DEFAULT,
                             'detailUrl' => \yii\helpers\Url::to(['view-detail-inv']),
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'เลขที่ใบสั่งยา',
                             'hAlign' => GridView::ALIGN_CENTER,
                             'value' => function ($model) {
-                        if ($model->cpoe_num == null) {
-                            return '-';
-                        } else {
-                            return $model->cpoe_num;
-                        }
-                    }
+                                if ($model->cpoe_num == null) {
+                                    return '-';
+                                } else {
+                                    return $model->cpoe_num;
+                                }
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'HN',
                             'hAlign' => GridView::ALIGN_CENTER,
                             'value' => function ($model) {
-                        if ($model->pt_hospital_number == null) {
-                            return '-';
-                        } else {
-                            return $model->pt_hospital_number;
-                        }
-                    }
+                                if ($model->pt_hospital_number == null) {
+                                    return '-';
+                                } else {
+                                    return $model->pt_hospital_number;
+                                }
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'VN : AN',
                             'hAlign' => GridView::ALIGN_CENTER,
                             'value' => function ($model) {
-                        if ($model->VNAN == null) {
-                            return '-';
-                        } else {
-                            return $model->VNAN;
-                        }
-                    }
+                                if ($model->VNAN == null) {
+                                    return '-';
+                                } else {
+                                    return $model->VNAN;
+                                }
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'ชื่อ-นามสกุลผู้ป่วย',
                             'hAlign' => GridView::ALIGN_LEFT,
                             'value' => function ($model) {
-                        if ($model->pt_fullname == null) {
-                            return '-';
-                        } else {
-                            return $model->pt_fullname;
-                        }
-                    }
+                                if ($model->pt_fullname == null) {
+                                    return '-';
+                                } else {
+                                    return $model->pt_fullname;
+                                }
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'สถานะคำสั่ง',
                             'hAlign' => GridView::ALIGN_CENTER,
                             'value' => function ($model) {
-                        if ($model->cpoe_status == null) {
-                            return '-';
-                        } else {
-                            return $model->cpoe_status;
-                        }
-                    }
+                                if ($model->cpoe_status == null) {
+                                    return '-';
+                                } else {
+                                    return $model->cpoe_status;
+                                }
+                            }
                         ],
                         [
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'header' => 'สถานะการชำระเงิน',
                             'hAlign' => GridView::ALIGN_CENTER,
                             'value' => function ($model) {
-                        if ($model->rep_status == null) {
-                            return '-';
-                        } else {
-                            return $model->rep_status;
-                        }
-                    }
+                                if ($model->rep_status == null) {
+                                    return '-';
+                                } else {
+                                    return $model->rep_status;
+                                }
+                            }
                         ],
                         [
                             'class' => 'kartik\grid\ActionColumn',
-                            'options' => ['style' => 'width:160px;'],
                             'header' => 'Actions',
+                            'noWrap' => true,
                             'hAlign' => GridView::ALIGN_CENTER,
-                            'headerOptions' => ['style' => 'text-align:center;color:#000000;'],
+                            'headerOptions' => $header_style,
                             'template' => '{select} {owed}',
                             'buttons' => [
                                 'select' => function ($url, $model) {
@@ -144,10 +136,9 @@ $this->registerJs($script);
                                     if (!empty($findRep)) {
                                         return '<span style="color:#53a93f;">กำลังดำเนินการ</span><span class="glyphicon glyphicon-hourglass" style="color:#53a93f;"></span>';
                                    } else {    
-                                        return Html::a('<span class="btn btn-success btn-xs">Select</span>','#', [
+                                        return Html::a('<span class="btn btn-success btn-xs">Select</span>',false, [
                                             'title' => Yii::t('app', 'Select'),
                                             'onclick' => "select_inv($model->inv_id)",
-                                            //'data-id' => $model->inv_id,
                                         ]);
                                     }
                                 },
@@ -166,9 +157,7 @@ $this->registerJs($script);
                         ]);
                         ?>
                         <?php Pjax::end() ?>
-                        <div class="form-group" style="margin-top:30px;text-align: right">
-                                <?= Html::a('Close', ['index'], ['class' => 'btn btn-default']) ?>
-                        </div>
+                        <?php echo $this->render('/config/btn_close.php'); ?>
                     </div>
                 </div>
             </div>
@@ -179,7 +168,42 @@ $(document).ready(function () {
 	setInterval(function(){
 		$.pjax.reload({container: '#inv_pjax'}); 
 	}, 60000); 
-});             
+});      
+$(document).ready(function () {
+    $('table.default').DataTable({
+        "dom": '<"pull-left"f><"pull-right"l>t<"pull-left"i>p',
+        "pageLength": 10,
+        "responsive": true,
+        "columns": [
+            null,
+            {"bSortable": false},
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {"bSortable": false}
+        ],
+        "language": {
+            // "search": "ค้นหา : _INPUT_ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><span class='text'></span><input type='checkbox' class='colored-success' id='chk_box'  data-toggle='checkbox-x'><span class='text'> แสดงเฉพาะรายการที่ยังไม่บันทึกลูกหนี้</span></label>",
+            "search": "ค้นหา : _INPUT_ ",
+            /*"searchPlaceholder": "ค้นหาข้อมูล...",*/
+            "lengthMenu": "_MENU_",
+            "infoEmpty": "No records available",
+            "info": "แสดง _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
+            //"infoFiltered": "(ค้นหาจากทั้งหมด _MAX_ รายการ)"
+        },
+        "aLengthMenu": [
+            [5, 10, 15, 20, 100, -1],
+            [5, 10, 15, 20, 100, "All"]
+        ],
+        /*"paging":   false,
+         "ordering": false,
+         "info":     false*/
+    });
+});
+           
 JS;
 $this->registerJs($script);
 ?>
@@ -187,17 +211,13 @@ $this->registerJs($script);
 function select_inv(inv_id) {
 
         $.get(
-                'index.php?r=Payment/payment/create-payment',
+                'create-payment',
                 {
                     inv_id
                 },
                 function (data)
                 {
-                    if (data) {
-                        var data_key = data;
-                        var url = "index.php?r=Payment/payment/create&rep_id=" + data_key + "";
-                        window.location.replace(url);
-                    }
+                    
                 }
         );
  }   

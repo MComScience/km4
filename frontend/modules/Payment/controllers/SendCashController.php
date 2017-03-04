@@ -33,8 +33,7 @@ class SendCashController extends Controller
      * Lists all VwFiRepList models.
      * @return mixed
      */
-    public function actionIndex()
-    {	
+    public function actionIndex(){	
     	$findName = \app\modules\Payment\models\TbSection::findOne(['SectionID'=>$_SESSION['section_view']]);
     	$SectionName = $findName['SectionDecs'];
         $searchModel = new VwFiRepListSearch();
@@ -48,11 +47,11 @@ class SendCashController extends Controller
         ]);
     }
     public function actionHistory(){
-        // $findName = \app\modules\Payment\models\TbSection::findOne(['SectionID'=>$_SESSION['section_view']]);
-        // $SectionName = $findName['SectionDecs'];
+        $findName = \app\modules\Payment\models\TbSection::findOne(['SectionID'=>$_SESSION['section_view']]);
+        $SectionName = $findName['SectionDecs'];
         $searchModel = new \app\modules\Payment\models\VwFiRepSummarySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->pagination->pageSize = 10;
+        $dataProvider->pagination->pageSize = false;
         return $this->render('_history', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -78,13 +77,13 @@ class SendCashController extends Controller
     }
     public function actionInPatient()
     {   
-        $SectionID = '2014';
+        $SectionID = 'S012';
         $_SESSION['section_view'] = $SectionID;
         return $this->redirect(['index']);
     }
     public function actionOutPatient()
     {
-        $SectionID = '2013';
+        $SectionID = 'S011';
         $_SESSION['section_view'] = $SectionID;
         return $this->redirect(['index']);
     }
@@ -233,14 +232,14 @@ class SendCashController extends Controller
     }
 
     public function actionSummary($id) {
-        $summary_header = \app\modules\Payment\models\Vwfirepsummary::findOne(['rep_summary_id' => $id]);
+        $summary_header = \app\modules\Payment\models\VwFiRepSummary::findOne(['rep_summary_id' => $id]);
         $summary_content = \app\modules\Payment\models\vwfireplistsum::findOne($summary_header['rep_summary_section']);
         $summary_creditcard = \app\modules\Payment\models\vwfireplistsum::findOne(['rep_create_section' => $summary_header['rep_summary_section']]);
         $summary_listcount = \app\modules\Payment\models\vwfireplistcount::findOne(['rep_create_section' => $summary_header['rep_summary_section']]);
         $pdf = new Pdf([
             'mode' => Pdf::MODE_UTF8,
             'orientation' => Pdf::ORIENT_PORTRAIT,
-             'destination' => Pdf::DEST_DOWNLOAD,
+             'destination' => Pdf::DEST_BROWSER,
             'format' => Pdf::FORMAT_A4,
             'content' => $this->renderPartial('summary', [
                 'content' => 'content', 'summary_creditcard1', 'count_creditcard',

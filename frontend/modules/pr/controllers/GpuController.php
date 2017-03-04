@@ -119,7 +119,7 @@ class GpuController extends Controller {
 
     public function actionUpdate($id) {
         $model = $this->findModel($id);
-        $post = Yii::$app->request->post();
+        $post = Yii::$app->request->post('TbPr2Temp', []);
 
         $type = empty($model['PRNum']) ? 'new' : 'edit';
 
@@ -129,25 +129,25 @@ class GpuController extends Controller {
                     ->sum('PRExtendedCost');
 
             $POPriceLimit = TbPotype::find()
-                    ->where(['POTypeID' => $post['TbPr2Temp']['POTypeID']])
+                    ->where(['POTypeID' => $post['POTypeID']])
                     ->sum('POPriceLimit');
 
             if ((!empty($PRExtendedCost)) && (!empty($POPriceLimit)) && ($PRExtendedCost > $POPriceLimit)) {
                 return 'เกินประเภทการสั่งซื้อ';
-            } else if ((TbPr2Temp::find()->where(['PRNum' => $post['TbPr2Temp']['PRNum']])->andWhere('PRID <> :PRID', [':PRID' => $id])->all()) != null || (TbPr2::find()->where(['PRNum' => $post['TbPr2Temp']['PRNum']])->andWhere('PRID <> :PRID', [':PRID' => $id])->all()) != null) {
+            } else if ((TbPr2Temp::find()->where(['PRNum' => $post['PRNum']])->andWhere('PRID <> :PRID', [':PRID' => $id])->all()) != null || (TbPr2::find()->where(['PRNum' => $post['PRNum']])->andWhere('PRID <> :PRID', [':PRID' => $id])->all()) != null) {
                 return 'duplicate_prnum';
             } else {
-                $PRNum = $post['Auto-Gen'] == 'true' && $post['TbPr2Temp']['PRNum'] == 'Draft' ? Yii::$app->genprnum->generatePRNum(1) : $post['TbPr2Temp']['PRNum'];
-                $PRDate = empty($post['TbPr2Temp']['PRDate']) ? null : Yii::$app->dateconvert->convertThaiToMysqlDate2($post['TbPr2Temp']['PRDate']);
+                $PRNum = $post['Auto-Gen'] == 'true' && $post['PRNum'] == 'Draft' ? Yii::$app->genprnum->generatePRNum(1) : $post['PRNum'];
+                $PRDate = !isset($post['PRDate']) ? null : Yii::$app->dateconvert->convertThaiToMysqlDate2($post['PRDate']);
                 $PRTypeID = 1;
                 $PRStatusID = 1;
-                $DepartmentID = !empty($post['TbPr2Temp']['DepartmentID']) ? $post['TbPr2Temp']['DepartmentID'] : NULL;
-                $SectionID = !empty($post['TbPr2Temp']['SectionID']) ? $post['TbPr2Temp']['SectionID'] : NULL;
-                $POTypeID = !empty($post['TbPr2Temp']['POTypeID']) ? $post['TbPr2Temp']['POTypeID'] : NULL;
-                $PRReasonNote = !empty($post['TbPr2Temp']['PRReasonNote']) ? $post['TbPr2Temp']['PRReasonNote'] : NULL;
-                $PRExpectDate = !empty($post['TbPr2Temp']['PRExpectDate']) ? $post['TbPr2Temp']['PRExpectDate'] : NULL;
+                $DepartmentID = isset($post['DepartmentID']) ? $post['DepartmentID'] : NULL;
+                $SectionID = isset($post['SectionID']) ? $post['SectionID'] : NULL;
+                $POTypeID = isset($post['POTypeID']) ? $post['POTypeID'] : NULL;
+                $PRReasonNote = isset($post['PRReasonNote']) ? $post['PRReasonNote'] : NULL;
+                $PRExpectDate = isset($post['PRExpectDate']) ? $post['PRExpectDate'] : NULL;
                 $PRCreatedBy = Yii::$app->user->getId();
-                $PRbudgetID = !empty($post['TbPr2Temp']['PRbudgetID']) ? $post['TbPr2Temp']['PRbudgetID'] : NULL;
+                $PRbudgetID = isset($post['PRbudgetID']) ? $post['PRbudgetID'] : NULL;
                 Yii::$app->db->createCommand('CALL cmd_pr2_savedraft(:PRDate,:PRTypeID,:PRStatusID,:DepartmentID,:SectionID,:POTypeID,:PRID,:PRReasonNote,:PRExpectDate,:PRCreatedBy,:PRbudgetID,:PRNum,:PRTotal);')
                         ->bindParam(':PRDate', $PRDate)
                         ->bindParam(':PRTypeID', $PRTypeID)
@@ -221,34 +221,34 @@ class GpuController extends Controller {
     }
 
     public function actionUpdateRejectVerify($data) {
-        $post = Yii::$app->request->post();
+        $post = Yii::$app->request->post('TbPr2', []);
         if (($model = TbPr2::findOne($data)) !== null) {
             $type = 'edit';
             if ($model->load($post)) {
                 $PRExtendedCost = TbPritemdetail2::find()
-                        ->where(['PRID' => $post['TbPr2']['PRID']])
+                        ->where(['PRID' => $post['PRID']])
                         ->sum('PRExtendedCost');
 
                 $POPriceLimit = TbPotype::find()
-                        ->where(['POTypeID' => $post['TbPr2']['POTypeID']])
+                        ->where(['POTypeID' => $post['POTypeID']])
                         ->sum('POPriceLimit');
 
                 if ((!empty($PRExtendedCost)) && (!empty($POPriceLimit)) && ($PRExtendedCost > $POPriceLimit)) {
                     return 'เกินประเภทการสั่งซื้อ';
                 } else {
-                    $model->PRNum = !empty($post['TbPr2']['PRNum']) ? $post['TbPr2']['PRNum'] : NULL;
-                    $model->PRDate = empty($post['TbPr2']['PRDate']) ? null : Yii::$app->dateconvert->convertThaiToMysqlDate2($post['TbPr2']['PRDate']);
+                    $model->PRNum = isset($post['PRNum']) ? $post['PRNum'] : NULL;
+                    $model->PRDate = !isset($post['PRDate']) ? null : Yii::$app->dateconvert->convertThaiToMysqlDate2($post['PRDate']);
                     $model->PRTypeID = 1;
                     $model->PRStatusID = 4;
-                    $model->DepartmentID = !empty($post['TbPr2']['DepartmentID']) ? $post['TbPr2']['DepartmentID'] : NULL;
-                    $model->SectionID = !empty($post['TbPr2']['SectionID']) ? $post['TbPr2']['SectionID'] : NULL;
-                    $model->POTypeID = !empty($post['TbPr2']['POTypeID']) ? $post['TbPr2']['POTypeID'] : NULL;
-                    $model->PRReasonNote = !empty($post['TbPr2']['PRReasonNote']) ? $post['TbPr2']['PRReasonNote'] : NULL;
-                    $model->PRExpectDate = !empty($post['TbPr2']['PRExpectDate']) ? $post['TbPr2']['PRExpectDate'] : NULL;
-                    $model->PRbudgetID = !empty($post['TbPr2']['PRbudgetID']) ? $post['TbPr2']['PRbudgetID'] : NULL;
+                    $model->DepartmentID = isset($post['DepartmentID']) ? $post['DepartmentID'] : NULL;
+                    $model->SectionID = isset($post['SectionID']) ? $post['SectionID'] : NULL;
+                    $model->POTypeID = isset($post['POTypeID']) ? $post['POTypeID'] : NULL;
+                    $model->PRReasonNote = isset($post['PRReasonNote']) ? $post['PRReasonNote'] : NULL;
+                    $model->PRExpectDate = isset($post['PRExpectDate']) ? $post['PRExpectDate'] : NULL;
+                    $model->PRbudgetID = isset($post['PRbudgetID']) ? $post['PRbudgetID'] : NULL;
                     $model->save();
                     TbPritemdetail2::updateAll([
-                        'PRNum' => $post['TbPr2']['PRNum'],
+                        'PRNum' => $post['PRNum'],
                             ], 'PRID = :PRID', [':PRID' => $data]);
                     return 'success';
                 }
@@ -592,11 +592,11 @@ class GpuController extends Controller {
             ]);
             $arr = array(
                 'FSN_GPU' => $query['FSN_GPU'],
-                'GPUStdCost' => empty($query['GPUStdCost']) ? null : number_format($query['GPUStdCost'], 4),
-                'GPUUnitCost' => empty($query['GPUUnitCost']) ? null : number_format($query['GPUUnitCost'], 4),
-                'GPUOrderQty' => empty($query['GPUOrderQty']) ? null : number_format($query['GPUOrderQty'], 4),
-                'PRApprovedOrderQty' => empty($query['PRApprovedOrderQty']) ? null : number_format($query['PRApprovedOrderQty'], 4),
-                'PRGPUAvalible' => empty($query['PRGPUAvalible']) ? null : number_format($query['PRGPUAvalible'], 4),
+                'GPUStdCost' => !isset($query['GPUStdCost']) ? null : number_format($query['GPUStdCost'], 4),
+                'GPUUnitCost' => !isset($query['GPUUnitCost']) ? null : number_format($query['GPUUnitCost'], 4),
+                'GPUOrderQty' => !isset($query['GPUOrderQty']) ? null : number_format($query['GPUOrderQty'], 4),
+                'PRApprovedOrderQty' => !isset($query['PRApprovedOrderQty']) ? null : number_format($query['PRApprovedOrderQty'], 4),
+                'PRGPUAvalible' => !isset($query['PRGPUAvalible']) ? null : number_format($query['PRGPUAvalible'], 4),
             );
             return $arr;
         }
@@ -636,33 +636,33 @@ class GpuController extends Controller {
     }
 
     public function actionSaveItemdetails() {
-        $request = Yii::$app->request->post();
+        $request = Yii::$app->request->post('TbPritemdetail2Temp', []);
         if ($request) {
             $cmd = null;
-            $ItemID = !empty($request['TbPritemdetail2Temp']['ItemID']) ? $request['TbPritemdetail2Temp']['ItemID'] : NULL;
-            $TMTID_GPU = !empty($request['TbPritemdetail2Temp']['TMTID_GPU']) ? $request['TbPritemdetail2Temp']['TMTID_GPU'] : NULL;
-            $TMTID_TPU = !empty($request['TbPritemdetail2Temp']['TMTID_TPU']) ? $request['TbPritemdetail2Temp']['TMTID_TPU'] : NULL;
-            $ItemName = !empty($request['TbPritemdetail2Temp']['ItemName']) ? $request['TbPritemdetail2Temp']['ItemName'] : NULL;
-            $PCPlanNum = !empty($request['TbPritemdetail2Temp']['PCPlanNum']) ? $request['TbPritemdetail2Temp']['PCPlanNum'] : NULL;
-            $PRItemStdCost = !empty($request['TbPritemdetail2Temp']['PRItemStdCost']) ? $this->strNumber($request['TbPritemdetail2Temp']['PRItemStdCost']) : NULL;
-            $PRItemUnitCost = !empty($request['TbPritemdetail2Temp']['PRItemUnitCost']) ? $this->strNumber($request['TbPritemdetail2Temp']['PRItemUnitCost']) : NULL;
-            $PRItemOrderQty = !empty($request['TbPritemdetail2Temp']['PRItemOrderQty']) ? $this->strNumber($request['TbPritemdetail2Temp']['PRItemOrderQty']) : NULL;
-            $PRApprovedOrderQtySum = !empty($request['TbPritemdetail2Temp']['PRApprovedOrderQtySum']) ? $this->strNumber($request['TbPritemdetail2Temp']['PRApprovedOrderQtySum']) : NULL;
-            $PRItemAvalible = !empty($request['TbPritemdetail2Temp']['PRItemAvalible']) ? $this->strNumber($request['TbPritemdetail2Temp']['PRItemAvalible']) : NULL;
-            $PRExtendedCost = !empty($request['TbPritemdetail2Temp']['PRExtendedCost']) ? $this->strNumber($request['TbPritemdetail2Temp']['PRExtendedCost']) : NULL;
-            $PROrderQty = !empty($request['TbPritemdetail2Temp']['PROrderQty']) ? $this->strNumber($request['TbPritemdetail2Temp']['PROrderQty']) : NULL;
-            $PRUnitCost = !empty($request['TbPritemdetail2Temp']['PRUnitCost']) ? $this->strNumber($request['TbPritemdetail2Temp']['PRUnitCost']) : NULL;
-            $PRPackQty = !empty($request['TbPritemdetail2Temp']['PRPackQty']) ? $this->strNumber($request['TbPritemdetail2Temp']['PRPackQty']) : NULL;
-            $PackID = !empty($request['TbPritemdetail2Temp']['PackID']) ? $request['TbPritemdetail2Temp']['PackID'] : NULL;
-            $ItemPackCost = !empty($request['TbPritemdetail2Temp']['ItemPackCost']) ? $this->strNumber($request['TbPritemdetail2Temp']['ItemPackCost']) : NULL;
+            $ItemID = isset($request['ItemID']) ? $request['ItemID'] : NULL;
+            $TMTID_GPU = isset($request['TMTID_GPU']) ? $request['TMTID_GPU'] : NULL;
+            $TMTID_TPU = isset($request['TMTID_TPU']) ? $request['TMTID_TPU'] : NULL;
+            $ItemName = isset($request['ItemName']) ? $request['ItemName'] : NULL;
+            $PCPlanNum = isset($request['PCPlanNum']) ? $request['PCPlanNum'] : NULL;
+            $PRItemStdCost = isset($request['PRItemStdCost']) ? $this->strNumber($request['PRItemStdCost']) : NULL;
+            $PRItemUnitCost = isset($request['PRItemUnitCost']) ? $this->strNumber($request['PRItemUnitCost']) : NULL;
+            $PRItemOrderQty = isset($request['PRItemOrderQty']) ? $this->strNumber($request['PRItemOrderQty']) : NULL;
+            $PRApprovedOrderQtySum = isset($request['PRApprovedOrderQtySum']) ? $this->strNumber($request['PRApprovedOrderQtySum']) : NULL;
+            $PRItemAvalible = isset($request['PRItemAvalible']) ? $this->strNumber($request['PRItemAvalible']) : NULL;
+            $PRExtendedCost = isset($request['PRExtendedCost']) ? $this->strNumber($request['PRExtendedCost']) : NULL;
+            $PROrderQty = isset($request['PROrderQty']) ? $this->strNumber($request['PROrderQty']) : NULL;
+            $PRUnitCost = isset($request['PRUnitCost']) ? $this->strNumber($request['PRUnitCost']) : NULL;
+            $PRPackQty = isset($request['PRPackQty']) ? $this->strNumber($request['PRPackQty']) : NULL;
+            $PackID = isset($request['PackID']) ? $request['PackID'] : NULL;
+            $ItemPackCost = isset($request['ItemPackCost']) ? $this->strNumber($request['ItemPackCost']) : NULL;
             $ids_PR_selected = NULL;
-            $PRID = !empty($request['TbPritemdetail2Temp']['PRID']) ? $request['TbPritemdetail2Temp']['PRID'] : NULL;
-            $ids = !empty($request['TbPritemdetail2Temp']['ids']) ? $request['TbPritemdetail2Temp']['ids'] : TbPritemdetail2Temp::find()->max('ids') + 1;
+            $PRID = isset($request['PRID']) ? $request['PRID'] : NULL;
+            $ids = isset($request['ids']) ? $request['ids'] : TbPritemdetail2Temp::find()->max('ids') + 1;
             $PRCreatedBy = Yii::$app->user->getId();
-            $PRLastUnitCost = !empty($request['TbPritemdetail2Temp']['PRLastUnitCost']) ? $this->strNumber($request['TbPritemdetail2Temp']['PRLastUnitCost']) : NULL;
-            $PRItemOnPCPlan = !empty($request['TbPritemdetail2Temp']['PRItemOnPCPlan']) ? $request['TbPritemdetail2Temp']['PRItemOnPCPlan'] : 8;
+            $PRLastUnitCost = isset($request['PRLastUnitCost']) ? $this->strNumber($request['PRLastUnitCost']) : NULL;
+            $PRItemOnPCPlan = isset($request['PRItemOnPCPlan']) ? $request['PRItemOnPCPlan'] : 8;
 
-            if (!empty($PCPlanNum) && ($request['formsubmit'] != 'pass')) {
+            if (!empty($PCPlanNum) && (Yii::$app->request->post('formsubmit') != 'pass')) {
                 return $this->CheckOverPlan($PRItemStdCost, $PRItemUnitCost, $PRUnitCost, $PRItemAvalible, $PROrderQty);
             } else {
                 Yii::$app->db->createCommand('
@@ -1214,19 +1214,23 @@ class GpuController extends Controller {
     public function actionAutoApprove() {
         $request = Yii::$app->request;
         if ($request->isPost) {
-            $PRExtendedCost = TbPritemdetail2::find()
-                    ->where(['PRID' => $request->post('PRID'), 'PRItemNumStatusID' => 2])
-                    ->sum('PRExtendedCost');
-            $modelPR = TbPr2::findOne($request->post('PRID'));
-            $modelPR->PRStatusID = 11;
-            $modelPR->PRApprovaDate = date('Y-m-d');
-            $modelPR->PRApprovatime = date('H:i:s');
-            $modelPR->PRTotal = number_format($PRExtendedCost, 2);
-            $modelPR->PRApproveBy = Yii::$app->user->getId();
-            $modelPR->PRVerifyBy = Yii::$app->user->getId();
-            $modelPR->save();
+            $count = TbPritemdetail2::find()->where(['PRVerifyQty' => null, 'PRID' => $request->post('PRID')])->count('ids');
+            if ($count == 0) {
+                return 'ต้องมีอย่างน้อย 1 รายการ ที่ ok';
+            } else {
+                $PRExtendedCost = TbPritemdetail2::find()
+                        ->where(['PRID' => $request->post('PRID'), 'PRItemNumStatusID' => 2])
+                        ->sum('PRExtendedCost');
+                $modelPR = TbPr2::findOne($request->post('PRID'));
+                $modelPR->PRStatusID = 11;
+                $modelPR->PRApprovaDate = date('Y-m-d');
+                $modelPR->PRApprovatime = date('H:i:s');
+                $modelPR->PRTotal = number_format($PRExtendedCost, 2);
+                $modelPR->PRApproveBy = Yii::$app->user->getId();
+                $modelPR->PRVerifyBy = Yii::$app->user->getId();
+                $modelPR->save();
 
-            $sql = "
+                $sql = "
                  UPDATE tb_pritemdetail2
                     SET PRPackQtyApprove = PRPackQtyVerify,
                      ItemPackCostApprove = ItemPackCostVerify,
@@ -1236,9 +1240,10 @@ class GpuController extends Controller {
                     WHERE
                             PRID = $modelPR->PRID;
                  ";
-            Yii::$app->db->createCommand($sql)->execute();
-            Yii::$app->session->setFlash('success', 'Send ' . $modelPR['PRNum'] . ' To Approve Success!');
-            return $this->redirect('/km4/pr/default/list-verify');
+                Yii::$app->db->createCommand($sql)->execute();
+                Yii::$app->session->setFlash('success', 'Send ' . $modelPR['PRNum'] . ' To Approve Success!');
+                return $this->redirect('/km4/pr/default/list-verify');
+            }
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

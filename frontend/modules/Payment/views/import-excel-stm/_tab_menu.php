@@ -4,18 +4,9 @@ use yii\helpers\Html;
 ?>
 
 <ul class="nav nav-tabs" id="myTab">
-    <li class="tab-success" id="tab_A">
-        <a data-toggle="tab" href="#tab">
+    <li id="tab_A" class="<?= Yii::$app->controller->action->id=='index'?'active':''; ?>">
+        <a href="index">
             <?= Html::encode('STM_UDCANCER') ?> <span ><?php  //echo '(' . $countInv . ')'; ?></span>
         </a>
     </li>
 </ul>
-
-<?php
-$script = <<< JS
-$("#tab_A").click(function (e) {
-   window.location.replace("index.php?r=Payment/import-excel-stm/index");      
-});
-JS;
-$this->registerJs($script);
-?>
